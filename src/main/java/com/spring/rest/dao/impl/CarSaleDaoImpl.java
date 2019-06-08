@@ -15,6 +15,9 @@ import java.util.Date;
 import java.util.List;
 
 
+/**
+ * The type Car sale dao.
+ */
 @Repository
 public class CarSaleDaoImpl implements CarSaleDao {
     @Value("${get.car.sale}")
@@ -34,8 +37,15 @@ public class CarSaleDaoImpl implements CarSaleDao {
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final CarSaleMapper carSaleMapper;
 
+    /**
+     * Instantiates a new Car sale dao.
+     *
+     * @param jdbcTemplate  the jdbc template
+     * @param carSaleMapper the car sale mapper
+     */
     @Autowired
-    public CarSaleDaoImpl(NamedParameterJdbcTemplate jdbcTemplate, CarSaleMapper carSaleMapper) {
+    public CarSaleDaoImpl(final NamedParameterJdbcTemplate jdbcTemplate,
+                          final CarSaleMapper carSaleMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.carSaleMapper = carSaleMapper;
     }
@@ -46,14 +56,15 @@ public class CarSaleDaoImpl implements CarSaleDao {
     }
 
     @Override
-    public CarSale getCarSale(int index) {
+    public CarSale getCarSale(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
         return jdbcTemplate.queryForObject(GET_CAR_SALE_SQL, parameters, carSaleMapper);
     }
 
     @Override
-    public void addCarSale(BigDecimal price, int userId, int carId) {
+    public void addCarSale(final BigDecimal price, final int userId,
+                           final int carId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("price", price)
                 .addValue("date", new Date(System.currentTimeMillis()))
@@ -63,7 +74,8 @@ public class CarSaleDaoImpl implements CarSaleDao {
     }
 
     @Override
-    public void updateCarSale(int index, BigDecimal price, int userId, int carId) {
+    public void updateCarSale(final int index, final BigDecimal price,
+                              final int userId, final int carId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index)
                 .addValue("price", price)
@@ -73,7 +85,7 @@ public class CarSaleDaoImpl implements CarSaleDao {
     }
 
     @Override
-    public void deleteCarSale(int index) {
+    public void deleteCarSale(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
         jdbcTemplate.update(DELETE_CAR_SALE_SQL, parameters);

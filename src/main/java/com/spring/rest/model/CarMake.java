@@ -1,35 +1,67 @@
 package com.spring.rest.model;
 
+/**
+ * The type Car make.
+ */
 public class CarMake {
     private int carMakeId;
     private String carMake;
 
+    /**
+     * Instantiates a new Car make.
+     */
     public CarMake() {
     }
 
-    public CarMake(int carMakeId, String carMake) {
+    /**
+     * Instantiates a new Car make.
+     *
+     * @param carMakeId the car make id
+     * @param carMake   the car make
+     */
+    public CarMake(final int carMakeId, final String carMake) {
         this.carMakeId = carMakeId;
         this.carMake = carMake;
     }
 
+    /**
+     * Gets car make id.
+     *
+     * @return the car make id
+     */
     public int getCarMakeId() {
         return carMakeId;
     }
 
-    public void setCarMakeId(int carMakeId) {
+    /**
+     * Sets car make id.
+     *
+     * @param carMakeId the car make id
+     */
+    public void setCarMakeId(final int carMakeId) {
         this.carMakeId = carMakeId;
     }
 
+    /**
+     * Gets car make.
+     *
+     * @return the car make
+     */
     public String getCarMake() {
         return carMake;
     }
 
-    public void setCarMake(final String pCarMake) {
-        this.carMake = pCarMake;
+    /**
+     * Sets car make.
+     *
+     * @param carMake the car make
+     */
+    public void setCarMake(final String carMake) {
+        this.carMake = carMake;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return "carMake='" + carMake + '\'';
     }
 }

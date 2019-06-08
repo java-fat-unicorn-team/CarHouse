@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * The type Transmission dao.
+ */
 @Repository
 public class TransmissionDaoImpl implements TransmissionDao {
     @Value("${get.transmission}")
@@ -21,8 +24,14 @@ public class TransmissionDaoImpl implements TransmissionDao {
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final TransmissionMapper transmissionMapper;
 
-    public TransmissionDaoImpl(NamedParameterJdbcTemplate jdbcTemplate,
-                               TransmissionMapper transmissionMapper) {
+    /**
+     * Instantiates a new Transmission dao.
+     *
+     * @param jdbcTemplate       the jdbc template
+     * @param transmissionMapper the transmission mapper
+     */
+    public TransmissionDaoImpl(final NamedParameterJdbcTemplate jdbcTemplate,
+                               final TransmissionMapper transmissionMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.transmissionMapper = transmissionMapper;
     }
@@ -34,7 +43,7 @@ public class TransmissionDaoImpl implements TransmissionDao {
     }
 
     @Override
-    public Transmission getTransmission(int index) {
+    public Transmission getTransmission(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
         return jdbcTemplate.queryForObject(GET_TRANSMISSION_SQL,

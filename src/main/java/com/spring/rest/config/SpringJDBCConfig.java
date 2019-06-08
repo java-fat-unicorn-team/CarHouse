@@ -10,20 +10,37 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 
+/**
+ * The type Spring jdbc config.
+ */
 @Configuration
 @PropertySource("classpath:jdbc-connection.properties")
 public class SpringJDBCConfig {
+    /**
+     * The Driver class name.
+     */
     @Value("${driver.class.name}")
     public String DRIVER_CLASS_NAME;
+    /**
+     * The Url.
+     */
     @Value("${url}")
     public String URL;
+    /**
+     * The User name.
+     */
     @Value("${user.name.p}")
     public String USER_NAME;
+    /**
+     * The Password.
+     */
     @Value("${password}")
     public String PASSWORD;
 
     /**
-     * @return DataSource
+     * Data source data source.
+     *
+     * @return DataSource data source
      */
     @Bean
     public DataSource dataSource() {
@@ -36,12 +53,15 @@ public class SpringJDBCConfig {
     }
 
     /**
+     * Gets named parameter jdbc template.
+     *
      * @param dataSource is settings connection to database
-     * @return JdbcTemplate
+     * @return JdbcTemplate named parameter jdbc template
      */
     @Bean
     @Autowired
-    public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate(final DataSource dataSource) {
+    public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate(
+            final DataSource dataSource) {
         return new NamedParameterJdbcTemplate(dataSource);
     }
 }

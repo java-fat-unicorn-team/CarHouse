@@ -1,35 +1,67 @@
 package com.spring.rest.model;
 
+/**
+ * The type Transmission.
+ */
 public class Transmission {
     private int transmissionId;
     private String transmission;
 
+    /**
+     * Instantiates a new Transmission.
+     */
     public Transmission() {
     }
 
-    public Transmission(int transmissionId, String transmission) {
+    /**
+     * Instantiates a new Transmission.
+     *
+     * @param transmissionId the transmission id
+     * @param transmission   the transmission
+     */
+    public Transmission(final int transmissionId, final String transmission) {
         this.transmissionId = transmissionId;
         this.transmission = transmission;
     }
 
+    /**
+     * Gets transmission id.
+     *
+     * @return the transmission id
+     */
     public int getTransmissionId() {
         return transmissionId;
     }
 
-    public void setTransmissionId(int transmissionId) {
+    /**
+     * Sets transmission id.
+     *
+     * @param transmissionId the transmission id
+     */
+    public void setTransmissionId(final int transmissionId) {
         this.transmissionId = transmissionId;
     }
 
+    /**
+     * Gets transmission.
+     *
+     * @return the transmission
+     */
     public String getTransmission() {
         return transmission;
     }
 
-    public void setTransmission(final String pTransmission) {
+    /**
+     * Sets transmission.
+     *
+     * @param transmission the transmission
+     */
+    public void setTransmission(final String transmission) {
         this.transmission = transmission;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return "transmission='" + transmission + '\'';
     }
 }

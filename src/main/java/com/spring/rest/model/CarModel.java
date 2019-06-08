@@ -1,45 +1,89 @@
 package com.spring.rest.model;
 
+/**
+ * The type Car model.
+ */
 public class CarModel {
     private int carModelId;
     private CarMake carMake;
     private String carModel;
 
+    /**
+     * Instantiates a new Car model.
+     */
     public CarModel() {
     }
 
-    public CarModel(int carModelId, CarMake carMake, String carModel) {
+    /**
+     * Instantiates a new Car model.
+     *
+     * @param carModelId the car model id
+     * @param carMake    the car make
+     * @param carModel   the car model
+     */
+    public CarModel(final int carModelId, final CarMake carMake,
+                    final String carModel) {
         this.carModelId = carModelId;
         this.carMake = carMake;
         this.carModel = carModel;
     }
 
+    /**
+     * Gets car model id.
+     *
+     * @return the car model id
+     */
     public int getCarModelId() {
         return carModelId;
     }
 
-    public void setCarModelId(int carModelId) {
+    /**
+     * Sets car model id.
+     *
+     * @param carModelId the car model id
+     */
+    public void setCarModelId(final int carModelId) {
         this.carModelId = carModelId;
     }
 
+    /**
+     * Gets car make.
+     *
+     * @return the car make
+     */
     public CarMake getCarMake() {
         return carMake;
     }
 
-    public void setCarMake(final CarMake pCarMake) {
-        this.carMake = pCarMake;
+    /**
+     * Sets car make.
+     *
+     * @param carMake the car make
+     */
+    public void setCarMake(final CarMake carMake) {
+        this.carMake = carMake;
     }
 
+    /**
+     * Gets car model.
+     *
+     * @return the car model
+     */
     public String getCarModel() {
         return carModel;
     }
 
-    public void setCarModel(final String pCarModel) {
-        this.carModel = pCarModel;
+    /**
+     * Sets car model.
+     *
+     * @param carModel the car model
+     */
+    public void setCarModel(final String carModel) {
+        this.carModel = carModel;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return carMake + ", carModel='" + carModel + '\'';
     }
 }

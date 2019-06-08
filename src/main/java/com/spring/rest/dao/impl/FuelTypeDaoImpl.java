@@ -12,6 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * The type Fuel type dao.
+ */
 @Repository
 public class FuelTypeDaoImpl implements FuelTypeDao {
     @Value("${get.fuel.type}")
@@ -29,8 +32,15 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final FuelTypeMapper fuelTypeMapper;
 
+    /**
+     * Instantiates a new Fuel type dao.
+     *
+     * @param jdbcTemplate   the jdbc template
+     * @param fuelTypeMapper the fuel type mapper
+     */
     @Autowired
-    public FuelTypeDaoImpl(NamedParameterJdbcTemplate jdbcTemplate, FuelTypeMapper fuelTypeMapper) {
+    public FuelTypeDaoImpl(final NamedParameterJdbcTemplate jdbcTemplate,
+                           final FuelTypeMapper fuelTypeMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.fuelTypeMapper = fuelTypeMapper;
     }
@@ -43,7 +53,7 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
     }
 
     @Override
-    public FuelType getFuelType(int index) {
+    public FuelType getFuelType(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
         return jdbcTemplate.queryForObject(
@@ -52,14 +62,14 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
     }
 
     @Override
-    public void addFuelType(String fuelType) {
+    public void addFuelType(final String fuelType) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("fuelType", fuelType);
         jdbcTemplate.update(ADD_FUEL_TYPE, parameters);
     }
 
     @Override
-    public void deleteFuelType(int index) {
+    public void deleteFuelType(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
 
@@ -67,7 +77,7 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
     }
 
     @Override
-    public void updateFuelType(int index, String fuelType) {
+    public void updateFuelType(final int index, final String fuelType) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("fuelType", fuelType)
                 .addValue("id", index);

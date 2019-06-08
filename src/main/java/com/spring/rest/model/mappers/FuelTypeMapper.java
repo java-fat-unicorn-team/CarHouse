@@ -7,13 +7,23 @@ import org.springframework.stereotype.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * The type Fuel type mapper.
+ */
 @Component
 public class FuelTypeMapper implements RowMapper<FuelType> {
+    /**
+     * The constant FUEL_TYPE_ID.
+     */
     public static final String FUEL_TYPE_ID = "fuel_type_id";
+    /**
+     * The constant FUEL_TYPE.
+     */
     public static final String FUEL_TYPE = "fuel_type";
 
     @Override
-    public FuelType mapRow(ResultSet resultSet, int i) throws SQLException {
+    public FuelType mapRow(final ResultSet resultSet, final int i)
+            throws SQLException {
         return new FuelType(resultSet.getInt(FUEL_TYPE_ID),
                 resultSet.getString(FUEL_TYPE));
     }
