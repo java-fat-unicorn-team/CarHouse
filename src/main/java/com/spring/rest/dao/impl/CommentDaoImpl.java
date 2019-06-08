@@ -19,9 +19,9 @@ public class CommentDaoImpl implements CommentDao {
     private String GET_ALL_COMMENTS_OF_CAR_SALE_SQL;
     @Value("${add.comment}")
     private String ADD_COMMENT_SQL;
-    @Value("${update.comment.sql}")
+    @Value("${update.comment}")
     private String UPDATE_COMMENT_SQL;
-    @Value("${delete.comment.sql}")
+    @Value("${delete.comment}")
     private String DELETE_COMMENT_SQL;
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
@@ -56,12 +56,11 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public void updateComment(int index, String userName, String comment, int carSaleId) {
+    public void updateComment(int index, String userName, String comment) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index)
                 .addValue("userName", userName)
-                .addValue("comment", comment)
-                .addValue("carSaleId", carSaleId);
+                .addValue("comment", comment);
         jdbcTemplate.update(UPDATE_COMMENT_SQL, parameters);
     }
 

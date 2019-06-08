@@ -6,8 +6,12 @@ import java.util.List;
 
 public interface FuelTypeDao {
     List<FuelType> getAllFuelTypes();
+
     FuelType getFuelType(int index);
+
     void addFuelType(String fuelType);
+
     void deleteFuelType(int index);
+
     void updateFuelType(int index, String fuelType);
 }

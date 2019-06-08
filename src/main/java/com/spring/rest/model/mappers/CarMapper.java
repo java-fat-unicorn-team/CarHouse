@@ -1,6 +1,6 @@
 package com.spring.rest.model.mappers;
 
-import com.spring.rest.model.*;
+import com.spring.rest.model.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;

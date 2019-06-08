@@ -15,7 +15,7 @@ public class TransmissionMapper implements RowMapper<Transmission> {
 
     @Override
     public Transmission mapRow(ResultSet resultSet, int i) throws SQLException {
-        return  new Transmission(
-                resultSet.getInt(TRANSMISSION_ID),resultSet.getString(TRANSMISSION));
+        return new Transmission(
+                resultSet.getInt(TRANSMISSION_ID), resultSet.getString(TRANSMISSION));
     }
 }

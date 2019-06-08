@@ -1,5 +1,6 @@
 package com.spring.rest.model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Car {
@@ -73,8 +74,10 @@ public class Car {
 
     @Override
     public String toString() {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(year);
         return "carId=" + carId +
-                ", year=" + year.getYear() +
+                ", year=" + cal.get(Calendar.YEAR) +
                 ", mileage=" + mileage +
                 ", " + fuelType +
                 ", " + transmission +
