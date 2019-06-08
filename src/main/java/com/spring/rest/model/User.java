@@ -1,5 +1,8 @@
 package com.spring.rest.model;
 
+/**
+ * The type User.
+ */
 public class User {
     private int userId;
     private String userName;
@@ -7,11 +10,27 @@ public class User {
     private String login;
     private String password;
 
+    /**
+     * Instantiates a new User.
+     *
+     * @param pUserName the p user name
+     */
     public User(final String pUserName) {
         userName = pUserName;
     }
 
-    public User(int userId, String userName, String phoneNumber, String login, String password) {
+    /**
+     * Instantiates a new User.
+     *
+     * @param userId      the user id
+     * @param userName    the user name
+     * @param phoneNumber the phone number
+     * @param login       the login
+     * @param password    the password
+     */
+    public User(final int userId, final String userName,
+                final String phoneNumber, final String login,
+                final String password) {
         this.userId = userId;
         this.userName = userName;
         this.phoneNumber = phoneNumber;
@@ -19,49 +38,99 @@ public class User {
         this.password = password;
     }
 
+    /**
+     * Gets user id.
+     *
+     * @return the user id
+     */
     public int getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    /**
+     * Sets user id.
+     *
+     * @param userId the user id
+     */
+    public void setUserId(final int userId) {
         this.userId = userId;
     }
 
+    /**
+     * Gets user name.
+     *
+     * @return the user name
+     */
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(final String pUserName) {
-        this.userName = pUserName;
+    /**
+     * Sets user name.
+     *
+     * @param userName the user name
+     */
+    public void setUserName(final String userName) {
+        this.userName = userName;
     }
 
+    /**
+     * Gets phone number.
+     *
+     * @return the phone number
+     */
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(final String pPhoneNumber) {
-        this.phoneNumber = pPhoneNumber;
+    /**
+     * Sets phone number.
+     *
+     * @param phoneNumber the phone number
+     */
+    public void setPhoneNumber(final String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
+    /**
+     * Gets login.
+     *
+     * @return the login
+     */
     public String getLogin() {
         return login;
     }
 
-    public void setLogin(final String pLogin) {
-        this.login = pLogin;
+    /**
+     * Sets login.
+     *
+     * @param login the login
+     */
+    public void setLogin(final String login) {
+        this.login = login;
     }
 
+    /**
+     * Gets password.
+     *
+     * @return the password
+     */
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(final String pPassword) {
-        this.password = pPassword;
+    /**
+     * Sets password.
+     *
+     * @param password the password
+     */
+    public void setPassword(final String password) {
+        this.password = password;
     }
 
     @Override
-    public String toString() {
-        return "userId=" + userId +
-                ", userName='" + userName + '\'';
+    public final String toString() {
+        return "userId=" + userId
+                + ", userName='" + userName + '\'';
     }
 }

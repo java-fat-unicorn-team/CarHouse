@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * The type Car make dao.
+ */
 @Repository
 public class CarMakeDaoImpl implements CarMakeDao {
     @Value("${get.car.make}")
@@ -21,7 +24,14 @@ public class CarMakeDaoImpl implements CarMakeDao {
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final CarMakeMapper carMakeMapper;
 
-    public CarMakeDaoImpl(NamedParameterJdbcTemplate jdbcTemplate, CarMakeMapper carMakeMapper) {
+    /**
+     * Instantiates a new Car make dao.
+     *
+     * @param jdbcTemplate  the jdbc template
+     * @param carMakeMapper the car make mapper
+     */
+    public CarMakeDaoImpl(final NamedParameterJdbcTemplate jdbcTemplate,
+                          final CarMakeMapper carMakeMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.carMakeMapper = carMakeMapper;
     }
@@ -32,9 +42,10 @@ public class CarMakeDaoImpl implements CarMakeDao {
     }
 
     @Override
-    public CarMake getCarMake(int index) {
+    public CarMake getCarMake(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        return jdbcTemplate.queryForObject(GET_CAR_MAKE_SQL, parameters, carMakeMapper);
+        return jdbcTemplate.queryForObject(GET_CAR_MAKE_SQL, parameters,
+                carMakeMapper);
     }
 }

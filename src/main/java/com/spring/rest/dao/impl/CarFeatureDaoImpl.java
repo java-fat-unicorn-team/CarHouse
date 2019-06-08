@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * The type Car feature dao.
+ */
 @Repository
 public class CarFeatureDaoImpl implements CarFeatureDao {
     @Value("${get.car.feature}")
@@ -27,28 +30,37 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final CarFeatureMapper carFeatureMapper;
 
-    public CarFeatureDaoImpl(NamedParameterJdbcTemplate jdbcTemplate, CarFeatureMapper carFeatureMapper) {
+    /**
+     * Instantiates a new Car feature dao.
+     *
+     * @param jdbcTemplate     the jdbc template
+     * @param carFeatureMapper the car feature mapper
+     */
+    public CarFeatureDaoImpl(final NamedParameterJdbcTemplate jdbcTemplate,
+                             final CarFeatureMapper carFeatureMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.carFeatureMapper = carFeatureMapper;
     }
 
 
     @Override
-    public List<CarFeature> getAllCarFeatures(int carId) {
+    public List<CarFeature> getAllCarFeatures(final int carId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("carId", carId);
-        return jdbcTemplate.query(GET_ALL_CAR_FEATURES_SQL, parameters, carFeatureMapper);
+        return jdbcTemplate.query(GET_ALL_CAR_FEATURES_SQL, parameters,
+                carFeatureMapper);
     }
 
     @Override
-    public CarFeature getCarFeature(int index) {
+    public CarFeature getCarFeature(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        return jdbcTemplate.queryForObject(GET_CAR_FEATURE_SQL, parameters, carFeatureMapper);
+        return jdbcTemplate.queryForObject(GET_CAR_FEATURE_SQL,
+                parameters, carFeatureMapper);
     }
 
     @Override
-    public void addCarFeature(String carFeature, int carId) {
+    public void addCarFeature(final String carFeature, final int carId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("carFeature", carFeature)
                 .addValue("carId", carId);
@@ -56,7 +68,7 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
     }
 
     @Override
-    public void updateCarFeature(String carFeature, int carFeatureId) {
+    public void updateCarFeature(final String carFeature, final int carFeatureId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("carFeature", carFeature)
                 .addValue("id", carFeatureId);
@@ -64,7 +76,7 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
     }
 
     @Override
-    public void deleteCarFeature(int index) {
+    public void deleteCarFeature(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
         jdbcTemplate.update(DELETE_CAR_FEATURE_SQL, parameters);

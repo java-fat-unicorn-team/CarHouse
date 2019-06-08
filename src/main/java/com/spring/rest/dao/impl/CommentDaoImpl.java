@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * The type Comment dao.
+ */
 @Repository
 public class CommentDaoImpl implements CommentDao {
     @Value("${get.comment}")
@@ -27,27 +30,37 @@ public class CommentDaoImpl implements CommentDao {
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final CommentMapper commentMapper;
 
-    public CommentDaoImpl(NamedParameterJdbcTemplate jdbcTemplate, CommentMapper commentMapper) {
+    /**
+     * Instantiates a new Comment dao.
+     *
+     * @param jdbcTemplate  the jdbc template
+     * @param commentMapper the comment mapper
+     */
+    public CommentDaoImpl(final NamedParameterJdbcTemplate jdbcTemplate,
+                          final CommentMapper commentMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.commentMapper = commentMapper;
     }
 
     @Override
-    public List<Comment> getAllCommentsOfCarSale(int index) {
+    public List<Comment> getAllCommentsOfCarSale(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        return jdbcTemplate.query(GET_ALL_COMMENTS_OF_CAR_SALE_SQL, parameters, commentMapper);
+        return jdbcTemplate.query(GET_ALL_COMMENTS_OF_CAR_SALE_SQL, parameters,
+                commentMapper);
     }
 
     @Override
-    public Comment getComment(int index) {
+    public Comment getComment(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        return jdbcTemplate.queryForObject(GET_COMMENT_SQL, parameters, commentMapper);
+        return jdbcTemplate.queryForObject(GET_COMMENT_SQL, parameters,
+                commentMapper);
     }
 
     @Override
-    public void addComment(String userName, String comment, int carSaleId) {
+    public void addComment(final String userName, final String comment,
+                           final int carSaleId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("userName", userName)
                 .addValue("comment", comment)
@@ -56,7 +69,8 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public void updateComment(int index, String userName, String comment) {
+    public void updateComment(final int index, final String userName,
+                              final String comment) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index)
                 .addValue("userName", userName)
@@ -65,7 +79,7 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public void deleteComment(int index) {
+    public void deleteComment(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
         jdbcTemplate.update(DELETE_COMMENT_SQL, parameters);

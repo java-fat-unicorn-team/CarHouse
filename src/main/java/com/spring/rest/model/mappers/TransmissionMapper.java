@@ -7,15 +7,26 @@ import org.springframework.stereotype.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * The type Transmission mapper.
+ */
 @Component
 public class TransmissionMapper implements RowMapper<Transmission> {
 
+    /**
+     * The constant TRANSMISSION_ID.
+     */
     public static final String TRANSMISSION_ID = "transmission_id";
+    /**
+     * The constant TRANSMISSION.
+     */
     public static final String TRANSMISSION = "transmission";
 
     @Override
-    public Transmission mapRow(ResultSet resultSet, int i) throws SQLException {
+    public Transmission mapRow(final ResultSet resultSet, final int i)
+            throws SQLException {
         return new Transmission(
-                resultSet.getInt(TRANSMISSION_ID), resultSet.getString(TRANSMISSION));
+                resultSet.getInt(TRANSMISSION_ID),
+                resultSet.getString(TRANSMISSION));
     }
 }

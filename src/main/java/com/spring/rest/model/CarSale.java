@@ -3,6 +3,9 @@ package com.spring.rest.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * The type Car sale.
+ */
 public class CarSale {
     private int carSaleId;
     private BigDecimal price;
@@ -10,10 +13,23 @@ public class CarSale {
     private User user;
     private Car car;
 
+    /**
+     * Instantiates a new Car sale.
+     */
     public CarSale() {
     }
 
-    public CarSale(int carSaleId, BigDecimal price, Date date, User user, Car car) {
+    /**
+     * Instantiates a new Car sale.
+     *
+     * @param carSaleId the car sale id
+     * @param price     the price
+     * @param date      the date
+     * @param user      the user
+     * @param car       the car
+     */
+    public CarSale(final int carSaleId, final BigDecimal price, final Date date,
+                   final User user, final Car car) {
         this.carSaleId = carSaleId;
         this.price = price;
         this.date = date;
@@ -21,52 +37,102 @@ public class CarSale {
         this.car = car;
     }
 
+    /**
+     * Gets car sale id.
+     *
+     * @return the car sale id
+     */
     public int getCarSaleId() {
         return carSaleId;
     }
 
-    public void setCarSaleId(int carSaleId) {
+    /**
+     * Sets car sale id.
+     *
+     * @param carSaleId the car sale id
+     */
+    public void setCarSaleId(final int carSaleId) {
         this.carSaleId = carSaleId;
     }
 
+    /**
+     * Gets price.
+     *
+     * @return the price
+     */
     public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(final BigDecimal pPrice) {
-        this.price = pPrice;
+    /**
+     * Sets price.
+     *
+     * @param price the price
+     */
+    public void setPrice(final BigDecimal price) {
+        this.price = price;
     }
 
+    /**
+     * Gets date.
+     *
+     * @return the date
+     */
     public Date getDate() {
         return date;
     }
 
-    public void setDate(final Date pDate) {
-        this.date = pDate;
+    /**
+     * Sets date.
+     *
+     * @param date the date
+     */
+    public void setDate(final Date date) {
+        this.date = date;
     }
 
+    /**
+     * Gets user.
+     *
+     * @return the user
+     */
     public User getUser() {
         return user;
     }
 
-    public void setUser(final User pUser) {
-        this.user = pUser;
+    /**
+     * Sets user.
+     *
+     * @param user the user
+     */
+    public void setUser(final User user) {
+        this.user = user;
     }
 
+    /**
+     * Gets car.
+     *
+     * @return the car
+     */
     public Car getCar() {
         return car;
     }
 
-    public void setCar(final Car pCar) {
-        this.car = pCar;
+    /**
+     * Sets car.
+     *
+     * @param car the car
+     */
+    public void setCar(final Car car) {
+        this.car = car;
     }
 
     @Override
-    public String toString() {
-        return "carSaleId=" + carSaleId +
-                ", price=" + price +
-                ", date=" + date +
-                ", " + user +
-                ", " + car;
+    public final String toString() {
+        return "carSaleId=" + carSaleId
+                + ", price=" + price
+                + ", date=" + date
+                + ", " + user
+                + ", " + car;
     }
 }

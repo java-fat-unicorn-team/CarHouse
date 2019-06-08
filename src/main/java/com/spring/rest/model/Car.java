@@ -3,6 +3,9 @@ package com.spring.rest.model;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * The type Car.
+ */
 public class Car {
     private int carId;
     private Date year;
@@ -12,10 +15,25 @@ public class Car {
     private CarModel carModel;
 
 
+    /**
+     * Instantiates a new Car.
+     */
     public Car() {
     }
 
-    public Car(int carId, Date year, int mileage, FuelType fuelType, Transmission transmission, CarModel carModel) {
+    /**
+     * Instantiates a new Car.
+     *
+     * @param carId        the car id
+     * @param year         the year
+     * @param mileage      the mileage
+     * @param fuelType     the fuel type
+     * @param transmission the transmission
+     * @param carModel     the car model
+     */
+    public Car(final int carId, final Date year, final int mileage,
+               final FuelType fuelType, final Transmission transmission,
+               final CarModel carModel) {
         this.carId = carId;
         this.year = year;
         this.mileage = mileage;
@@ -24,64 +42,124 @@ public class Car {
         this.carModel = carModel;
     }
 
+    /**
+     * Gets car id.
+     *
+     * @return the car id
+     */
     public int getCarId() {
         return carId;
     }
 
+    /**
+     * Sets car id.
+     *
+     * @param carId the car id
+     */
     public void setCarId(int carId) {
         this.carId = carId;
     }
 
+    /**
+     * Gets year.
+     *
+     * @return the year
+     */
     public Date getYear() {
         return year;
     }
 
-    public void setYear(final Date pYear) {
-        this.year = pYear;
+    /**
+     * Sets year.
+     *
+     * @param year the year
+     */
+    public void setYear(final Date year) {
+        this.year = year;
     }
 
+    /**
+     * Gets mileage.
+     *
+     * @return the mileage
+     */
     public int getMileage() {
         return mileage;
     }
 
-    public void setMileage(final int pMileage) {
-        this.mileage = pMileage;
+    /**
+     * Sets mileage.
+     *
+     * @param mileage the mileage
+     */
+    public void setMileage(final int mileage) {
+        this.mileage = mileage;
     }
 
+    /**
+     * Gets fuel type.
+     *
+     * @return the fuel type
+     */
     public FuelType getFuelType() {
         return fuelType;
     }
 
-    public void setFuelType(final FuelType pFuelType) {
-        this.fuelType = pFuelType;
+    /**
+     * Sets fuel type.
+     *
+     * @param fuelType the fuel type
+     */
+    public void setFuelType(final FuelType fuelType) {
+        this.fuelType = fuelType;
     }
 
+    /**
+     * Gets transmission.
+     *
+     * @return the transmission
+     */
     public Transmission getTransmission() {
         return transmission;
     }
 
-    public void setTransmission(final Transmission pTransmission) {
-        this.transmission = pTransmission;
+    /**
+     * Sets transmission.
+     *
+     * @param transmission the transmission
+     */
+    public void setTransmission(final Transmission transmission) {
+        this.transmission = transmission;
     }
 
+    /**
+     * Gets car model.
+     *
+     * @return the car model
+     */
     public CarModel getCarModel() {
         return carModel;
     }
 
-    public void setCarModel(final CarModel pCarModel) {
-        this.carModel = pCarModel;
+    /**
+     * Sets car model.
+     *
+     * @param carModel the car model
+     */
+    public void setCarModel(final CarModel carModel) {
+        this.carModel = carModel;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(year);
-        return "carId=" + carId +
-                ", year=" + cal.get(Calendar.YEAR) +
-                ", mileage=" + mileage +
-                ", " + fuelType +
-                ", " + transmission +
-                ", " + carModel +
-                ';';
+        return "carId=" + carId
+                + ", year=" + cal.get(Calendar.YEAR)
+                + ", mileage=" + mileage
+                + ", " + fuelType
+                + ", " + transmission
+                + ", " + carModel
+                + ';';
     }
 }
