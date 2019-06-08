@@ -53,7 +53,7 @@ public class CarSaleDaoImpl implements CarSaleDao {
     }
 
     @Override
-    public void addCarSale(BigDecimal price, Date date, int userId, int carId) {
+    public void addCarSale(BigDecimal price, int userId, int carId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("price", price)
                 .addValue("date", new Date(System.currentTimeMillis()))

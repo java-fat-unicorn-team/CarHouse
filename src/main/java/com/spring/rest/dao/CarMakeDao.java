@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface CarMakeDao {
     List<CarMake> getAllCarMakes();
+
     CarMake getCarMake(int index);
 }

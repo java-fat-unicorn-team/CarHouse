@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface TransmissionDao {
     List<Transmission> getAllTransmission();
+
     Transmission getTransmission(int index);
 }

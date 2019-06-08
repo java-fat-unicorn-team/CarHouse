@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface CarModelDao {
     List<CarModel> getAllCarModels();
+
     CarModel getCarModel(int index);
 }

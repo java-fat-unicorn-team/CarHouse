@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @Repository
@@ -48,9 +49,8 @@ public class CarDaoImpl implements CarDao {
 
     @Override
     public void addCar(int year, int mileage, int fuelTypeId, int transmissionId, int carModelId) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        Date date = calendar.getTime();
+        Calendar cal = new GregorianCalendar(year, Calendar.JANUARY, 1);
+        Date date = cal.getTime();
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("year", date)
                 .addValue("mileage", mileage)
@@ -61,9 +61,12 @@ public class CarDaoImpl implements CarDao {
     }
 
     @Override
-    public void updateCar(int index, int mileage, int fuelTypeId, int transmissionId, int carModelId) {
+    public void updateCar(int index, int year, int mileage, int fuelTypeId, int transmissionId, int carModelId) {
+        Calendar cal = new GregorianCalendar(year, Calendar.JANUARY, 1);
+        Date date = cal.getTime();
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index)
+                .addValue("year", date)
                 .addValue("mileage", mileage)
                 .addValue("fuelType", fuelTypeId)
                 .addValue("transmission", transmissionId)
