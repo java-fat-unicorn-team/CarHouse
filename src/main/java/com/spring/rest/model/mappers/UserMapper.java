@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * The type User mapper.
+ * The is used to create User from data returned from database.
  */
 @Component
 public class UserMapper implements RowMapper<User> {

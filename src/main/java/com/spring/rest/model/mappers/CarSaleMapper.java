@@ -9,12 +9,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * The type Car sale mapper.
+ * The is used to create CarSale from data returned from database.
  */
 @Component
 public class CarSaleMapper implements RowMapper<CarSale> {
     /**
-     * The constant CAR_SALE_ID.
+     * The constant CAR_SALE.
      */
     public static final String CAR_SALE_ID = "car_sale_id";
     /**
@@ -25,20 +25,27 @@ public class CarSaleMapper implements RowMapper<CarSale> {
      * The constant DATE.
      */
     public static final String DATE = "date";
+    /**
+     * mapper to get User object.
+     */
     private UserMapper userMapper;
-    private CarMapper carMapper;
+    /**
+     * mapper to get CarCharacteristics object.
+     */
+    private CarCharacteristicsMapper carCharacteristicsMapper;
 
     /**
      * Instantiates a new Car sale mapper.
      *
-     * @param userMapper the user mapper
-     * @param carMapper  the car mapper
+     * @param userMapper               the user mapper
+     * @param carCharacteristicsMapper the car mapper
      */
     @Autowired
     public CarSaleMapper(final UserMapper userMapper,
-                         final CarMapper carMapper) {
+                         final CarCharacteristicsMapper
+                                 carCharacteristicsMapper) {
         this.userMapper = userMapper;
-        this.carMapper = carMapper;
+        this.carCharacteristicsMapper = carCharacteristicsMapper;
     }
 
     @Override
@@ -47,6 +54,6 @@ public class CarSaleMapper implements RowMapper<CarSale> {
         return new CarSale(resultSet.getInt(CAR_SALE_ID),
                 resultSet.getBigDecimal(PRICE), resultSet.getDate(DATE),
                 userMapper.mapRow(resultSet, i),
-                carMapper.mapRow(resultSet, i));
+                carCharacteristicsMapper.mapRow(resultSet, i));
     }
 }

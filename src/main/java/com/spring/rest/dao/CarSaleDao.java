@@ -2,11 +2,10 @@ package com.spring.rest.dao;
 
 import com.spring.rest.model.CarSale;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * The interface Car sale dao.
+ * The interface provides CRUD operations with CarSale model.
  */
 public interface CarSaleDao {
     /**
@@ -14,7 +13,7 @@ public interface CarSaleDao {
      *
      * @return the all car sales
      */
-    List<CarSale> getAllCarSales();
+    List<CarSale> getCarSales();
 
     /**
      * Gets car sale.
@@ -24,24 +23,21 @@ public interface CarSaleDao {
      */
     CarSale getCarSale(int index);
 
+
     /**
      * Add car sale.
      *
-     * @param price  the price
-     * @param userId the user id
-     * @param carId  the car id
+     * @param carSale the car sale
      */
-    void addCarSale(BigDecimal price, int userId, int carId);
+    void addCarSale(CarSale carSale);
+
 
     /**
      * Update car sale.
      *
-     * @param index  the index
-     * @param price  the price
-     * @param userId the user id
-     * @param carId  the car id
+     * @param carSale the car sale
      */
-    void updateCarSale(int index, BigDecimal price, int userId, int carId);
+    void updateCarSale(CarSale carSale);
 
     /**
      * Delete car sale.

@@ -4,14 +4,29 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * The type Car sale.
+ * The Car sale model.
  */
 public class CarSale {
+    /**
+     * car sale id.
+     */
     private int carSaleId;
+    /**
+     * car price.
+     */
     private BigDecimal price;
+    /**
+     * date when announcement was added.
+     */
     private Date date;
+    /**
+     * user who added this announcement.
+     */
     private User user;
-    private Car car;
+    /**
+     * car characteristics.
+     */
+    private CarCharacteristics carCharacteristics;
 
     /**
      * Instantiates a new Car sale.
@@ -22,34 +37,35 @@ public class CarSale {
     /**
      * Instantiates a new Car sale.
      *
-     * @param carSaleId the car sale id
-     * @param price     the price
-     * @param date      the date
-     * @param user      the user
-     * @param car       the car
+     * @param carSaleId          the car sale id
+     * @param price              the price
+     * @param date               the date
+     * @param user               the user
+     * @param carCharacteristics the carCharacteristics
      */
-    public CarSale(final int carSaleId, final BigDecimal price, final Date date,
-                   final User user, final Car car) {
+    public CarSale(final int carSaleId, final BigDecimal price,
+                   final Date date, final User user,
+                   final CarCharacteristics carCharacteristics) {
         this.carSaleId = carSaleId;
         this.price = price;
         this.date = date;
         this.user = user;
-        this.car = car;
+        this.carCharacteristics = carCharacteristics;
     }
 
     /**
-     * Gets car sale id.
+     * Gets carCharacteristics sale id.
      *
-     * @return the car sale id
+     * @return the carCharacteristics sale id
      */
     public int getCarSaleId() {
         return carSaleId;
     }
 
     /**
-     * Sets car sale id.
+     * Sets carCharacteristics sale id.
      *
-     * @param carSaleId the car sale id
+     * @param carSaleId the carCharacteristics sale id
      */
     public void setCarSaleId(final int carSaleId) {
         this.carSaleId = carSaleId;
@@ -110,21 +126,22 @@ public class CarSale {
     }
 
     /**
-     * Gets car.
+     * Gets carCharacteristics.
      *
-     * @return the car
+     * @return the carCharacteristics
      */
-    public Car getCar() {
-        return car;
+    public CarCharacteristics getCarCharacteristics() {
+        return carCharacteristics;
     }
 
     /**
-     * Sets car.
+     * Sets carCharacteristics.
      *
-     * @param car the car
+     * @param carCharacteristics the carCharacteristics
      */
-    public void setCar(final Car car) {
-        this.car = car;
+    public void setCarCharacteristics(
+            final CarCharacteristics carCharacteristics) {
+        this.carCharacteristics = carCharacteristics;
     }
 
     @Override
@@ -133,6 +150,6 @@ public class CarSale {
                 + ", price=" + price
                 + ", date=" + date
                 + ", " + user
-                + ", " + car;
+                + ", " + carCharacteristics;
     }
 }

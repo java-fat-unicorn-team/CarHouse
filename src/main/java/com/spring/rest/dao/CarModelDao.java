@@ -5,7 +5,7 @@ import com.spring.rest.model.CarModel;
 import java.util.List;
 
 /**
- * The interface Car model dao.
+ * The interface provides methods to get CarModel model.
  */
 public interface CarModelDao {
     /**
@@ -13,7 +13,7 @@ public interface CarModelDao {
      *
      * @return the all car models
      */
-    List<CarModel> getAllCarModels();
+    List<CarModel> getCarModels();
 
     /**
      * Gets car model.

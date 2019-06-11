@@ -1,11 +1,20 @@
 package com.spring.rest.model;
 
 /**
- * The type Car model.
+ * The Car model model.
  */
 public class CarModel {
+    /**
+     * car model id.
+     */
     private int carModelId;
+    /**
+     * car make.
+     */
     private CarMake carMake;
+    /**
+     * car model.
+     */
     private String carModel;
 
     /**
@@ -84,6 +93,6 @@ public class CarModel {
 
     @Override
     public final String toString() {
-        return carMake + ", carModel='" + carModel + '\'';
+        return carMake + carModel;
     }
 }

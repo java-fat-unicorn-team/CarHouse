@@ -4,25 +4,42 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * The type Car.
+ * The CarCharacteristics model.
  */
-public class Car {
+public class CarCharacteristics {
+    /**
+     * car id.
+     */
     private int carId;
+    /**
+     * year of car manufacture.
+     */
     private Date year;
+    /**
+     * car mileage.
+     */
     private int mileage;
+    /**
+     * fuel type of car.
+     */
     private FuelType fuelType;
+    /**
+     * car transmission.
+     */
     private Transmission transmission;
+    /**
+     * car model.
+     */
     private CarModel carModel;
 
-
     /**
-     * Instantiates a new Car.
+     * Instantiates a new CarCharacteristics.
      */
-    public Car() {
+    public CarCharacteristics() {
     }
 
     /**
-     * Instantiates a new Car.
+     * Instantiates a new CarCharacteristics.
      *
      * @param carId        the car id
      * @param year         the year
@@ -31,9 +48,10 @@ public class Car {
      * @param transmission the transmission
      * @param carModel     the car model
      */
-    public Car(final int carId, final Date year, final int mileage,
-               final FuelType fuelType, final Transmission transmission,
-               final CarModel carModel) {
+    public CarCharacteristics(final int carId, final Date year,
+                              final int mileage, final FuelType fuelType,
+                              final Transmission transmission,
+                              final CarModel carModel) {
         this.carId = carId;
         this.year = year;
         this.mileage = mileage;
@@ -56,7 +74,7 @@ public class Car {
      *
      * @param carId the car id
      */
-    public void setCarId(int carId) {
+    public void setCarId(final int carId) {
         this.carId = carId;
     }
 

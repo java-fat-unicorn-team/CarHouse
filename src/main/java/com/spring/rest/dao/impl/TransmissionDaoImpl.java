@@ -12,16 +12,29 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * The type Transmission dao.
+ * The class provides methods to get Transmission model.
+ * The class stores date in database
  */
 @Repository
 public class TransmissionDaoImpl implements TransmissionDao {
-    @Value("${get.transmission}")
+    /**
+     * SQL query to get transmission.
+     */
+    @Value("${transmission.get}")
     private String GET_TRANSMISSION_SQL;
-    @Value("${get.all.transmissions}")
-    private String GET_ALL_TRANSMISSIONS_SQL;
+    /**
+     * SQL query to get transmissions.
+     */
+    @Value("${transmissions.get}")
+    private String GET_TRANSMISSIONS_SQL;
 
+    /**
+     * named parameter JDBC template.
+     */
     private final NamedParameterJdbcTemplate jdbcTemplate;
+    /**
+     * mapper to get Transmission object.
+     */
     private final TransmissionMapper transmissionMapper;
 
     /**
@@ -36,12 +49,23 @@ public class TransmissionDaoImpl implements TransmissionDao {
         this.transmissionMapper = transmissionMapper;
     }
 
+    /**
+     * Gets transmissions.
+     *
+     * @return the transmissions
+     */
     @Override
-    public List<Transmission> getAllTransmission() {
-        return jdbcTemplate.query(GET_ALL_TRANSMISSIONS_SQL,
+    public List<Transmission> getTransmissions() {
+        return jdbcTemplate.query(GET_TRANSMISSIONS_SQL,
                 transmissionMapper);
     }
 
+    /**
+     * Gets transmission.
+     *
+     * @param index the index
+     * @return the transmission
+     */
     @Override
     public Transmission getTransmission(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()

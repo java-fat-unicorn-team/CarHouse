@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 /**
- * The type App config.
+ * Configuration class which provides beans to create classes.
  */
 @ComponentScan("com.spring.rest")
 @PropertySource("classpath:sql-query.properties")

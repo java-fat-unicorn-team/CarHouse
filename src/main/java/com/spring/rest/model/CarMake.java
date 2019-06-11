@@ -1,10 +1,16 @@
 package com.spring.rest.model;
 
 /**
- * The type Car make.
+ * The Car make model.
  */
 public class CarMake {
+    /**
+     * car make id.
+     */
     private int carMakeId;
+    /**
+     * car make.
+     */
     private String carMake;
 
     /**

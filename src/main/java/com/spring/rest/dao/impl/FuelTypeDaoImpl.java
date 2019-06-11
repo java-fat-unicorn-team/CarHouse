@@ -13,23 +13,44 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * The type Fuel type dao.
+ * The class provides CRUD operations with FuelType model.
+ * The class stores date in database
  */
 @Repository
 public class FuelTypeDaoImpl implements FuelTypeDao {
-    @Value("${get.fuel.type}")
+    /**
+     * SQL query to get fuel type.
+     */
+    @Value("${fuel.type.get}")
     private String GET_FUEL_TYPE_SQL;
-    @Value("${get.all.fuel.types}")
-    private String GET_ALL_FUEL_TYPES_SQL;
-    @Value("${add.fuel.type}")
+    /**
+     * SQL query to get fuel types.
+     */
+    @Value("${fuel.types.get}")
+    private String GET_FUEL_TYPES_SQL;
+    /**
+     * SQL query to add fuel type.
+     */
+    @Value("${fuel.type.add}")
     private String ADD_FUEL_TYPE;
-    @Value("${update.fuel.type}")
+    /**
+     * SQL query to update fuel type.
+     */
+    @Value("${fuel.type.update}")
     private String UPDATE_FUEL_TYPE;
-    @Value("${delete.fuel.type}")
+    /**
+     * SQL query to delete fuel type.
+     */
+    @Value("${fuel.type.delete}")
     private String DELETE_FUEL_TYPE;
 
-
+    /**
+     * named parameter JDBC template.
+     */
     private final NamedParameterJdbcTemplate jdbcTemplate;
+    /**
+     * mapper to get FuelType object.
+     */
     private final FuelTypeMapper fuelTypeMapper;
 
     /**
@@ -45,13 +66,24 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
         this.fuelTypeMapper = fuelTypeMapper;
     }
 
+    /**
+     * Gets fuel types.
+     *
+     * @return the fuel types
+     */
     @Override
-    public List<FuelType> getAllFuelTypes() {
+    public List<FuelType> getFuelTypes() {
         return jdbcTemplate.query(
-                GET_ALL_FUEL_TYPES_SQL,
+                GET_FUEL_TYPES_SQL,
                 fuelTypeMapper);
     }
 
+    /**
+     * Gets fuel type.
+     *
+     * @param index the index
+     * @return the fuel type
+     */
     @Override
     public FuelType getFuelType(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
@@ -61,6 +93,11 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
                 fuelTypeMapper);
     }
 
+    /**
+     * Add fuel type.
+     *
+     * @param fuelType the fuel type
+     */
     @Override
     public void addFuelType(final String fuelType) {
         SqlParameterSource parameters = new MapSqlParameterSource()
@@ -68,6 +105,11 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
         jdbcTemplate.update(ADD_FUEL_TYPE, parameters);
     }
 
+    /**
+     * Delete fuel type.
+     *
+     * @param index the index
+     */
     @Override
     public void deleteFuelType(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
@@ -76,6 +118,12 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
         jdbcTemplate.update(DELETE_FUEL_TYPE, parameters);
     }
 
+    /**
+     * Update fuel type.
+     *
+     * @param index    the index
+     * @param fuelType the fuel type
+     */
     @Override
     public void updateFuelType(final int index, final String fuelType) {
         SqlParameterSource parameters = new MapSqlParameterSource()

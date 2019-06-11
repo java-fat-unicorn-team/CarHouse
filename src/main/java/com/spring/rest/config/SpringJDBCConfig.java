@@ -11,7 +11,9 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import javax.sql.DataSource;
 
 /**
- * The type Spring jdbc config.
+ * Spring JDBC configuration.
+ * Set settings of database connections
+ * Create class to work with database
  */
 @Configuration
 @PropertySource("classpath:jdbc-connection.properties")
@@ -19,36 +21,36 @@ public class SpringJDBCConfig {
     /**
      * The Driver class name.
      */
-    @Value("${driver.class.name}")
-    public String DRIVER_CLASS_NAME;
+    @Value("${db.driver.class.name}")
+    private String DB_DRIVER_CLASS_NAME;
     /**
-     * The Url.
+     * The Url to connect database.
      */
-    @Value("${url}")
-    public String URL;
+    @Value("${db.url}")
+    private String DB_URL;
     /**
-     * The User name.
+     * The database's user name.
      */
-    @Value("${user.name.p}")
-    public String USER_NAME;
+    @Value("${db.user.name.p}")
+    private String DB_USER_NAME;
     /**
-     * The Password.
+     * The database's password.
      */
-    @Value("${password}")
-    public String PASSWORD;
+    @Value("${db.password}")
+    private String DB_PASSWORD;
 
     /**
-     * Data source data source.
+     * Configuration data source (MySQL database).
      *
-     * @return DataSource data source
+     * @return DataSource utility class to access a datasource
      */
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(DRIVER_CLASS_NAME);
-        dataSource.setUrl(URL);
-        dataSource.setUsername(USER_NAME);
-        dataSource.setPassword(PASSWORD);
+        dataSource.setDriverClassName(DB_DRIVER_CLASS_NAME);
+        dataSource.setUrl(DB_URL);
+        dataSource.setUsername(DB_USER_NAME);
+        dataSource.setPassword(DB_PASSWORD);
         return dataSource;
     }
 
@@ -56,7 +58,7 @@ public class SpringJDBCConfig {
      * Gets named parameter jdbc template.
      *
      * @param dataSource is settings connection to database
-     * @return JdbcTemplate named parameter jdbc template
+     * @return JdbcTemplate template class with a basic set of JDBC operations
      */
     @Bean
     @Autowired
