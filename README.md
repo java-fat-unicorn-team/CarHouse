@@ -1,5 +1,5 @@
 # CarSale
-
+[![Build Status](https://travis-ci.com/java-fat-unicorn-team/CarSale.svg?branch=dev)](https://travis-ci.com/java-fat-unicorn-team/CarSale)
 ## Main topic of project
 It will be a web application where you can place an advertisement for the sale of a carCharacteristics
 or find a carCharacteristics for yourself
