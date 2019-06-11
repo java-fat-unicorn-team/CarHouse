@@ -1,13 +1,28 @@
 package com.spring.rest.model;
 
 /**
- * The type User.
+ * The User model.
  */
 public class User {
+    /**
+     * user id.
+     */
     private int userId;
+    /**
+     * user name.
+     */
     private String userName;
+    /**
+     * phone number.
+     */
     private String phoneNumber;
+    /**
+     * user's login.
+     */
     private String login;
+    /**
+     * user's password.
+     */
     private String password;
 
     /**

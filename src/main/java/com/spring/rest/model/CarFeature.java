@@ -1,25 +1,34 @@
 package com.spring.rest.model;
 
 /**
- * The type Car feature.
+ * The Car feature model.
  */
 public class CarFeature {
+    /**
+     * car feature id.
+     */
     private int carFeatureId;
+    /**
+     * car feature.
+     */
     private String carFeature;
-    private int carId;
+    /**
+     * car which have this feature.
+     */
+    private CarCharacteristics carCharacteristics;
 
     /**
      * Instantiates a new Car feature.
      *
      * @param carFeatureId the car feature id
      * @param carFeature   the car feature
-     * @param carId        the car id
+     * @param carCharacteristics          the car
      */
     public CarFeature(final int carFeatureId, final String carFeature,
-                      final int carId) {
+                      final CarCharacteristics carCharacteristics) {
         this.carFeatureId = carFeatureId;
         this.carFeature = carFeature;
-        this.carId = carId;
+        this.carCharacteristics = carCharacteristics;
     }
 
     /**
@@ -61,24 +70,25 @@ public class CarFeature {
     /**
      * Gets car id.
      *
-     * @return the car id
+     * @return the car which have this feature
      */
-    public int getCarId() {
-        return carId;
+    public CarCharacteristics getCarCharacteristics() {
+        return carCharacteristics;
     }
 
     /**
      * Sets car id.
      *
-     * @param carId the car id
+     * @param carCharacteristics the car id
      */
-    public void setCarId(final int carId) {
-        this.carId = carId;
+    public void setCarCharacteristics(
+            final CarCharacteristics carCharacteristics) {
+        this.carCharacteristics = carCharacteristics;
     }
 
     @Override
     public final String toString() {
         return "carFeature='" + carFeature + '\''
-                + ", carId=" + carId;
+                + carCharacteristics;
     }
 }

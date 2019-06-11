@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * The type Transmission mapper.
+ * The is used to create Transmission from data returned from database.
  */
 @Component
 public class TransmissionMapper implements RowMapper<Transmission> {

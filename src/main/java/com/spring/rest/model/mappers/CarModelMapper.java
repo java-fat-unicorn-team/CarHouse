@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * The type Car model mapper.
+ * The is used to create CarModel from data returned from database.
  */
 @Component
 public class CarModelMapper implements RowMapper<CarModel> {
@@ -21,6 +21,9 @@ public class CarModelMapper implements RowMapper<CarModel> {
      * The constant CAR_MODEL.
      */
     public static final String CAR_MODEL = "car_model";
+    /**
+     * mapper to get CarMake object.
+     */
     private CarMakeMapper carMakeMapper;
 
     /**

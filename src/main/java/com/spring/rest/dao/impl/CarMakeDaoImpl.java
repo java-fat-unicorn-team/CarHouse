@@ -12,16 +12,29 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * The type Car make dao.
+ * The class provides methods to get CarMake model.
+ * The class stores date in database
  */
 @Repository
 public class CarMakeDaoImpl implements CarMakeDao {
-    @Value("${get.car.make}")
+    /**
+     * SQL query to get car make.
+     */
+    @Value("${car.make.get}")
     private String GET_CAR_MAKE_SQL;
-    @Value("${get.all.car.makes}")
-    private String GET_ALL_CAR_MAKES_SQL;
+    /**
+     * SQL query to get car makes.
+     */
+    @Value("${car.makes.get}")
+    private String GET_CARS_MAKES_SQL;
 
+    /**
+     * named parameter JDBC template.
+     */
     private final NamedParameterJdbcTemplate jdbcTemplate;
+    /**
+     * mapper to get CarMake object.
+     */
     private final CarMakeMapper carMakeMapper;
 
     /**
@@ -36,11 +49,22 @@ public class CarMakeDaoImpl implements CarMakeDao {
         this.carMakeMapper = carMakeMapper;
     }
 
+    /**
+     * Gets car makes.
+     *
+     * @return the car makes
+     */
     @Override
-    public List<CarMake> getAllCarMakes() {
-        return jdbcTemplate.query(GET_ALL_CAR_MAKES_SQL, carMakeMapper);
+    public List<CarMake> getCarMakes() {
+        return jdbcTemplate.query(GET_CARS_MAKES_SQL, carMakeMapper);
     }
 
+    /**
+     * Gets car make.
+     *
+     * @param index the index
+     * @return the car make
+     */
     @Override
     public CarMake getCarMake(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()

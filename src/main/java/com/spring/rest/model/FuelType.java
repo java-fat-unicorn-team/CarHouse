@@ -1,10 +1,16 @@
 package com.spring.rest.model;
 
 /**
- * The type Fuel type.
+ * The Fuel type model.
  */
 public class FuelType {
+    /**
+     * fuel type id.
+     */
     private int fuelTypeId;
+    /**
+     * fuel type's name.
+     */
     private String fuelType;
 
     /**

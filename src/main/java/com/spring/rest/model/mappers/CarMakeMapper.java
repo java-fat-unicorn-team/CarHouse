@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * The type Car make mapper.
+ * The is used to create CarMake from data returned from database.
  */
 @Component
 public class CarMakeMapper implements RowMapper<CarMake> {

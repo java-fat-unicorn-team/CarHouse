@@ -5,7 +5,7 @@ import com.spring.rest.model.Transmission;
 import java.util.List;
 
 /**
- * The interface Transmission dao.
+ * The interface provides methods to get Transmission model.
  */
 public interface TransmissionDao {
     /**
@@ -13,7 +13,7 @@ public interface TransmissionDao {
      *
      * @return the all transmission
      */
-    List<Transmission> getAllTransmission();
+    List<Transmission> getTransmissions();
 
     /**
      * Gets transmission.

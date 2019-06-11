@@ -5,7 +5,7 @@ import com.spring.rest.model.Comment;
 import java.util.List;
 
 /**
- * The interface Comment dao.
+ * The interface provides CRUD operations with Comment model.
  */
 public interface CommentDao {
     /**
@@ -14,7 +14,7 @@ public interface CommentDao {
      * @param index the index
      * @return the all comments of car sale
      */
-    List<Comment> getAllCommentsOfCarSale(int index);
+    List<Comment> getCarSaleComments(int index);
 
     /**
      * Gets comment.
@@ -27,20 +27,16 @@ public interface CommentDao {
     /**
      * Add comment.
      *
-     * @param userName  the user name
-     * @param comment   the comment
-     * @param carSaleId the car sale id
+     * @param comment the comment
      */
-    void addComment(String userName, String comment, int carSaleId);
+    void addComment(Comment comment);
 
     /**
      * Update comment.
      *
-     * @param index    the index
-     * @param userName the user name
-     * @param comment  the comment
+     * @param comment the comment
      */
-    void updateComment(int index, String userName, String comment);
+    void updateComment(Comment comment);
 
     /**
      * Delete comment.

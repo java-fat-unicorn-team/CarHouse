@@ -1,10 +1,16 @@
 package com.spring.rest.model;
 
 /**
- * The type Transmission.
+ * The Transmission model.
  */
 public class Transmission {
+    /**
+     * transmission id.
+     */
     private int transmissionId;
+    /**
+     * transmission's name.
+     */
     private String transmission;
 
     /**

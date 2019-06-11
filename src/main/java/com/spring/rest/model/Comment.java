@@ -1,13 +1,25 @@
 package com.spring.rest.model;
 
 /**
- * The type Comment.
+ * The Comment model.
  */
 public class Comment {
+    /**
+     * comment id.
+     */
     private int commentId;
+    /**
+     * user's name who added this comment.
+     */
     private String userName;
+    /**
+     * comment.
+     */
     private String comment;
-    private int carSaleId;
+    /**
+     * car sale to which this comment applies.
+     */
+    private CarSale carSale;
 
 
     /**
@@ -22,14 +34,14 @@ public class Comment {
      * @param commentId the comment id
      * @param userName  the user name
      * @param comment   the comment
-     * @param carSaleId the car sale id
+     * @param carSale the car sale
      */
     public Comment(final int commentId, final String userName,
-                   final String comment, final int carSaleId) {
+                   final String comment, final CarSale carSale) {
         this.commentId = commentId;
         this.userName = userName;
         this.comment = comment;
-        this.carSaleId = carSaleId;
+        this.carSale = carSale;
     }
 
     /**
@@ -87,27 +99,27 @@ public class Comment {
     }
 
     /**
-     * Gets car sale id.
+     * Gets car sale.
      *
      * @return the car sale id
      */
-    public int getCarSaleId() {
-        return carSaleId;
+    public CarSale getCarSale() {
+        return carSale;
     }
 
     /**
-     * Sets car sale id.
+     * Sets car sale.
      *
-     * @param carSaleId the car sale id
+     * @param carSale the car sale id
      */
-    public void setCarSaleId(final int carSaleId) {
-        this.carSaleId = carSaleId;
+    public void setCarSale(final CarSale carSale) {
+        this.carSale = carSale;
     }
 
     @Override
     public final String toString() {
         return "userName='" + userName + '\''
-                + ", comment='" + comment + '\''
-                + ", carSaleId=" + carSaleId;
+                + ", comment='" + comment + "', "
+                + carSale;
     }
 }

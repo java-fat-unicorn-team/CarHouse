@@ -1,8 +1,8 @@
 # CarSale
 
 ## Main topic of project
-It will be a web application where you can place an advertisement for the sale of a car
-or find a car for yourself
+It will be a web application where you can place an advertisement for the sale of a carCharacteristics
+or find a carCharacteristics for yourself
 
 ## Technologies
 Project is created with:

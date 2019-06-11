@@ -3,6 +3,7 @@ package com.spring.rest.dao.impl;
 import com.spring.rest.dao.CarSaleDao;
 import com.spring.rest.model.CarSale;
 import com.spring.rest.model.mappers.CarSaleMapper;
+import com.spring.rest.model.mappers.ParameterSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -10,80 +11,121 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 
 /**
- * The type Car sale dao.
+ * The class provides CRUD operations with CarSale model.
+ * The class stores date in database
  */
 @Repository
 public class CarSaleDaoImpl implements CarSaleDao {
-    @Value("${get.car.sale}")
+    /**
+     * SQL query to get car sale.
+     */
+    @Value("${car.sale.get}")
     private String GET_CAR_SALE_SQL;
-    @Value("${get.all.car.sales}")
-    private String GET_ALL_CAR_SALES_SQL;
-    @Value("${add.car.sale}")
+    /**
+     * SQL query to get car sales.
+     */
+    @Value("${car.sales.get}")
+    private String GET_CAR_SALES_SQL;
+    /**
+     * SQL query to add car sale.
+     */
+    @Value("${car.sale.add}")
     private String ADD_CAR_SALE_SQL;
-    @Value("${update.car.sale}")
+    /**
+     * SQL query to update car sale.
+     */
+    @Value("${car.sale.update}")
     private String UPDATE_CAR_SALE_SQL;
-    @Value("${delete.car.sale}")
+    /**
+     * SQL query to delete car sale.
+     */
+    @Value("${car.sale.delete}")
     private String DELETE_CAR_SALE_SQL;
 
     /**
-     * JdbcTemplate.
+     * named parameter JDBC template.
      */
     private final NamedParameterJdbcTemplate jdbcTemplate;
+    /**
+     * mapper to get CarSale object.
+     */
     private final CarSaleMapper carSaleMapper;
+    /**
+     * class is used to get parameters for sql query.
+     */
+    private final ParameterSource parameterSource;
 
     /**
      * Instantiates a new Car sale dao.
      *
-     * @param jdbcTemplate  the jdbc template
-     * @param carSaleMapper the car sale mapper
+     * @param jdbcTemplate    the jdbc template
+     * @param carSaleMapper   the car sale mapper
+     * @param parameterSource the parameter source
      */
     @Autowired
     public CarSaleDaoImpl(final NamedParameterJdbcTemplate jdbcTemplate,
-                          final CarSaleMapper carSaleMapper) {
+                          final CarSaleMapper carSaleMapper,
+                          final ParameterSource parameterSource) {
         this.jdbcTemplate = jdbcTemplate;
         this.carSaleMapper = carSaleMapper;
+        this.parameterSource = parameterSource;
     }
 
+    /**
+     * Gets car sales.
+     *
+     * @return the car sales
+     */
     @Override
-    public List<CarSale> getAllCarSales() {
-        return jdbcTemplate.query(GET_ALL_CAR_SALES_SQL, carSaleMapper);
+    public List<CarSale> getCarSales() {
+        return jdbcTemplate.query(GET_CAR_SALES_SQL, carSaleMapper);
     }
 
+    /**
+     * Gets car sale.
+     *
+     * @param index the index
+     * @return the car sale
+     */
     @Override
     public CarSale getCarSale(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        return jdbcTemplate.queryForObject(GET_CAR_SALE_SQL, parameters, carSaleMapper);
+        return jdbcTemplate.queryForObject(GET_CAR_SALE_SQL, parameters,
+                carSaleMapper);
     }
 
+    /**
+     * Add car sale.
+     *
+     * @param carSale the car sale
+     */
     @Override
-    public void addCarSale(final BigDecimal price, final int userId,
-                           final int carId) {
-        SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("price", price)
-                .addValue("date", new Date(System.currentTimeMillis()))
-                .addValue("userId", userId)
-                .addValue("carId", carId);
-        jdbcTemplate.update(ADD_CAR_SALE_SQL, parameters);
+    public void addCarSale(final CarSale carSale) {
+        jdbcTemplate.update(ADD_CAR_SALE_SQL,
+                parameterSource.getCarSaleParameters(carSale));
     }
 
+    /**
+     * Update car sale.
+     *
+     * @param carSale the car sale
+     */
     @Override
-    public void updateCarSale(final int index, final BigDecimal price,
-                              final int userId, final int carId) {
-        SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", index)
-                .addValue("price", price)
-                .addValue("userId", userId)
-                .addValue("carId", carId);
-        jdbcTemplate.update(UPDATE_CAR_SALE_SQL, parameters);
+    public void updateCarSale(final CarSale carSale) {
+        jdbcTemplate.update(UPDATE_CAR_SALE_SQL,
+                parameterSource.getCarSaleParameters(carSale));
     }
 
+    /**
+     * Delete car sale.
+     *
+     * @param index the index
+     */
     @Override
     public void deleteCarSale(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()

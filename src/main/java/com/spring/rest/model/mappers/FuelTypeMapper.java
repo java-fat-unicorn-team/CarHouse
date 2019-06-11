@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * The type Fuel type mapper.
+ * The is used to create FuelType from data returned from database.
  */
 @Component
 public class FuelTypeMapper implements RowMapper<FuelType> {
