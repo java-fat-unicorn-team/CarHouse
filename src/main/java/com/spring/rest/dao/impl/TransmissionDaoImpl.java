@@ -3,6 +3,8 @@ package com.spring.rest.dao.impl;
 import com.spring.rest.dao.TransmissionDao;
 import com.spring.rest.model.Transmission;
 import com.spring.rest.model.mappers.TransmissionMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * The class provides methods to get Transmission model.
+ * The class provides methods to manage Transmission model.
  * The class stores date in database
  */
 @Repository
@@ -31,33 +33,38 @@ public class TransmissionDaoImpl implements TransmissionDao {
     /**
      * named parameter JDBC template.
      */
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     /**
      * mapper to get Transmission object.
      */
     private final TransmissionMapper transmissionMapper;
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(TransmissionDaoImpl.class);
 
     /**
      * Instantiates a new Transmission dao.
      *
-     * @param jdbcTemplate       the jdbc template
-     * @param transmissionMapper the transmission mapper
+     * @param namedParameterJdbcTemplate the named parameter jdbc template
+     * @param transmissionMapper         the transmission mapper
      */
-    public TransmissionDaoImpl(final NamedParameterJdbcTemplate jdbcTemplate,
+    public TransmissionDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                                final TransmissionMapper transmissionMapper) {
-        this.jdbcTemplate = jdbcTemplate;
+        LOGGER.debug("TransmissionDaoImpl was created");
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.transmissionMapper = transmissionMapper;
     }
 
     /**
      * Gets transmissions.
      *
-     * @return the transmissions
+     * @return the list of transmissions
      */
     @Override
     public List<Transmission> getTransmissions() {
-        return jdbcTemplate.query(GET_TRANSMISSIONS_SQL,
-                transmissionMapper);
+        LOGGER.info("method getTransmissions was called");
+        return namedParameterJdbcTemplate.query(GET_TRANSMISSIONS_SQL, transmissionMapper);
     }
 
     /**
@@ -70,7 +77,7 @@ public class TransmissionDaoImpl implements TransmissionDao {
     public Transmission getTransmission(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        return jdbcTemplate.queryForObject(GET_TRANSMISSION_SQL,
-                parameters, transmissionMapper);
+        LOGGER.info("method getTransmission with parameter: {} was called", index);
+        return namedParameterJdbcTemplate.queryForObject(GET_TRANSMISSION_SQL, parameters, transmissionMapper);
     }
 }

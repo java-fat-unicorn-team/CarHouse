@@ -5,13 +5,13 @@ import com.spring.rest.model.CarSale;
 import java.util.List;
 
 /**
- * The interface provides CRUD operations with CarSale model.
+ * The interface provides methods to manage CarSale model.
  */
 public interface CarSaleDao {
     /**
-     * Gets all car sales.
+     * Gets car sales.
      *
-     * @return the all car sales
+     * @return the list of car sales
      */
     List<CarSale> getCarSales();
 

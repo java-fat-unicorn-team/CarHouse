@@ -34,12 +34,6 @@ public class CarCharacteristics {
 
     /**
      * Instantiates a new CarCharacteristics.
-     */
-    public CarCharacteristics() {
-    }
-
-    /**
-     * Instantiates a new CarCharacteristics.
      *
      * @param carId        the car id
      * @param year         the year
@@ -48,10 +42,8 @@ public class CarCharacteristics {
      * @param transmission the transmission
      * @param carModel     the car model
      */
-    public CarCharacteristics(final int carId, final Date year,
-                              final int mileage, final FuelType fuelType,
-                              final Transmission transmission,
-                              final CarModel carModel) {
+    public CarCharacteristics(final int carId, final Date year, final int mileage, final FuelType fuelType,
+                              final Transmission transmission, final CarModel carModel) {
         this.carId = carId;
         this.year = year;
         this.mileage = mileage;

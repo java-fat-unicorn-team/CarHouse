@@ -5,14 +5,14 @@ import com.spring.rest.model.CarFeature;
 import java.util.List;
 
 /**
- * The interface provides CRUD operations with CarFeature model.
+ * The interface provides methods to manage CarFeature model.
  */
 public interface CarFeatureDao {
     /**
-     * Gets all car features.
+     * Gets car features.
      *
      * @param carId the car id
-     * @return the all car features
+     * @return the list of car features
      */
     List<CarFeature> getCarFeatures(int carId);
 

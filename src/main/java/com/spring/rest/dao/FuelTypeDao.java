@@ -5,13 +5,13 @@ import com.spring.rest.model.FuelType;
 import java.util.List;
 
 /**
- * The interface provides CRUD operations with FuelType model.
+ * The interface provides methods to manage FuelType model.
  */
 public interface FuelTypeDao {
     /**
-     * Gets all fuel types.
+     * Gets fuel types.
      *
-     * @return the all fuel types
+     * @return the list of fuel types
      */
     List<FuelType> getFuelTypes();
 

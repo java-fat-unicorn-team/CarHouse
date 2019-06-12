@@ -30,12 +30,6 @@ public class CarSale {
 
     /**
      * Instantiates a new Car sale.
-     */
-    public CarSale() {
-    }
-
-    /**
-     * Instantiates a new Car sale.
      *
      * @param carSaleId          the car sale id
      * @param price              the price
@@ -43,8 +37,7 @@ public class CarSale {
      * @param user               the user
      * @param carCharacteristics the carCharacteristics
      */
-    public CarSale(final int carSaleId, final BigDecimal price,
-                   final Date date, final User user,
+    public CarSale(final int carSaleId, final BigDecimal price, final Date date, final User user,
                    final CarCharacteristics carCharacteristics) {
         this.carSaleId = carSaleId;
         this.price = price;
@@ -139,8 +132,7 @@ public class CarSale {
      *
      * @param carCharacteristics the carCharacteristics
      */
-    public void setCarCharacteristics(
-            final CarCharacteristics carCharacteristics) {
+    public void setCarCharacteristics(final CarCharacteristics carCharacteristics) {
         this.carCharacteristics = carCharacteristics;
     }
 

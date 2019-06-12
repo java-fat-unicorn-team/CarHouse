@@ -20,12 +20,11 @@ public class CarFeature {
     /**
      * Instantiates a new Car feature.
      *
-     * @param carFeatureId the car feature id
-     * @param carFeature   the car feature
-     * @param carCharacteristics          the car
+     * @param carFeatureId       the car feature id
+     * @param carFeature         the car feature
+     * @param carCharacteristics the car
      */
-    public CarFeature(final int carFeatureId, final String carFeature,
-                      final CarCharacteristics carCharacteristics) {
+    public CarFeature(final int carFeatureId, final String carFeature, final CarCharacteristics carCharacteristics) {
         this.carFeatureId = carFeatureId;
         this.carFeature = carFeature;
         this.carCharacteristics = carCharacteristics;
@@ -81,8 +80,7 @@ public class CarFeature {
      *
      * @param carCharacteristics the car id
      */
-    public void setCarCharacteristics(
-            final CarCharacteristics carCharacteristics) {
+    public void setCarCharacteristics(final CarCharacteristics carCharacteristics) {
         this.carCharacteristics = carCharacteristics;
     }
 

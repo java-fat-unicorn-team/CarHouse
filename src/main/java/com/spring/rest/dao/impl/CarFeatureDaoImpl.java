@@ -3,6 +3,8 @@ package com.spring.rest.dao.impl;
 import com.spring.rest.dao.CarFeatureDao;
 import com.spring.rest.model.CarFeature;
 import com.spring.rest.model.mappers.CarFeatureMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * The class provides CRUD operations with CarFeature model.
+ * The class provides methods to manage CarFeature model.
  * The class stores date in database
  */
 @Repository
@@ -46,21 +48,25 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
     /**
      * named parameter JDBC template.
      */
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     /**
      * mapper to get CarFeature object.
      */
     private final CarFeatureMapper carFeatureMapper;
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CarFeatureDaoImpl.class);
 
     /**
      * Instantiates a new Car feature dao.
      *
-     * @param jdbcTemplate     the jdbc template
-     * @param carFeatureMapper the car feature mapper
+     * @param namedParameterJdbcTemplate the named parameter jdbc template
+     * @param carFeatureMapper           the car feature mapper
      */
-    public CarFeatureDaoImpl(final NamedParameterJdbcTemplate jdbcTemplate,
+    public CarFeatureDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                              final CarFeatureMapper carFeatureMapper) {
-        this.jdbcTemplate = jdbcTemplate;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.carFeatureMapper = carFeatureMapper;
     }
 
@@ -69,14 +75,14 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
      * Gets car features.
      *
      * @param carId the car id
-     * @return the car features
+     * @return the list of car features
      */
     @Override
     public List<CarFeature> getCarFeatures(final int carId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("carId", carId);
-        return jdbcTemplate.query(GET_CAR_FEATURES_SQL, parameters,
-                carFeatureMapper);
+        LOGGER.info("method getCarFeatures with parameter: {} was called", carId);
+        return namedParameterJdbcTemplate.query(GET_CAR_FEATURES_SQL, parameters, carFeatureMapper);
     }
 
     /**
@@ -89,8 +95,8 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
     public CarFeature getCarFeature(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        return jdbcTemplate.queryForObject(GET_CAR_FEATURE_SQL,
-                parameters, carFeatureMapper);
+        LOGGER.info("method getCarFeature with parameter: {} was called", index);
+        return namedParameterJdbcTemplate.queryForObject(GET_CAR_FEATURE_SQL, parameters, carFeatureMapper);
     }
 
     /**
@@ -104,7 +110,8 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("carFeature", carFeature)
                 .addValue("carId", carId);
-        jdbcTemplate.update(ADD_CAR_FEATURE_SQL, parameters);
+        LOGGER.info("method addCarFeature with parameters: {}, {}", carFeature, carId);
+        namedParameterJdbcTemplate.update(ADD_CAR_FEATURE_SQL, parameters);
     }
 
     /**
@@ -119,7 +126,8 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("carFeature", carFeature)
                 .addValue("id", carFeatureId);
-        jdbcTemplate.update(UPDATE_CAR_FEATURE_SQL, parameters);
+        LOGGER.info("method updateCarFeature with parameters: {}, {}", carFeature, carFeatureId);
+        namedParameterJdbcTemplate.update(UPDATE_CAR_FEATURE_SQL, parameters);
     }
 
     /**
@@ -131,6 +139,7 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
     public void deleteCarFeature(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        jdbcTemplate.update(DELETE_CAR_FEATURE_SQL, parameters);
+        LOGGER.info("method deleteCarFeature with parameter: {} was called", index);
+        namedParameterJdbcTemplate.update(DELETE_CAR_FEATURE_SQL, parameters);
     }
 }

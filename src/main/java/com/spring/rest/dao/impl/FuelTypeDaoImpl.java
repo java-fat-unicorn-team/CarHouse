@@ -3,6 +3,8 @@ package com.spring.rest.dao.impl;
 import com.spring.rest.dao.FuelTypeDao;
 import com.spring.rest.model.FuelType;
 import com.spring.rest.model.mappers.FuelTypeMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * The class provides CRUD operations with FuelType model.
+ * The class provides methods to manage FuelType model.
  * The class stores date in database
  */
 @Repository
@@ -47,35 +49,38 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
     /**
      * named parameter JDBC template.
      */
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     /**
      * mapper to get FuelType object.
      */
     private final FuelTypeMapper fuelTypeMapper;
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(FuelTypeDaoImpl.class);
 
     /**
      * Instantiates a new Fuel type dao.
      *
-     * @param jdbcTemplate   the jdbc template
-     * @param fuelTypeMapper the fuel type mapper
+     * @param namedParameterJdbcTemplate the named parameter jdbc template
+     * @param fuelTypeMapper             the fuel type mapper
      */
     @Autowired
-    public FuelTypeDaoImpl(final NamedParameterJdbcTemplate jdbcTemplate,
+    public FuelTypeDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                            final FuelTypeMapper fuelTypeMapper) {
-        this.jdbcTemplate = jdbcTemplate;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.fuelTypeMapper = fuelTypeMapper;
     }
 
     /**
      * Gets fuel types.
      *
-     * @return the fuel types
+     * @return the list of fuel types
      */
     @Override
     public List<FuelType> getFuelTypes() {
-        return jdbcTemplate.query(
-                GET_FUEL_TYPES_SQL,
-                fuelTypeMapper);
+        LOGGER.info("method getFuelTypes was called");
+        return namedParameterJdbcTemplate.query(GET_FUEL_TYPES_SQL, fuelTypeMapper);
     }
 
     /**
@@ -88,9 +93,8 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
     public FuelType getFuelType(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        return jdbcTemplate.queryForObject(
-                GET_FUEL_TYPE_SQL, parameters,
-                fuelTypeMapper);
+        LOGGER.info("method getFuelType with parameter: {} was called", index);
+        return namedParameterJdbcTemplate.queryForObject(GET_FUEL_TYPE_SQL, parameters, fuelTypeMapper);
     }
 
     /**
@@ -102,7 +106,8 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
     public void addFuelType(final String fuelType) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("fuelType", fuelType);
-        jdbcTemplate.update(ADD_FUEL_TYPE, parameters);
+        LOGGER.info("method addFuelType with parameter: {} was called", fuelType);
+        namedParameterJdbcTemplate.update(ADD_FUEL_TYPE, parameters);
     }
 
     /**
@@ -114,8 +119,8 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
     public void deleteFuelType(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-
-        jdbcTemplate.update(DELETE_FUEL_TYPE, parameters);
+        LOGGER.info("method deleteFuelType with parameter: {} was called", index);
+        namedParameterJdbcTemplate.update(DELETE_FUEL_TYPE, parameters);
     }
 
     /**
@@ -129,7 +134,8 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("fuelType", fuelType)
                 .addValue("id", index);
-        jdbcTemplate.update(UPDATE_FUEL_TYPE, parameters);
+        LOGGER.info("method updateFuelType with parameters: {}, {} was called", index, fuelType);
+        namedParameterJdbcTemplate.update(UPDATE_FUEL_TYPE, parameters);
 
     }
 }

@@ -15,12 +15,6 @@ public class Transmission {
 
     /**
      * Instantiates a new Transmission.
-     */
-    public Transmission() {
-    }
-
-    /**
-     * Instantiates a new Transmission.
      *
      * @param transmissionId the transmission id
      * @param transmission   the transmission

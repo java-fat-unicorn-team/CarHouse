@@ -1,6 +1,8 @@
 package com.spring.rest.model.mappers;
 
 import com.spring.rest.model.CarCharacteristics;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -9,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * The is used to create CarCharacteristics from data returned from database.
+ * Used to create CarCharacteristics from data obtained from database.
  */
 @Component
 public class CarCharacteristicsMapper implements RowMapper<CarCharacteristics> {
@@ -37,6 +39,10 @@ public class CarCharacteristicsMapper implements RowMapper<CarCharacteristics> {
      * mapper to get CarModel object.
      */
     private CarModelMapper carModelMapper;
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CarCharacteristicsMapper.class);
 
     /**
      * Instantiates a new CarCharacteristics mapper.
@@ -46,8 +52,7 @@ public class CarCharacteristicsMapper implements RowMapper<CarCharacteristics> {
      * @param carModelMapper     the car model mapper
      */
     @Autowired
-    public CarCharacteristicsMapper(final FuelTypeMapper fuelTypeMapper,
-                                    final TransmissionMapper transmissionMapper,
+    public CarCharacteristicsMapper(final FuelTypeMapper fuelTypeMapper, final TransmissionMapper transmissionMapper,
                                     final CarModelMapper carModelMapper) {
         this.fuelTypeMapper = fuelTypeMapper;
         this.transmissionMapper = transmissionMapper;
@@ -56,12 +61,11 @@ public class CarCharacteristicsMapper implements RowMapper<CarCharacteristics> {
 
 
     @Override
-    public CarCharacteristics mapRow(final ResultSet resultSet, final int i)
-            throws SQLException {
-        return new CarCharacteristics(resultSet.getInt(CAR_ID),
-                resultSet.getDate(YEAR), resultSet.getInt(MILEAGE),
-                fuelTypeMapper.mapRow(resultSet, i),
-                transmissionMapper.mapRow(resultSet, i),
-                carModelMapper.mapRow(resultSet, i));
+    public CarCharacteristics mapRow(final ResultSet resultSet, final int i) throws SQLException {
+        CarCharacteristics carCharacteristics = new CarCharacteristics(resultSet.getInt(CAR_ID),
+                resultSet.getDate(YEAR), resultSet.getInt(MILEAGE), fuelTypeMapper.mapRow(resultSet, i),
+                transmissionMapper.mapRow(resultSet, i), carModelMapper.mapRow(resultSet, i));
+        LOGGER.info("method mapRow returned: {}", carCharacteristics);
+        return carCharacteristics;
     }
 }

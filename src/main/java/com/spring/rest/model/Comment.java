@@ -21,23 +21,15 @@ public class Comment {
      */
     private CarSale carSale;
 
-
-    /**
-     * Instantiates a new Comment.
-     */
-    public Comment() {
-    }
-
     /**
      * Instantiates a new Comment.
      *
      * @param commentId the comment id
      * @param userName  the user name
      * @param comment   the comment
-     * @param carSale the car sale
+     * @param carSale   the car sale
      */
-    public Comment(final int commentId, final String userName,
-                   final String comment, final CarSale carSale) {
+    public Comment(final int commentId, final String userName, final String comment, final CarSale carSale) {
         this.commentId = commentId;
         this.userName = userName;
         this.comment = comment;

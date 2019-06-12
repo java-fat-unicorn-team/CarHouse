@@ -4,6 +4,8 @@ import com.spring.rest.dao.CommentDao;
 import com.spring.rest.model.Comment;
 import com.spring.rest.model.mappers.CommentMapper;
 import com.spring.rest.model.mappers.ParameterSource;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * The class provides CRUD operations with Comment model.
+ * The class provides methods to manage Comment model.
  * The class stores date in database
  */
 @Repository
@@ -47,7 +49,7 @@ public class CommentDaoImpl implements CommentDao {
     /**
      * named parameter JDBC template.
      */
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     /**
      * mapper to get Comment object.
      */
@@ -56,18 +58,21 @@ public class CommentDaoImpl implements CommentDao {
      * class is used to get parameters for sql query.
      */
     private final ParameterSource parameterSource;
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CommentDaoImpl.class);
 
     /**
      * Instantiates a new Comment dao.
      *
-     * @param jdbcTemplate    the jdbc template
-     * @param commentMapper   the comment mapper
-     * @param parameterSource the parameter source
+     * @param namedParameterJdbcTemplate the named parameter jdbc template
+     * @param commentMapper              the comment mapper
+     * @param parameterSource            the parameter source
      */
-    public CommentDaoImpl(final NamedParameterJdbcTemplate jdbcTemplate,
-                          final CommentMapper commentMapper,
-                          final ParameterSource parameterSource) {
-        this.jdbcTemplate = jdbcTemplate;
+    public CommentDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
+                          final CommentMapper commentMapper, final ParameterSource parameterSource) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.commentMapper = commentMapper;
         this.parameterSource = parameterSource;
     }
@@ -76,14 +81,14 @@ public class CommentDaoImpl implements CommentDao {
      * Gets car sale comments.
      *
      * @param index the index
-     * @return the car sale comments
+     * @return the list of car sale comments
      */
     @Override
     public List<Comment> getCarSaleComments(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        return jdbcTemplate.query(GET_CAR_SALE_COMMENTS_SQL, parameters,
-                commentMapper);
+        LOGGER.info("method getCarSaleComments with parameter: {} was called", index);
+        return namedParameterJdbcTemplate.query(GET_CAR_SALE_COMMENTS_SQL, parameters, commentMapper);
     }
 
     /**
@@ -96,8 +101,8 @@ public class CommentDaoImpl implements CommentDao {
     public Comment getComment(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        return jdbcTemplate.queryForObject(GET_COMMENT_SQL, parameters,
-                commentMapper);
+        LOGGER.info("method getComment with parameter: {} was called", index);
+        return namedParameterJdbcTemplate.queryForObject(GET_COMMENT_SQL, parameters, commentMapper);
     }
 
     /**
@@ -107,8 +112,8 @@ public class CommentDaoImpl implements CommentDao {
      */
     @Override
     public void addComment(final Comment comment) {
-        jdbcTemplate.update(ADD_COMMENT_SQL,
-                parameterSource.getCommentParameters(comment));
+        LOGGER.info("method addComment with parameter: {}", comment);
+        namedParameterJdbcTemplate.update(ADD_COMMENT_SQL, parameterSource.getCommentParameters(comment));
     }
 
     /**
@@ -118,8 +123,8 @@ public class CommentDaoImpl implements CommentDao {
      */
     @Override
     public void updateComment(final Comment comment) {
-        jdbcTemplate.update(UPDATE_COMMENT_SQL,
-                parameterSource.getCommentParameters(comment));
+        LOGGER.info("method updateComment with parameter: {}", comment);
+        namedParameterJdbcTemplate.update(UPDATE_COMMENT_SQL, parameterSource.getCommentParameters(comment));
     }
 
     /**
@@ -131,6 +136,7 @@ public class CommentDaoImpl implements CommentDao {
     public void deleteComment(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        jdbcTemplate.update(DELETE_COMMENT_SQL, parameters);
+        LOGGER.info("method deleteComment with parameter: {} was called", index);
+        namedParameterJdbcTemplate.update(DELETE_COMMENT_SQL, parameters);
     }
 }

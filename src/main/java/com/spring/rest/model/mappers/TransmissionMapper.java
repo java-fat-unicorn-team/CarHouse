@@ -1,6 +1,8 @@
 package com.spring.rest.model.mappers;
 
 import com.spring.rest.model.Transmission;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * The is used to create Transmission from data returned from database.
+ * The Class is used to create Transmission from data obtained from database.
  */
 @Component
 public class TransmissionMapper implements RowMapper<Transmission> {
@@ -21,12 +23,16 @@ public class TransmissionMapper implements RowMapper<Transmission> {
      * The constant TRANSMISSION.
      */
     public static final String TRANSMISSION = "transmission";
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(TransmissionMapper.class);
 
     @Override
-    public Transmission mapRow(final ResultSet resultSet, final int i)
-            throws SQLException {
-        return new Transmission(
-                resultSet.getInt(TRANSMISSION_ID),
+    public Transmission mapRow(final ResultSet resultSet, final int i) throws SQLException {
+        Transmission transmission = new Transmission(resultSet.getInt(TRANSMISSION_ID),
                 resultSet.getString(TRANSMISSION));
+        LOGGER.info("method mapRow returned: {}", transmission);
+        return transmission;
     }
 }

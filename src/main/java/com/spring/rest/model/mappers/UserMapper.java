@@ -1,6 +1,8 @@
 package com.spring.rest.model.mappers;
 
 import com.spring.rest.model.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * The is used to create User from data returned from database.
+ * The Class is used to create User from data obtained from database.
  */
 @Component
 public class UserMapper implements RowMapper<User> {
@@ -33,14 +35,16 @@ public class UserMapper implements RowMapper<User> {
      */
     public static final String PASSWORD = "password";
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(UserMapper.class);
 
     @Override
-    public User mapRow(final ResultSet resultSet, final int i)
-            throws SQLException {
-        return new User(resultSet.getInt(USER_ID),
-                resultSet.getString(USER_NAME),
-                resultSet.getString(PHONE_NUMBER),
-                resultSet.getString(LOGIN),
-                resultSet.getString(PASSWORD));
+    public User mapRow(final ResultSet resultSet, final int i) throws SQLException {
+        User user = new User(resultSet.getInt(USER_ID), resultSet.getString(USER_NAME),
+                resultSet.getString(PHONE_NUMBER), resultSet.getString(LOGIN), resultSet.getString(PASSWORD));
+        LOGGER.info("method mapRow returned: {}", user);
+        return user;
     }
 }

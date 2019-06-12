@@ -1,6 +1,8 @@
 package com.spring.rest.model.mappers;
 
 import com.spring.rest.model.Comment;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -9,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * The is used to create Comment from data returned from database.
+ * The Class is used to create Comment from data obtained from database.
  */
 @Component
 public class CommentMapper implements RowMapper<Comment> {
@@ -29,6 +31,10 @@ public class CommentMapper implements RowMapper<Comment> {
      * mapper to get CarSale object.
      */
     private CarSaleMapper carSaleMapper;
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CommentMapper.class);
 
     /**
      * Instantiates a new Comment mapper.
@@ -41,10 +47,10 @@ public class CommentMapper implements RowMapper<Comment> {
     }
 
     @Override
-    public Comment mapRow(final ResultSet resultSet, final int i)
-            throws SQLException {
-        return new Comment(resultSet.getInt(COMMENT_ID),
-                resultSet.getString(USER_NAME), resultSet.getString(COMMENT),
-                carSaleMapper.mapRow(resultSet, i));
+    public Comment mapRow(final ResultSet resultSet, final int i) throws SQLException {
+        Comment comment = new Comment(resultSet.getInt(COMMENT_ID), resultSet.getString(USER_NAME),
+                resultSet.getString(COMMENT), carSaleMapper.mapRow(resultSet, i));
+        LOGGER.info("method mapRow returned: {}", comment);
+        return comment;
     }
 }
