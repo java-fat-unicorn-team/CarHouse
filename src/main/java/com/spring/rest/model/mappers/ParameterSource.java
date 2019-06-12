@@ -11,14 +11,10 @@ import java.util.Date;
 
 /**
  * The class is used to add parameters to SqlParameterSource.
+ * SqlParameterSource used by NamedParameterJdbcTemplate for SQL queries
  */
 @Component
 public class ParameterSource {
-    /**
-     * Instantiates a new Parameter source.
-     */
-    public ParameterSource() {
-    }
 
     /**
      * Gets car characteristics parameters.
@@ -26,15 +22,13 @@ public class ParameterSource {
      * @param car the car
      * @return the car characteristics parameters
      */
-    public SqlParameterSource getCarCharacteristicsParameters(
-            final CarCharacteristics car) {
+    public SqlParameterSource getCarCharacteristicsParameters(final CarCharacteristics car) {
         return new MapSqlParameterSource()
                 .addValue("id", car.getCarId())
                 .addValue("year", car.getYear())
                 .addValue("mileage", car.getMileage())
                 .addValue("fuelType", car.getFuelType().getFuelTypeId())
-                .addValue("transmission",
-                        car.getTransmission().getTransmissionId())
+                .addValue("transmission", car.getTransmission().getTransmissionId())
                 .addValue("carModel", car.getCarModel().getCarModelId());
     }
 

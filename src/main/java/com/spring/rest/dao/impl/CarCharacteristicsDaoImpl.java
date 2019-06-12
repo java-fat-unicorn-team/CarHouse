@@ -4,6 +4,8 @@ import com.spring.rest.dao.CarCharacteristicsDao;
 import com.spring.rest.model.CarCharacteristics;
 import com.spring.rest.model.mappers.CarCharacteristicsMapper;
 import com.spring.rest.model.mappers.ParameterSource;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * The class provides CRUD operations with CarCharacteristics model.
+ * The class provides methods to manage CarCharacteristics model.
  * The class stores date in database
  */
 @Repository
@@ -48,7 +50,7 @@ public class CarCharacteristicsDaoImpl implements CarCharacteristicsDao {
     /**
      * named parameter JDBC template.
      */
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     /**
      * mapper to get CarCharacteristics object.
      */
@@ -57,20 +59,23 @@ public class CarCharacteristicsDaoImpl implements CarCharacteristicsDao {
      * class is used to get parameters for sql query.
      */
     private final ParameterSource parameterSource;
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CarCharacteristicsDaoImpl.class);
 
     /**
      * Instantiates a new CarCharacteristics dao.
      *
-     * @param jdbcTemplate             the jdbc template
-     * @param carCharacteristicsMapper the car mapper
-     * @param parameterSource          the parameter source
+     * @param namedParameterJdbcTemplate the jdbc template
+     * @param carCharacteristicsMapper   the car mapper
+     * @param parameterSource            the parameter source
      */
     @Autowired
-    public CarCharacteristicsDaoImpl(
-            final NamedParameterJdbcTemplate jdbcTemplate,
-            final CarCharacteristicsMapper carCharacteristicsMapper,
-            final ParameterSource parameterSource) {
-        this.jdbcTemplate = jdbcTemplate;
+    public CarCharacteristicsDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
+            final CarCharacteristicsMapper carCharacteristicsMapper, final ParameterSource parameterSource) {
+        LOGGER.debug("CarCharacteristicsDaoImpl was created");
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.carCharacteristicsMapper = carCharacteristicsMapper;
         this.parameterSource = parameterSource;
     }
@@ -78,12 +83,12 @@ public class CarCharacteristicsDaoImpl implements CarCharacteristicsDao {
     /**
      * Gets cars characteristics.
      *
-     * @return the cars characteristics
+     * @return the list of cars characteristics
      */
     @Override
     public List<CarCharacteristics> getCarsCharacteristics() {
-        return jdbcTemplate.query(GET_CARS_CHARACTERISTICS_SQL,
-                carCharacteristicsMapper);
+        LOGGER.info("method getCarsCharacteristics was called");
+        return namedParameterJdbcTemplate.query(GET_CARS_CHARACTERISTICS_SQL, carCharacteristicsMapper);
     }
 
     /**
@@ -96,8 +101,9 @@ public class CarCharacteristicsDaoImpl implements CarCharacteristicsDao {
     public CarCharacteristics getCarCharacteristics(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        return jdbcTemplate.queryForObject(GET_CAR_CHARACTERISTICS_SQL,
-                parameters, carCharacteristicsMapper);
+        LOGGER.info("method getCarCharacteristics with parameter: {} was called", index);
+        return namedParameterJdbcTemplate.queryForObject(GET_CAR_CHARACTERISTICS_SQL, parameters,
+                carCharacteristicsMapper);
     }
 
     /**
@@ -107,7 +113,8 @@ public class CarCharacteristicsDaoImpl implements CarCharacteristicsDao {
      */
     @Override
     public void addCarCharacteristics(final CarCharacteristics car) {
-        jdbcTemplate.update(ADD_CAR_CHARACTERISTICS_SQL,
+        LOGGER.info("method addCarCharacteristics with parameter: {}", car);
+        namedParameterJdbcTemplate.update(ADD_CAR_CHARACTERISTICS_SQL,
                 parameterSource.getCarCharacteristicsParameters(car));
     }
 
@@ -118,7 +125,8 @@ public class CarCharacteristicsDaoImpl implements CarCharacteristicsDao {
      */
     @Override
     public void updateCarCharacteristics(final CarCharacteristics car) {
-        jdbcTemplate.update(UPDATE_CAR_CHARACTERISTICS_SQL,
+        LOGGER.info("method updateCarCharacteristics with parameter: {}", car);
+        namedParameterJdbcTemplate.update(UPDATE_CAR_CHARACTERISTICS_SQL,
                 parameterSource.getCarCharacteristicsParameters(car));
     }
 
@@ -131,6 +139,7 @@ public class CarCharacteristicsDaoImpl implements CarCharacteristicsDao {
     public void deleteCarCharacteristics(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        jdbcTemplate.update(DELETE_CAR_CHARACTERISTICS_SQL, parameters);
+        LOGGER.info("method deleteCarCharacteristics with parameter: {} was called", index);
+        namedParameterJdbcTemplate.update(DELETE_CAR_CHARACTERISTICS_SQL, parameters);
     }
 }

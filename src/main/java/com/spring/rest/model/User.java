@@ -28,23 +28,13 @@ public class User {
     /**
      * Instantiates a new User.
      *
-     * @param pUserName the p user name
-     */
-    public User(final String pUserName) {
-        userName = pUserName;
-    }
-
-    /**
-     * Instantiates a new User.
-     *
      * @param userId      the user id
      * @param userName    the user name
      * @param phoneNumber the phone number
      * @param login       the login
      * @param password    the password
      */
-    public User(final int userId, final String userName,
-                final String phoneNumber, final String login,
+    public User(final int userId, final String userName, final String phoneNumber, final String login,
                 final String password) {
         this.userId = userId;
         this.userName = userName;

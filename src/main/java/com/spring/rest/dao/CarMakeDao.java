@@ -5,13 +5,13 @@ import com.spring.rest.model.CarMake;
 import java.util.List;
 
 /**
- * The interface provides methods to get CarMake model.
+ * The interface provides methods to manage CarMake model.
  */
 public interface CarMakeDao {
     /**
-     * Gets all car makes.
+     * Gets car makes.
      *
-     * @return the all car makes
+     * @return the list of car makes
      */
     List<CarMake> getCarMakes();
 

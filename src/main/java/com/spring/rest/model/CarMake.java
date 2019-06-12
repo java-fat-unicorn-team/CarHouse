@@ -15,12 +15,6 @@ public class CarMake {
 
     /**
      * Instantiates a new Car make.
-     */
-    public CarMake() {
-    }
-
-    /**
-     * Instantiates a new Car make.
      *
      * @param carMakeId the car make id
      * @param carMake   the car make

@@ -3,6 +3,8 @@ package com.spring.rest.dao.impl;
 import com.spring.rest.dao.CarMakeDao;
 import com.spring.rest.model.CarMake;
 import com.spring.rest.model.mappers.CarMakeMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * The class provides methods to get CarMake model.
+ * The class provides methods to manage CarMake model.
  * The class stores date in database
  */
 @Repository
@@ -31,32 +33,37 @@ public class CarMakeDaoImpl implements CarMakeDao {
     /**
      * named parameter JDBC template.
      */
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     /**
      * mapper to get CarMake object.
      */
     private final CarMakeMapper carMakeMapper;
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CarMakeDaoImpl.class);
 
     /**
      * Instantiates a new Car make dao.
      *
-     * @param jdbcTemplate  the jdbc template
-     * @param carMakeMapper the car make mapper
+     * @param namedParameterJdbcTemplate the named parameter jdbc template
+     * @param carMakeMapper              the car make mapper
      */
-    public CarMakeDaoImpl(final NamedParameterJdbcTemplate jdbcTemplate,
+    public CarMakeDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                           final CarMakeMapper carMakeMapper) {
-        this.jdbcTemplate = jdbcTemplate;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.carMakeMapper = carMakeMapper;
     }
 
     /**
      * Gets car makes.
      *
-     * @return the car makes
+     * @return the list of car makes
      */
     @Override
     public List<CarMake> getCarMakes() {
-        return jdbcTemplate.query(GET_CARS_MAKES_SQL, carMakeMapper);
+        LOGGER.info("method getCarMakes was called");
+        return namedParameterJdbcTemplate.query(GET_CARS_MAKES_SQL, carMakeMapper);
     }
 
     /**
@@ -69,7 +76,7 @@ public class CarMakeDaoImpl implements CarMakeDao {
     public CarMake getCarMake(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        return jdbcTemplate.queryForObject(GET_CAR_MAKE_SQL, parameters,
-                carMakeMapper);
+        LOGGER.info("method getCarMake with parameter: {} was called", index);
+        return namedParameterJdbcTemplate.queryForObject(GET_CAR_MAKE_SQL, parameters, carMakeMapper);
     }
 }

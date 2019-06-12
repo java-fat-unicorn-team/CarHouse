@@ -1,6 +1,8 @@
 package com.spring.rest.model.mappers;
 
 import com.spring.rest.model.CarFeature;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -9,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * The is used to create CarFeature from data returned from database.
+ * The Class is used to create CarFeature from data obtained from database.
  */
 @Component
 public class CarFeatureMapper implements RowMapper<CarFeature> {
@@ -25,6 +27,10 @@ public class CarFeatureMapper implements RowMapper<CarFeature> {
      * mapper to get CarCharacteristics object.
      */
     private CarCharacteristicsMapper carCharacteristicsMapper;
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CarFeatureMapper.class);
 
     /**
      * Instantiates a new Car feature mapper.
@@ -32,16 +38,15 @@ public class CarFeatureMapper implements RowMapper<CarFeature> {
      * @param carCharacteristicsMapper the car characteristics mapper
      */
     @Autowired
-    public CarFeatureMapper(
-            final CarCharacteristicsMapper carCharacteristicsMapper) {
+    public CarFeatureMapper(final CarCharacteristicsMapper carCharacteristicsMapper) {
         this.carCharacteristicsMapper = carCharacteristicsMapper;
     }
 
     @Override
-    public CarFeature mapRow(final ResultSet resultSet, final int i)
-            throws SQLException {
-        return new CarFeature(resultSet.getInt(CAR_FEATURE_ID),
-                resultSet.getString(CAR_FEATURE),
+    public CarFeature mapRow(final ResultSet resultSet, final int i) throws SQLException {
+        CarFeature carFeature = new CarFeature(resultSet.getInt(CAR_FEATURE_ID), resultSet.getString(CAR_FEATURE),
                 carCharacteristicsMapper.mapRow(resultSet, i));
+        LOGGER.info("method mapRow returned: {}", carFeature);
+        return carFeature;
     }
 }

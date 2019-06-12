@@ -1,6 +1,8 @@
 package com.spring.rest.model.mappers;
 
 import com.spring.rest.model.FuelType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * The is used to create FuelType from data returned from database.
+ * The Class is used to create FuelType from data obtained from database.
  */
 @Component
 public class FuelTypeMapper implements RowMapper<FuelType> {
@@ -20,11 +22,15 @@ public class FuelTypeMapper implements RowMapper<FuelType> {
      * The constant FUEL_TYPE.
      */
     public static final String FUEL_TYPE = "fuel_type";
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(FuelTypeMapper.class);
 
     @Override
-    public FuelType mapRow(final ResultSet resultSet, final int i)
-            throws SQLException {
-        return new FuelType(resultSet.getInt(FUEL_TYPE_ID),
-                resultSet.getString(FUEL_TYPE));
+    public FuelType mapRow(final ResultSet resultSet, final int i) throws SQLException {
+        FuelType fuelType = new FuelType(resultSet.getInt(FUEL_TYPE_ID), resultSet.getString(FUEL_TYPE));
+        LOGGER.info("method mapRow returned: {}", fuelType);
+        return fuelType;
     }
 }

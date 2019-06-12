@@ -5,14 +5,14 @@ import com.spring.rest.model.Comment;
 import java.util.List;
 
 /**
- * The interface provides CRUD operations with Comment model.
+ * The interface provides methods to manage Comment model.
  */
 public interface CommentDao {
     /**
-     * Gets all comments of car sale.
+     * Gets car sale comments.
      *
      * @param index the index
-     * @return the all comments of car sale
+     * @return the list of car sale's comments
      */
     List<Comment> getCarSaleComments(int index);
 

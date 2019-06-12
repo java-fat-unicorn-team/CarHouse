@@ -1,6 +1,8 @@
 package com.spring.rest.model.mappers;
 
 import com.spring.rest.model.CarModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -9,7 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * The is used to create CarModel from data returned from database.
+ * The Class is used to create CarModel from data obtained from database.
  */
 @Component
 public class CarModelMapper implements RowMapper<CarModel> {
@@ -25,6 +27,10 @@ public class CarModelMapper implements RowMapper<CarModel> {
      * mapper to get CarMake object.
      */
     private CarMakeMapper carMakeMapper;
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(CarModelMapper.class);
 
     /**
      * Instantiates a new Car model mapper.
@@ -37,10 +43,10 @@ public class CarModelMapper implements RowMapper<CarModel> {
     }
 
     @Override
-    public CarModel mapRow(final ResultSet resultSet, final int i)
-            throws SQLException {
-        return new CarModel(resultSet.getInt(CAR_MODEL_ID),
-                carMakeMapper.mapRow(resultSet, i),
+    public CarModel mapRow(final ResultSet resultSet, final int i) throws SQLException {
+        CarModel carModel = new CarModel(resultSet.getInt(CAR_MODEL_ID), carMakeMapper.mapRow(resultSet, i),
                 resultSet.getString(CAR_MODEL));
+        LOGGER.info("method mapRow returned: {}", carModel);
+        return carModel;
     }
 }
