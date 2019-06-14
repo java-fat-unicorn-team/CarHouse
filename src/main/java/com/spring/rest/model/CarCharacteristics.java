@@ -33,6 +33,15 @@ public class CarCharacteristics {
     private CarModel carModel;
 
     /**
+     * Instantiates a new Car characteristics.
+     *
+     * @param carId the car id
+     */
+    public CarCharacteristics(final int carId) {
+        this.carId = carId;
+    }
+
+    /**
      * Instantiates a new CarCharacteristics.
      *
      * @param carId        the car id

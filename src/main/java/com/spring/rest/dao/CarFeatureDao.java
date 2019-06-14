@@ -29,8 +29,9 @@ public interface CarFeatureDao {
      *
      * @param carFeature the car feature
      * @param carId      the car id
+     * @return car feature id
      */
-    void addCarFeature(String carFeature, int carId);
+    Integer addCarFeature(String carFeature, int carId);
 
     /**
      * Update car feature.

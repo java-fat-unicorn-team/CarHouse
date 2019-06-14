@@ -17,6 +17,15 @@ public class Transmission {
      * Instantiates a new Transmission.
      *
      * @param transmissionId the transmission id
+     */
+    public Transmission(final int transmissionId) {
+        this.transmissionId = transmissionId;
+    }
+
+    /**
+     * Instantiates a new Transmission.
+     *
+     * @param transmissionId the transmission id
      * @param transmission   the transmission
      */
     public Transmission(final int transmissionId, final String transmission) {

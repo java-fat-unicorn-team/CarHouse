@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -109,11 +111,14 @@ public class CommentDaoImpl implements CommentDao {
      * Add comment.
      *
      * @param comment the comment
+     * @return comment id
      */
     @Override
-    public void addComment(final Comment comment) {
+    public Integer addComment(final Comment comment) {
         LOGGER.info("method addComment with parameter: {}", comment);
-        namedParameterJdbcTemplate.update(ADD_COMMENT_SQL, parameterSource.getCommentParameters(comment));
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        namedParameterJdbcTemplate.update(ADD_COMMENT_SQL, parameterSource.getCommentParameters(comment), keyHolder);
+        return keyHolder.getKey().intValue();
     }
 
     /**

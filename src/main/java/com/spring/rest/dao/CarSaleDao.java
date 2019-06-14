@@ -28,8 +28,9 @@ public interface CarSaleDao {
      * Add car sale.
      *
      * @param carSale the car sale
+     * @return car sale id
      */
-    void addCarSale(CarSale carSale);
+    Integer addCarSale(CarSale carSale);
 
 
     /**

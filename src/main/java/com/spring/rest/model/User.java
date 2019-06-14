@@ -28,6 +28,15 @@ public class User {
     /**
      * Instantiates a new User.
      *
+     * @param userId the user id
+     */
+    public User(final int userId) {
+        this.userId = userId;
+    }
+
+    /**
+     * Instantiates a new User.
+     *
      * @param userId      the user id
      * @param userName    the user name
      * @param phoneNumber the phone number

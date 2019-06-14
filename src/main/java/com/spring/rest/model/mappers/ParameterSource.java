@@ -7,8 +7,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-
 /**
  * The class is used to add parameters to SqlParameterSource.
  * SqlParameterSource used by NamedParameterJdbcTemplate for SQL queries
@@ -42,9 +40,8 @@ public class ParameterSource {
         return new MapSqlParameterSource()
                 .addValue("id", carSale.getCarSaleId())
                 .addValue("price", carSale.getPrice())
-                .addValue("date", new Date(System.currentTimeMillis()))
                 .addValue("userId", carSale.getUser().getUserId())
-                .addValue("carId", carSale.getCarCharacteristics().getCarId());
+                .addValue("carCharacteristicsId", carSale.getCarCharacteristics().getCarId());
     }
 
     /**

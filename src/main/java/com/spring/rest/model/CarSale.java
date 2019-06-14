@@ -31,6 +31,15 @@ public class CarSale {
     /**
      * Instantiates a new Car sale.
      *
+     * @param carSaleId the car sale id
+     */
+    public CarSale(final int carSaleId) {
+        this.carSaleId = carSaleId;
+    }
+
+    /**
+     * Instantiates a new Car sale.
+     *
      * @param carSaleId          the car sale id
      * @param price              the price
      * @param date               the date

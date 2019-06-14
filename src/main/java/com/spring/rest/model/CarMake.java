@@ -17,6 +17,15 @@ public class CarMake {
      * Instantiates a new Car make.
      *
      * @param carMakeId the car make id
+     */
+    public CarMake(final int carMakeId) {
+        this.carMakeId = carMakeId;
+    }
+
+    /**
+     * Instantiates a new Car make.
+     *
+     * @param carMakeId the car make id
      * @param carMake   the car make
      */
     public CarMake(final int carMakeId, final String carMake) {

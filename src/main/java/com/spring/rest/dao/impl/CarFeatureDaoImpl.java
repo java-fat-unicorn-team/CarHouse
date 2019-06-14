@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -74,14 +76,14 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
     /**
      * Gets car features.
      *
-     * @param carId the car id
+     * @param carCharacteristicsId the car id
      * @return the list of car features
      */
     @Override
-    public List<CarFeature> getCarFeatures(final int carId) {
+    public List<CarFeature> getCarFeatures(final int carCharacteristicsId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("carId", carId);
-        LOGGER.info("method getCarFeatures with parameter: {} was called", carId);
+                .addValue("carCharacteristicsId", carCharacteristicsId);
+        LOGGER.info("method getCarFeatures with parameter: {} was called", carCharacteristicsId);
         return namedParameterJdbcTemplate.query(GET_CAR_FEATURES_SQL, parameters, carFeatureMapper);
     }
 
@@ -103,15 +105,18 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
      * Add car feature.
      *
      * @param carFeature the car feature
-     * @param carId      the car id
+     * @param carCharacteristicsId      the car id
+     * @return car feature id
      */
     @Override
-    public void addCarFeature(final String carFeature, final int carId) {
+    public Integer addCarFeature(final String carFeature, final int carCharacteristicsId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("carFeature", carFeature)
-                .addValue("carId", carId);
-        LOGGER.info("method addCarFeature with parameters: {}, {}", carFeature, carId);
-        namedParameterJdbcTemplate.update(ADD_CAR_FEATURE_SQL, parameters);
+                .addValue("carCharacteristicsId", carCharacteristicsId);
+        LOGGER.info("method addCarFeature with parameters: {}, {}", carFeature, carCharacteristicsId);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        namedParameterJdbcTemplate.update(ADD_CAR_FEATURE_SQL, parameters, keyHolder);
+        return keyHolder.getKey().intValue();
     }
 
     /**
