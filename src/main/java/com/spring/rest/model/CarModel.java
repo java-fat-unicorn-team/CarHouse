@@ -22,6 +22,17 @@ public class CarModel {
      *
      * @param carModelId the car model id
      * @param carMake    the car make
+     */
+    public CarModel(final int carModelId, final CarMake carMake) {
+        this.carModelId = carModelId;
+        this.carMake = carMake;
+    }
+
+    /**
+     * Instantiates a new Car model.
+     *
+     * @param carModelId the car model id
+     * @param carMake    the car make
      * @param carModel   the car model
      */
     public CarModel(final int carModelId, final CarMake carMake, final String carModel) {

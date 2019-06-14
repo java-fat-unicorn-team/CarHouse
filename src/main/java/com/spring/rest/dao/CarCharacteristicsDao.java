@@ -27,8 +27,9 @@ public interface CarCharacteristicsDao {
      * Add car characteristics.
      *
      * @param car the car
+     * @return car characteristic id
      */
-    void addCarCharacteristics(CarCharacteristics car);
+    Integer addCarCharacteristics(CarCharacteristics car);
 
     /**
      * Update car characteristics.

@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -109,11 +111,15 @@ public class CarSaleDaoImpl implements CarSaleDao {
      * Add car sale.
      *
      * @param carSale the car sale
+     * @return car sale id
      */
     @Override
-    public void addCarSale(final CarSale carSale) {
+    public Integer addCarSale(final CarSale carSale) {
         LOGGER.info("method addCarSale with parameter: {}", carSale);
-        namedParameterJdbcTemplate.update(ADD_CAR_SALE_SQL, parameterSource.getCarSaleParameters(carSale));
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        namedParameterJdbcTemplate.update(ADD_CAR_SALE_SQL, parameterSource.getCarSaleParameters(carSale), keyHolder,
+                new String[] {"car_sale_id"});
+        return keyHolder.getKey().intValue();
     }
 
     /**

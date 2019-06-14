@@ -17,21 +17,22 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <maven.checkstyle.plugin>3.1.0</maven.checkstyle.plugin>
     <maven.pmd.plugin>3.12.0</maven.pmd.plugin>
-    <maven.checkstyle.plugin>3.1.0</maven.checkstyle.plugin>
-    <pitest.maven>1.4.7</pitest.maven>
+    <pitest.maven>1.4.8</pitest.maven>
+    <pitest.junit5.plugin>0.9</pitest.junit5.plugin>
     <spring.version>5.1.7.RELEASE</spring.version>
     <junit.version>5.4.2</junit.version>
+    <h2.version>1.4.199</h2.version>
     <mysql.connector.java>8.0.16</mysql.connector.java>
     <maven.clean.plugin>3.1.0</maven.clean.plugin>
     <log4j2.version>2.11.1</log4j2.version>
     <maven.resources.plugin>3.1.0</maven.resources.plugin>
     <maven.compiler.plugin>3.8.1</maven.compiler.plugin>
+    <maven.failsafe.plugin>2.22.2</maven.failsafe.plugin>
     <maven.surefire.plugin>2.22.2</maven.surefire.plugin>
     <maven.jar.plugin>3.1.2</maven.jar.plugin>
     <maven.install.plugin>2.5.2</maven.install.plugin>
     <maven.site.plugin>3.7.1</maven.site.plugin>
     <maven.project.info.reports.plugin>3.0.0</maven.project.info.reports.plugin>
-    <maven.failsafe.plugin>2.22.2</maven.failsafe.plugin>
     <exec.maven.plugin>1.6.0</exec.maven.plugin>
   </properties>
 
@@ -40,6 +41,24 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -67,6 +86,11 @@
       <artifactId>log4j-core</artifactId>
       <version>${log4j2.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.pitest</groupId>
+      <artifactId>pitest-junit5-plugin</artifactId>
+      <version>${pitest.junit5.plugin}</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -91,6 +115,10 @@
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>${maven.surefire.plugin}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <version>${maven.failsafe.plugin}</version>
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
@@ -147,11 +175,27 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>${exec.maven.plugin}</version>
+        <groupId>org.pitest</groupId>
+        <artifactId>pitest-maven</artifactId>
+        <version>${pitest.maven}</version>
+        <executions>
+          <execution>
+            <id>pit-report</id>
+            <phase>test</phase>
+            <goals>
+              <goal>mutationCoverage</goal>
+            </goals>
+          </execution>
+        </executions>
         <configuration>
-          <mainClass>com.spring.rest.runner.App</mainClass>
+          <targetClasses>
+            <param>com.spring.rest.dao.*</param>
+            <param>com.spring.rest.model.*</param>
+          </targetClasses>
+          <targetTests>
+            <param>com.spring.rest.*</param>
+          </targetTests>
+          <testPlugin>junit5</testPlugin>
         </configuration>
       </plugin>
     </plugins>

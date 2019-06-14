@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -101,13 +103,16 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
      * Add fuel type.
      *
      * @param fuelType the fuel type
+     * @return fuel type id
      */
     @Override
-    public void addFuelType(final String fuelType) {
+    public Integer addFuelType(final String fuelType) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("fuelType", fuelType);
         LOGGER.info("method addFuelType with parameter: {} was called", fuelType);
-        namedParameterJdbcTemplate.update(ADD_FUEL_TYPE, parameters);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        namedParameterJdbcTemplate.update(ADD_FUEL_TYPE, parameters, keyHolder);
+        return keyHolder.getKey().intValue();
     }
 
     /**

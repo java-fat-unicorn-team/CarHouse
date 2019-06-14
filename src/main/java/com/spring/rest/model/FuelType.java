@@ -17,6 +17,15 @@ public class FuelType {
      * Instantiates a new Fuel type.
      *
      * @param fuelTypeId the fuel type id
+     */
+    public FuelType(final int fuelTypeId) {
+        this.fuelTypeId = fuelTypeId;
+    }
+
+    /**
+     * Instantiates a new Fuel type.
+     *
+     * @param fuelTypeId the fuel type id
      * @param fuelType   the fuel type
      */
     public FuelType(final int fuelTypeId, final String fuelType) {

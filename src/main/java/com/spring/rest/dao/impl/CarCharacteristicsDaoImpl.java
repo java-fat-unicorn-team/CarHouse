@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -73,7 +75,8 @@ public class CarCharacteristicsDaoImpl implements CarCharacteristicsDao {
      */
     @Autowired
     public CarCharacteristicsDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
-            final CarCharacteristicsMapper carCharacteristicsMapper, final ParameterSource parameterSource) {
+                                     final CarCharacteristicsMapper carCharacteristicsMapper,
+                                     final ParameterSource parameterSource) {
         LOGGER.debug("CarCharacteristicsDaoImpl was created");
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.carCharacteristicsMapper = carCharacteristicsMapper;
@@ -110,12 +113,15 @@ public class CarCharacteristicsDaoImpl implements CarCharacteristicsDao {
      * Add car characteristics.
      *
      * @param car the car
+     * @return car characteristic id
      */
     @Override
-    public void addCarCharacteristics(final CarCharacteristics car) {
+    public Integer addCarCharacteristics(final CarCharacteristics car) {
         LOGGER.info("method addCarCharacteristics with parameter: {}", car);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(ADD_CAR_CHARACTERISTICS_SQL,
-                parameterSource.getCarCharacteristicsParameters(car));
+                parameterSource.getCarCharacteristicsParameters(car), keyHolder);
+        return keyHolder.getKey().intValue();
     }
 
     /**
@@ -126,8 +132,9 @@ public class CarCharacteristicsDaoImpl implements CarCharacteristicsDao {
     @Override
     public void updateCarCharacteristics(final CarCharacteristics car) {
         LOGGER.info("method updateCarCharacteristics with parameter: {}", car);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(UPDATE_CAR_CHARACTERISTICS_SQL,
-                parameterSource.getCarCharacteristicsParameters(car));
+                parameterSource.getCarCharacteristicsParameters(car), keyHolder);
     }
 
     /**

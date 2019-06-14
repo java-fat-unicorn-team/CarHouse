@@ -27,8 +27,9 @@ public interface FuelTypeDao {
      * Add fuel type.
      *
      * @param fuelType the fuel type
+     * @return fuel type id
      */
-    void addFuelType(String fuelType);
+    Integer addFuelType(String fuelType);
 
     /**
      * Delete fuel type.

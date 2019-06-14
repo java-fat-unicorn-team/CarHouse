@@ -28,8 +28,9 @@ public interface CommentDao {
      * Add comment.
      *
      * @param comment the comment
+     * @return comment id
      */
-    void addComment(Comment comment);
+    Integer addComment(Comment comment);
 
     /**
      * Update comment.
