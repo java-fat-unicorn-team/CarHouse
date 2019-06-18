@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * The class provides methods to manage Transmission model.
  * The class stores date in database
+ * @author Katuranau Maksimilyan
  */
 @Repository
 public class TransmissionDaoImpl implements TransmissionDao {
@@ -25,10 +26,10 @@ public class TransmissionDaoImpl implements TransmissionDao {
     @Value("${transmission.get}")
     private String GET_TRANSMISSION_SQL;
     /**
-     * SQL query to get transmissions.
+     * SQL query to get list of  transmissions.
      */
-    @Value("${transmissions.get}")
-    private String GET_TRANSMISSIONS_SQL;
+    @Value("${transmissions.list.get}")
+    private String GET_LIST_TRANSMISSIONS_SQL;
 
     /**
      * named parameter JDBC template.
@@ -63,8 +64,8 @@ public class TransmissionDaoImpl implements TransmissionDao {
      */
     @Override
     public List<Transmission> getTransmissions() {
-        LOGGER.info("method getTransmissions was called");
-        return namedParameterJdbcTemplate.query(GET_TRANSMISSIONS_SQL, transmissionMapper);
+        LOGGER.debug("method getTransmissions was called");
+        return namedParameterJdbcTemplate.query(GET_LIST_TRANSMISSIONS_SQL, transmissionMapper);
     }
 
     /**
@@ -77,7 +78,7 @@ public class TransmissionDaoImpl implements TransmissionDao {
     public Transmission getTransmission(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        LOGGER.info("method getTransmission with parameter: {} was called", index);
+        LOGGER.debug("method getTransmission with parameter: {} was called", index);
         return namedParameterJdbcTemplate.queryForObject(GET_TRANSMISSION_SQL, parameters, transmissionMapper);
     }
 }

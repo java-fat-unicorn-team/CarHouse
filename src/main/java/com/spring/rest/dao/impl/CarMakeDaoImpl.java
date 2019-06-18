@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * The class provides methods to manage CarMake model.
  * The class stores date in database
+ * @author Katuranau Maksimilyan
  */
 @Repository
 public class CarMakeDaoImpl implements CarMakeDao {
@@ -25,10 +26,10 @@ public class CarMakeDaoImpl implements CarMakeDao {
     @Value("${car.make.get}")
     private String GET_CAR_MAKE_SQL;
     /**
-     * SQL query to get car makes.
+     * SQL query to get list of car makes.
      */
-    @Value("${car.makes.get}")
-    private String GET_CARS_MAKES_SQL;
+    @Value("${car.makes.list.get}")
+    private String GET_LIST_CARS_MAKES_SQL;
 
     /**
      * named parameter JDBC template.
@@ -62,8 +63,8 @@ public class CarMakeDaoImpl implements CarMakeDao {
      */
     @Override
     public List<CarMake> getCarMakes() {
-        LOGGER.info("method getCarMakes was called");
-        return namedParameterJdbcTemplate.query(GET_CARS_MAKES_SQL, carMakeMapper);
+        LOGGER.debug("method getCarMakes was called");
+        return namedParameterJdbcTemplate.query(GET_LIST_CARS_MAKES_SQL, carMakeMapper);
     }
 
     /**
@@ -76,7 +77,7 @@ public class CarMakeDaoImpl implements CarMakeDao {
     public CarMake getCarMake(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        LOGGER.info("method getCarMake with parameter: {} was called", index);
+        LOGGER.debug("method getCarMake with parameter: {} was called", index);
         return namedParameterJdbcTemplate.queryForObject(GET_CAR_MAKE_SQL, parameters, carMakeMapper);
     }
 }

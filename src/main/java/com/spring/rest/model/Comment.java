@@ -1,24 +1,14 @@
 package com.spring.rest.model;
 
 /**
- * The Comment model.
+ * The comment model is used to create comments for car sale announcement.
+ * The model includes user's name who added the comment, comment and car sale announcement to which this comment applies
+ * @author Katuranau Maksimilyan
  */
 public class Comment {
-    /**
-     * comment id.
-     */
     private int commentId;
-    /**
-     * user's name who added this comment.
-     */
     private String userName;
-    /**
-     * comment.
-     */
     private String comment;
-    /**
-     * car sale to which this comment applies.
-     */
     private CarSale carSale;
 
     /**

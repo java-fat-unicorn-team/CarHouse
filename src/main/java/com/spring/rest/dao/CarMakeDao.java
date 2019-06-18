@@ -6,6 +6,8 @@ import java.util.List;
 
 /**
  * The interface provides methods to manage CarMake model.
+ * @see CarMake
+ * @author Katuranau Maksimilyan
  */
 public interface CarMakeDao {
     /**

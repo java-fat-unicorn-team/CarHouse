@@ -1,20 +1,14 @@
 package com.spring.rest.model;
 
 /**
- * The Car feature model.
+ * The car feature model is used to describe feature.
+ * The model includes feature description and car characteristics model which contains the feature.
+ * One car can have more then one feature.
+ * @author Katuranau Maksimilyan
  */
 public class CarFeature {
-    /**
-     * car feature id.
-     */
     private int carFeatureId;
-    /**
-     * car feature.
-     */
     private String carFeature;
-    /**
-     * car which have this feature.
-     */
     private CarCharacteristics carCharacteristics;
 
     /**

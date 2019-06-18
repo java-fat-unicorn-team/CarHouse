@@ -31,6 +31,7 @@ class CarMakeDaoImplTest {
 
     @Test
     void getNonExistentCarMake() {
-        assertThrows(EmptyResultDataAccessException.class, () -> carMakeDao.getCarMake(5));
+        assertThrows(EmptyResultDataAccessException.class,
+                () -> carMakeDao.getCarMake(5));
     }
 }

@@ -2,27 +2,15 @@ package com.spring.rest.model;
 
 /**
  * The User model.
+ * The model includes user name, user's phone number, login and password.
+ * Each user can have more then one car sale announcements.
+ * @author Katuranau Maksimilyan
  */
 public class User {
-    /**
-     * user id.
-     */
     private int userId;
-    /**
-     * user name.
-     */
     private String userName;
-    /**
-     * phone number.
-     */
     private String phoneNumber;
-    /**
-     * user's login.
-     */
     private String login;
-    /**
-     * user's password.
-     */
     private String password;
 
     /**

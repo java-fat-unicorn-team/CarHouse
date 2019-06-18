@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 /**
  * The Class is used to create CarModel from data obtained from database.
+ * @author Katuranau Maksimilyan
  */
 @Component
 public class CarModelMapper implements RowMapper<CarModel> {
@@ -46,7 +47,7 @@ public class CarModelMapper implements RowMapper<CarModel> {
     public CarModel mapRow(final ResultSet resultSet, final int i) throws SQLException {
         CarModel carModel = new CarModel(resultSet.getInt(CAR_MODEL_ID), carMakeMapper.mapRow(resultSet, i),
                 resultSet.getString(CAR_MODEL));
-        LOGGER.info("method mapRow returned: {}", carModel);
+        LOGGER.debug("row ({}, {}) has been mapped", resultSet.getInt(CAR_MODEL_ID), resultSet.getString(CAR_MODEL));
         return carModel;
     }
 }

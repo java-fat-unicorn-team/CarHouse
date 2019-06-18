@@ -1,6 +1,5 @@
 package com.spring.rest.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +13,7 @@ import javax.sql.DataSource;
  * Spring JDBC configuration.
  * Set settings of database connections
  * Create class to work with database
+ * @author Katuranau Maksimilyan
  */
 @Configuration
 @PropertySource("classpath:jdbc-connection.properties")
@@ -62,7 +62,6 @@ public class SpringJDBCConfig {
      * @return JdbcTemplate template class with a basic set of JDBC operations
      */
     @Bean
-    @Autowired
     public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate(
             final DataSource dataSource) {
         return new NamedParameterJdbcTemplate(dataSource);

@@ -6,6 +6,8 @@ import java.util.List;
 
 /**
  * The interface provides methods to manage CarSale model.
+ * @author Katuranau Maksimilyan
+ * @see CarSale
  */
 public interface CarSaleDao {
     /**

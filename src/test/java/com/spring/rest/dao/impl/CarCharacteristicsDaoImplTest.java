@@ -27,9 +27,7 @@ class CarCharacteristicsDaoImplTest {
 
     @Test
     void getCarsCharacteristics() {
-        assertEquals(1, carCharacteristicsDao.getCarCharacteristics(1).getCarId());
-        carCharacteristicsDao.deleteCarCharacteristics(5);
-        assertEquals(4, carCharacteristicsDao.getCarsCharacteristics().size());
+        assertEquals(5, carCharacteristicsDao.getCarsCharacteristics().size());
     }
 
     @Test
@@ -39,20 +37,25 @@ class CarCharacteristicsDaoImplTest {
 
     @Test
     void getCarCharacteristics() {
-        assertEquals(5, carCharacteristicsDao.getCarsCharacteristics().size());
+        assertEquals(1, carCharacteristicsDao.getCarCharacteristics(1).getCarId());
+        assertEquals(130300, carCharacteristicsDao.getCarCharacteristics(3).getMileage());
+        assertEquals(3, carCharacteristicsDao.getCarCharacteristics(4).getCarModel().getCarModelId());
     }
 
     @Test
     void addCarCharacteristics() {
         int size = carCharacteristicsDao.getCarsCharacteristics().size();
-        int index = carCharacteristicsDao.addCarCharacteristics(new CarCharacteristics(2, new Date(32000),
-                133455, new FuelType(2), new Transmission(1), new CarModel(3,
-                new CarMake(2))));
+        CarCharacteristics newCarCharacteristics = new CarCharacteristics(2, new Date(32000), 133455,
+                new FuelType(2), new Transmission(1), new CarModel(3,
+                new CarMake(2)));
+        int index = carCharacteristicsDao.addCarCharacteristics(newCarCharacteristics);
+        CarCharacteristics obtainedCarCharacteristics = carCharacteristicsDao.getCarCharacteristics(index);
         assertEquals(size + 1, carCharacteristicsDao.getCarsCharacteristics().size());
-        assertEquals(133455, carCharacteristicsDao.getCarCharacteristics(index).getMileage());
-        assertEquals(1,
-                carCharacteristicsDao.getCarCharacteristics(index).getTransmission().getTransmissionId());
-        assertEquals(3, carCharacteristicsDao.getCarCharacteristics(index).getCarModel().getCarModelId());
+        assertEquals(newCarCharacteristics.getMileage(), obtainedCarCharacteristics.getMileage());
+        assertEquals(newCarCharacteristics.getTransmission().getTransmissionId(),
+                obtainedCarCharacteristics.getTransmission().getTransmissionId());
+        assertEquals(newCarCharacteristics.getCarModel().getCarModelId(),
+                obtainedCarCharacteristics.getCarModel().getCarModelId());
 
     }
 
@@ -65,13 +68,16 @@ class CarCharacteristicsDaoImplTest {
 
     @Test
     void updateCarCharacteristics() {
-        carCharacteristicsDao.updateCarCharacteristics(new CarCharacteristics(2, new Date(32000),
-                233455, new FuelType(2), new Transmission(2), new CarModel(1,
-                new CarMake(2))));
-        assertEquals(233455, carCharacteristicsDao.getCarCharacteristics(2).getMileage());
-        assertEquals(2,
-                carCharacteristicsDao.getCarCharacteristics(2).getTransmission().getTransmissionId());
-        assertEquals(1, carCharacteristicsDao.getCarCharacteristics(2).getCarModel().getCarModelId());
+        CarCharacteristics newCarCharacteristics = new CarCharacteristics(2, new Date(32000), 233455,
+                new FuelType(2), new Transmission(2), new CarModel(1,
+                new CarMake(2)));
+        carCharacteristicsDao.updateCarCharacteristics(newCarCharacteristics);
+        CarCharacteristics obtainedCarCharacteristics = carCharacteristicsDao.getCarCharacteristics(2);
+        assertEquals(newCarCharacteristics.getMileage(), obtainedCarCharacteristics.getMileage());
+        assertEquals(newCarCharacteristics.getTransmission().getTransmissionId(),
+                obtainedCarCharacteristics.getTransmission().getTransmissionId());
+        assertEquals(newCarCharacteristics.getCarModel().getCarModelId(),
+                obtainedCarCharacteristics.getCarModel().getCarModelId());
     }
 
     @Test

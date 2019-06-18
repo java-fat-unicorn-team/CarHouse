@@ -6,6 +6,8 @@ import java.util.List;
 
 /**
  * The interface provides methods to manage Comment model.
+ * @author Katuranau Maksimilyan
+ * @see Comment
  */
 public interface CommentDao {
     /**

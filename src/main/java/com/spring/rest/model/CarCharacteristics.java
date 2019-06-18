@@ -4,32 +4,17 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * The CarCharacteristics model.
+ * The car characteristics model.
+ * This model includes year of car manufacture, car mileage, fuel type of car, transmission type and car model.
+ * Each car includes this model.
+ * @author Katuranau Maksimilyan
  */
 public class CarCharacteristics {
-    /**
-     * car id.
-     */
     private int carId;
-    /**
-     * year of car manufacture.
-     */
     private Date year;
-    /**
-     * car mileage.
-     */
     private int mileage;
-    /**
-     * fuel type of car.
-     */
     private FuelType fuelType;
-    /**
-     * car transmission.
-     */
     private Transmission transmission;
-    /**
-     * car model.
-     */
     private CarModel carModel;
 
     /**

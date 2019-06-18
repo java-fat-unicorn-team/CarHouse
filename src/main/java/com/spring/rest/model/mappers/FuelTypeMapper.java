@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 /**
  * The Class is used to create FuelType from data obtained from database.
+ * @author Katuranau Maksimilyan
  */
 @Component
 public class FuelTypeMapper implements RowMapper<FuelType> {
@@ -30,7 +31,7 @@ public class FuelTypeMapper implements RowMapper<FuelType> {
     @Override
     public FuelType mapRow(final ResultSet resultSet, final int i) throws SQLException {
         FuelType fuelType = new FuelType(resultSet.getInt(FUEL_TYPE_ID), resultSet.getString(FUEL_TYPE));
-        LOGGER.info("method mapRow returned: {}", fuelType);
+        LOGGER.debug("row ({}, {}) has been mapped", resultSet.getInt(FUEL_TYPE_ID), resultSet.getString(FUEL_TYPE));
         return fuelType;
     }
 }

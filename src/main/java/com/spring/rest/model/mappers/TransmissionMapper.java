@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 /**
  * The Class is used to create Transmission from data obtained from database.
+ * @author Katuranau Maksimilyan
  */
 @Component
 public class TransmissionMapper implements RowMapper<Transmission> {
@@ -32,7 +33,8 @@ public class TransmissionMapper implements RowMapper<Transmission> {
     public Transmission mapRow(final ResultSet resultSet, final int i) throws SQLException {
         Transmission transmission = new Transmission(resultSet.getInt(TRANSMISSION_ID),
                 resultSet.getString(TRANSMISSION));
-        LOGGER.info("method mapRow returned: {}", transmission);
+        LOGGER.debug("row ({}, {}) has been mapped", resultSet.getInt(TRANSMISSION_ID),
+                resultSet.getString(TRANSMISSION));
         return transmission;
     }
 }

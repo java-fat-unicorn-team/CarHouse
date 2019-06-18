@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 /**
  * The Class is used to create CarMake from data obtained from database.
+ * @author Katuranau Maksimilyan
  */
 @Component
 public class CarMakeMapper implements RowMapper<CarMake> {
@@ -30,7 +31,7 @@ public class CarMakeMapper implements RowMapper<CarMake> {
     @Override
     public CarMake mapRow(final ResultSet resultSet, final int i) throws SQLException {
         CarMake carMake = new CarMake(resultSet.getInt(CAR_MAKE_ID), resultSet.getString(CAR_MAKE));
-        LOGGER.info("method mapRow returned: {}", carMake);
+        LOGGER.debug("row ({}, {}) has been mapped", resultSet.getInt(CAR_MAKE_ID), resultSet.getString(CAR_MAKE));
         return carMake;
     }
 }

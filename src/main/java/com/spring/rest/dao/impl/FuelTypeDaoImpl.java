@@ -19,6 +19,7 @@ import java.util.List;
 /**
  * The class provides methods to manage FuelType model.
  * The class stores date in database
+ * @author Katuranau Maksimilyan
  */
 @Repository
 public class FuelTypeDaoImpl implements FuelTypeDao {
@@ -28,10 +29,10 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
     @Value("${fuel.type.get}")
     private String GET_FUEL_TYPE_SQL;
     /**
-     * SQL query to get fuel types.
+     * SQL query to get list of fuel types.
      */
-    @Value("${fuel.types.get}")
-    private String GET_FUEL_TYPES_SQL;
+    @Value("${fuel.types.list.get}")
+    private String GET_LIST_FUEL_TYPES_SQL;
     /**
      * SQL query to add fuel type.
      */
@@ -81,8 +82,8 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
      */
     @Override
     public List<FuelType> getFuelTypes() {
-        LOGGER.info("method getFuelTypes was called");
-        return namedParameterJdbcTemplate.query(GET_FUEL_TYPES_SQL, fuelTypeMapper);
+        LOGGER.debug("method getFuelTypes was called");
+        return namedParameterJdbcTemplate.query(GET_LIST_FUEL_TYPES_SQL, fuelTypeMapper);
     }
 
     /**
@@ -95,7 +96,7 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
     public FuelType getFuelType(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        LOGGER.info("method getFuelType with parameter: {} was called", index);
+        LOGGER.debug("method getFuelType with parameter: {} was called", index);
         return namedParameterJdbcTemplate.queryForObject(GET_FUEL_TYPE_SQL, parameters, fuelTypeMapper);
     }
 
@@ -109,7 +110,7 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
     public Integer addFuelType(final String fuelType) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("fuelType", fuelType);
-        LOGGER.info("method addFuelType with parameter: {} was called", fuelType);
+        LOGGER.debug("method addFuelType with parameter: {} was called", fuelType);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(ADD_FUEL_TYPE, parameters, keyHolder);
         return keyHolder.getKey().intValue();
@@ -124,7 +125,7 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
     public void deleteFuelType(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        LOGGER.info("method deleteFuelType with parameter: {} was called", index);
+        LOGGER.debug("method deleteFuelType with parameter: {} was called", index);
         namedParameterJdbcTemplate.update(DELETE_FUEL_TYPE, parameters);
     }
 
@@ -139,7 +140,7 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("fuelType", fuelType)
                 .addValue("id", index);
-        LOGGER.info("method updateFuelType with parameters: {}, {} was called", index, fuelType);
+        LOGGER.debug("method updateFuelType with parameters: {}, {} was called", index, fuelType);
         namedParameterJdbcTemplate.update(UPDATE_FUEL_TYPE, parameters);
 
     }

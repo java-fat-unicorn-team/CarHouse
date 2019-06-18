@@ -6,6 +6,8 @@ import java.util.List;
 
 /**
  * The interface provides methods to manage FuelType model.
+ * @author Katuranau Maksimilyan
+ * @see FuelType
  */
 public interface FuelTypeDao {
     /**

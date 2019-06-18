@@ -1,16 +1,13 @@
 package com.spring.rest.model;
 
 /**
- * The Fuel type model.
+ * The fuel type model.
+ * The model includes only fuel type's name and fuel type id to get this model faster.
+ * The model can be used by different cars.
+ * @author Katuranau Maksimilyan
  */
 public class FuelType {
-    /**
-     * fuel type id.
-     */
     private int fuelTypeId;
-    /**
-     * fuel type's name.
-     */
     private String fuelType;
 
     /**

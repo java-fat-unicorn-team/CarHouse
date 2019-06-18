@@ -1,16 +1,11 @@
 package com.spring.rest.model;
 
 /**
- * The Car make model.
+ * The car make model includes only car make and id to get the model.
+ * @author Katuranau Maksimilyan
  */
 public class CarMake {
-    /**
-     * car make id.
-     */
     private int carMakeId;
-    /**
-     * car make.
-     */
     private String carMake;
 
     /**
