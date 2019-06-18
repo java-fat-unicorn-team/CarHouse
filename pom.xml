@@ -33,7 +33,6 @@
     <maven.install.plugin>2.5.2</maven.install.plugin>
     <maven.site.plugin>3.7.1</maven.site.plugin>
     <maven.project.info.reports.plugin>3.0.0</maven.project.info.reports.plugin>
-    <exec.maven.plugin>1.6.0</exec.maven.plugin>
   </properties>
 
   <dependencies>
