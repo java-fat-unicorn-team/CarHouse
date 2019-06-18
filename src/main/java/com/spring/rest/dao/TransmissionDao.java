@@ -6,6 +6,8 @@ import java.util.List;
 
 /**
  * The interface provides methods to manage Transmission model.
+ * {@see Transmission}
+ * @author Katuranau Maksimilyan
  */
 public interface TransmissionDao {
     /**

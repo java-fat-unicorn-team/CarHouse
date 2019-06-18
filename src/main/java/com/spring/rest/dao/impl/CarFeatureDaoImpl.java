@@ -18,6 +18,7 @@ import java.util.List;
 /**
  * The class provides methods to manage CarFeature model.
  * The class stores date in database
+ * @author Katuranau Maksimilyan
  */
 @Repository
 public class CarFeatureDaoImpl implements CarFeatureDao {
@@ -27,10 +28,10 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
     @Value("${car.feature.get}")
     private String GET_CAR_FEATURE_SQL;
     /**
-     * SQL query to get car features.
+     * SQL query to get list of car features.
      */
-    @Value("${car.features.get}")
-    private String GET_CAR_FEATURES_SQL;
+    @Value("${list.car.features.get}")
+    private String GET_LIST_CAR_FEATURES_SQL;
     /**
      * SQL query to add car feature.
      */
@@ -83,8 +84,8 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
     public List<CarFeature> getCarFeatures(final int carCharacteristicsId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("carCharacteristicsId", carCharacteristicsId);
-        LOGGER.info("method getCarFeatures with parameter: {} was called", carCharacteristicsId);
-        return namedParameterJdbcTemplate.query(GET_CAR_FEATURES_SQL, parameters, carFeatureMapper);
+        LOGGER.debug("method getCarFeatures with parameter: {} was called", carCharacteristicsId);
+        return namedParameterJdbcTemplate.query(GET_LIST_CAR_FEATURES_SQL, parameters, carFeatureMapper);
     }
 
     /**
@@ -97,7 +98,7 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
     public CarFeature getCarFeature(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        LOGGER.info("method getCarFeature with parameter: {} was called", index);
+        LOGGER.debug("method getCarFeature with parameter: {} was called", index);
         return namedParameterJdbcTemplate.queryForObject(GET_CAR_FEATURE_SQL, parameters, carFeatureMapper);
     }
 
@@ -113,7 +114,7 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("carFeature", carFeature)
                 .addValue("carCharacteristicsId", carCharacteristicsId);
-        LOGGER.info("method addCarFeature with parameters: {}, {}", carFeature, carCharacteristicsId);
+        LOGGER.debug("method addCarFeature with parameters: {}, {}", carFeature, carCharacteristicsId);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(ADD_CAR_FEATURE_SQL, parameters, keyHolder);
         return keyHolder.getKey().intValue();
@@ -131,7 +132,7 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("carFeature", carFeature)
                 .addValue("id", carFeatureId);
-        LOGGER.info("method updateCarFeature with parameters: {}, {}", carFeature, carFeatureId);
+        LOGGER.debug("method updateCarFeature with parameters: {}, {}", carFeature, carFeatureId);
         namedParameterJdbcTemplate.update(UPDATE_CAR_FEATURE_SQL, parameters);
     }
 
@@ -144,7 +145,7 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
     public void deleteCarFeature(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        LOGGER.info("method deleteCarFeature with parameter: {} was called", index);
+        LOGGER.debug("method deleteCarFeature with parameter: {} was called", index);
         namedParameterJdbcTemplate.update(DELETE_CAR_FEATURE_SQL, parameters);
     }
 }

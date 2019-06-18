@@ -4,28 +4,16 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * The Car sale model.
+ * The car sale model describes the announcement of the car sale.
+ * The model includes car price, date when the announcement was added, user who added this announcement and
+ * car characteristics.
+ * @author Katuranau Maksimilyan
  */
 public class CarSale {
-    /**
-     * car sale id.
-     */
     private int carSaleId;
-    /**
-     * car price.
-     */
     private BigDecimal price;
-    /**
-     * date when announcement was added.
-     */
     private Date date;
-    /**
-     * user who added this announcement.
-     */
     private User user;
-    /**
-     * car characteristics.
-     */
     private CarCharacteristics carCharacteristics;
 
     /**

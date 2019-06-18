@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 /**
  * The Class is used to create Comment from data obtained from database.
+ * @author Katuranau Maksimilyan
  */
 @Component
 public class CommentMapper implements RowMapper<Comment> {
@@ -50,7 +51,8 @@ public class CommentMapper implements RowMapper<Comment> {
     public Comment mapRow(final ResultSet resultSet, final int i) throws SQLException {
         Comment comment = new Comment(resultSet.getInt(COMMENT_ID), resultSet.getString(USER_NAME),
                 resultSet.getString(COMMENT), carSaleMapper.mapRow(resultSet, i));
-        LOGGER.info("method mapRow returned: {}", comment);
+        LOGGER.debug("row ({}, {}, {}) has been mapped", resultSet.getInt(COMMENT_ID), resultSet.getString(USER_NAME),
+                resultSet.getString(COMMENT));
         return comment;
     }
 }

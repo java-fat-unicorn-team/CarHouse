@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * The class provides methods to manage CarModel model.
  * The class stores date in database
+ * @author Katuranau Maksimilyan
  */
 @Repository
 public class CarModelDaoImpl implements CarModelDao {
@@ -25,10 +26,10 @@ public class CarModelDaoImpl implements CarModelDao {
     @Value("${car.model.get}")
     private String GET_CAR_MODEL_SQL;
     /**
-     * SQL query to get car models.
+     * SQL query to get list of car models.
      */
-    @Value("${car.models.get}")
-    private String GET_CAR_MODELS_SQL;
+    @Value("${list.car.models.get}")
+    private String GET_LIST_CAR_MODELS_SQL;
 
     /**
      * named parameter JDBC template.
@@ -62,8 +63,8 @@ public class CarModelDaoImpl implements CarModelDao {
      */
     @Override
     public List<CarModel> getCarModels() {
-        LOGGER.info("method getCarModels was called");
-        return namedParameterJdbcTemplate.query(GET_CAR_MODELS_SQL, carModelMapper);
+        LOGGER.debug("method getCarModels was called");
+        return namedParameterJdbcTemplate.query(GET_LIST_CAR_MODELS_SQL, carModelMapper);
     }
 
     /**
@@ -76,7 +77,7 @@ public class CarModelDaoImpl implements CarModelDao {
     public CarModel getCarModel(final int index) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", index);
-        LOGGER.info("method getCarModel with parameter: {} was called", index);
+        LOGGER.debug("method getCarModel with parameter: {} was called", index);
         return namedParameterJdbcTemplate.queryForObject(GET_CAR_MODEL_SQL, parameters, carModelMapper);
     }
 }

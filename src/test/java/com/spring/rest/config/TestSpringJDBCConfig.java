@@ -54,7 +54,6 @@ public class TestSpringJDBCConfig {
      * @return JdbcTemplate template class with a basic set of JDBC operations
      */
     @Bean
-    @Autowired
     public NamedParameterJdbcTemplate getNamedParameterJdbcTemplate(
             final DataSource dataSource) {
         return new NamedParameterJdbcTemplate(dataSource);

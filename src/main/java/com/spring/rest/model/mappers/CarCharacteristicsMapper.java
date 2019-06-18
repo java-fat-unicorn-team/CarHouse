@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 /**
  * Used to create CarCharacteristics from data obtained from database.
+ * @author Katuranau Maksimilyan
  */
 @Component
 public class CarCharacteristicsMapper implements RowMapper<CarCharacteristics> {
@@ -65,7 +66,8 @@ public class CarCharacteristicsMapper implements RowMapper<CarCharacteristics> {
         CarCharacteristics carCharacteristics = new CarCharacteristics(resultSet.getInt(CAR_ID),
                 resultSet.getDate(YEAR), resultSet.getInt(MILEAGE), fuelTypeMapper.mapRow(resultSet, i),
                 transmissionMapper.mapRow(resultSet, i), carModelMapper.mapRow(resultSet, i));
-        LOGGER.info("method mapRow returned: {}", carCharacteristics);
+        LOGGER.debug("row ({}, {}, {}) has been mapped", resultSet.getInt(CAR_ID), resultSet.getDate(YEAR),
+                resultSet.getInt(MILEAGE));
         return carCharacteristics;
     }
 }

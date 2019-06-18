@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 /**
  * The Class is used to create User from data obtained from database.
+ * @author Katuranau Maksimilyan
  */
 @Component
 public class UserMapper implements RowMapper<User> {
@@ -44,7 +45,8 @@ public class UserMapper implements RowMapper<User> {
     public User mapRow(final ResultSet resultSet, final int i) throws SQLException {
         User user = new User(resultSet.getInt(USER_ID), resultSet.getString(USER_NAME),
                 resultSet.getString(PHONE_NUMBER), resultSet.getString(LOGIN), resultSet.getString(PASSWORD));
-        LOGGER.info("method mapRow returned: {}", user);
+        LOGGER.debug("row ({},{},{},{},{}) has been mapped", resultSet.getInt(USER_ID), resultSet.getString(USER_NAME),
+                resultSet.getString(PHONE_NUMBER), resultSet.getString(LOGIN), resultSet.getString(PASSWORD));
         return user;
     }
 }

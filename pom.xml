@@ -161,7 +161,7 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>${maven.checkstyle.plugin}</version>
         <configuration>
-          <configLocation>my_checkstyle.xml</configLocation>
+          <configLocation>checkstyle.xml</configLocation>
           <consoleOutput>true</consoleOutput>
           <violationSeverity>warning</violationSeverity>
           <failOnViolation>true</failOnViolation>

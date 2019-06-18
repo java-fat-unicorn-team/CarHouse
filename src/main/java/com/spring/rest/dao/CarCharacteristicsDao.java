@@ -6,6 +6,8 @@ import java.util.List;
 
 /**
  * The interface provides methods to manage CarCharacteristics model.
+ * {@see CarCharackteristics}
+ * @author Katuranau Maksimilyan
  */
 public interface CarCharacteristicsDao {
     /**

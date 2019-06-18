@@ -45,12 +45,13 @@ class CarSaleDaoImplTest {
     @Test
     void addCarSale() {
         int size = carSaleDao.getCarSales().size();
-        int index = carSaleDao.addCarSale(new CarSale(5, new BigDecimal(23200), new Date(),
-                new User(1), new CarCharacteristics(3)));
+        CarSale newCarSale = new CarSale(5, new BigDecimal(23200), new Date(), new User(1),
+                new CarCharacteristics(3));
+        int index = carSaleDao.addCarSale(newCarSale);
+        CarSale obtainedCarSale = carSaleDao.getCarSale(index);
         assertEquals(size + 1, carSaleDao.getCarSales().size());
-        CarSale carSale = carSaleDao.getCarSale(index);
-        assertEquals(new BigDecimal(23200), carSale.getPrice());
-        assertEquals(1, carSale.getUser().getUserId());
+        assertEquals(newCarSale.getPrice(), obtainedCarSale.getPrice());
+        assertEquals(newCarSale.getUser().getUserId(), obtainedCarSale.getUser().getUserId());
     }
 
     @Test
@@ -61,12 +62,13 @@ class CarSaleDaoImplTest {
 
     @Test
     void updateCarSale() {
-        carSaleDao.updateCarSale(new CarSale(4, new BigDecimal(13200), new Date(),
-                new User(1), new CarCharacteristics(5)));
-        CarSale carSale = carSaleDao.getCarSale(4);
-        assertEquals(new BigDecimal(13200), carSale.getPrice());
-        assertEquals(1, carSale.getUser().getUserId());
-        assertEquals(5, carSale.getCarCharacteristics().getCarId());
+        CarSale newCarSale = new CarSale(4, new BigDecimal(13200), new Date(), new User(1),
+                new CarCharacteristics(5));
+        carSaleDao.updateCarSale(newCarSale);
+        CarSale obtainedCarSale = carSaleDao.getCarSale(4);
+        assertEquals(newCarSale.getPrice(), obtainedCarSale.getPrice());
+        assertEquals(newCarSale.getUser().getUserId(), obtainedCarSale.getUser().getUserId());
+        assertEquals(newCarSale.getCarCharacteristics().getCarId(), obtainedCarSale.getCarCharacteristics().getCarId());
     }
 
     @Test

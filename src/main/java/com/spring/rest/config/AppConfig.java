@@ -6,6 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 
 /**
  * Configuration class which provides beans to create classes.
+ * @author Katuranau Maksimilyan
  */
 @ComponentScan("com.spring.rest")
 @PropertySource("classpath:sql-query.properties")

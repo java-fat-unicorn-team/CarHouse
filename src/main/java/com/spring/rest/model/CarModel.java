@@ -1,20 +1,14 @@
 package com.spring.rest.model;
 
 /**
- * The Car model model.
+ * The car model model.
+ * The model includes car make model and model of this car make.
+ * This model can be used by different cars.
+ * @author Katuranau Maksimilyan
  */
 public class CarModel {
-    /**
-     * car model id.
-     */
     private int carModelId;
-    /**
-     * car make.
-     */
     private CarMake carMake;
-    /**
-     * car model.
-     */
     private String carModel;
 
     /**
