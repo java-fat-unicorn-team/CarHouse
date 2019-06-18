@@ -33,7 +33,7 @@ public class CarSaleDaoImpl implements CarSaleDao {
     /**
      * SQL query to get list of car sales.
      */
-    @Value("${list.car.sales.get}")
+    @Value("${car.sales.list.get}")
     private String GET_LIST_CAR_SALES_SQL;
     /**
      * SQL query to add car sale.

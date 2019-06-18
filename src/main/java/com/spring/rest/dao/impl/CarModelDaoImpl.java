@@ -28,7 +28,7 @@ public class CarModelDaoImpl implements CarModelDao {
     /**
      * SQL query to get list of car models.
      */
-    @Value("${list.car.models.get}")
+    @Value("${car.models.list.get}")
     private String GET_LIST_CAR_MODELS_SQL;
 
     /**

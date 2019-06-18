@@ -31,7 +31,7 @@ public class CommentDaoImpl implements CommentDao {
     /**
      * SQL query to get list of car sale comments.
      */
-    @Value("${list.car.sale.comments.get}")
+    @Value("${car.sale.comments.list.get}")
     private String GET_LIST_CAR_SALE_COMMENTS_SQL;
     /**
      * SQL query to add comment.

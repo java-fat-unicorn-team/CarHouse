@@ -28,7 +28,7 @@ public class TransmissionDaoImpl implements TransmissionDao {
     /**
      * SQL query to get list of  transmissions.
      */
-    @Value("${list.transmissions.get}")
+    @Value("${transmissions.list.get}")
     private String GET_LIST_TRANSMISSIONS_SQL;
 
     /**

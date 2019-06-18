@@ -30,7 +30,7 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
     /**
      * SQL query to get list of car features.
      */
-    @Value("${list.car.features.get}")
+    @Value("${car.features.list.get}")
     private String GET_LIST_CAR_FEATURES_SQL;
     /**
      * SQL query to add car feature.

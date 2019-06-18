@@ -28,7 +28,7 @@ public class CarMakeDaoImpl implements CarMakeDao {
     /**
      * SQL query to get list of car makes.
      */
-    @Value("${list.car.makes.get}")
+    @Value("${car.makes.list.get}")
     private String GET_LIST_CARS_MAKES_SQL;
 
     /**
