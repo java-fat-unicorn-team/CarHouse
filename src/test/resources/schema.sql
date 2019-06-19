@@ -54,15 +54,15 @@ CREATE TABLE `car_model`
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
 
-DROP TABLE IF EXISTS `car_characteristics`;
-CREATE TABLE `car_characteristics`
+DROP TABLE IF EXISTS `car`;
+CREATE TABLE `car`
 (
-    `car_id`          int(11)  NOT NULL AUTO_INCREMENT,
-    `year`            datetime NOT NULL,
+    `car_id`          int(11) NOT NULL AUTO_INCREMENT,
+    `year`            int(11) NOT NULL,
     `mileage`         int(11) DEFAULT NULL,
-    `fuel_type_id`    int(11)  NOT NULL,
-    `transmission_id` int(11)  NOT NULL,
-    `car_model_id`    int(11)  NOT NULL,
+    `fuel_type_id`    int(11) NOT NULL,
+    `transmission_id` int(11) NOT NULL,
+    `car_model_id`    int(11) NOT NULL,
     PRIMARY KEY (`car_id`),
     CONSTRAINT `car_model` FOREIGN KEY (`car_model_id`) REFERENCES `car_model` (`car_model_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT `fk_fuel_type` FOREIGN KEY (`fuel_type_id`) REFERENCES `fuel_type` (`fuel_type_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -78,7 +78,7 @@ CREATE TABLE `car_feature`
     `car_feature`    varchar(45) NOT NULL,
     `car_id`         int(11)     NOT NULL,
     PRIMARY KEY (`car_feature_id`),
-    CONSTRAINT `fk_car_for_feature_id` FOREIGN KEY (`car_id`) REFERENCES `car_characteristics` (`car_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT `fk_car_for_feature_id` FOREIGN KEY (`car_id`) REFERENCES `car` (`car_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;
@@ -92,7 +92,7 @@ CREATE TABLE `car_sale`
     `user_id`     int(11)     NOT NULL,
     `car_id`      int(11)     NOT NULL,
     PRIMARY KEY (`car_sale_id`),
-    CONSTRAINT `fk_car_id` FOREIGN KEY (`car_id`) REFERENCES `car_characteristics` (`car_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `fk_car_id` FOREIGN KEY (`car_id`) REFERENCES `car` (`car_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user_table` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 18
