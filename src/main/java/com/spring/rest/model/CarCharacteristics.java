@@ -1,5 +1,7 @@
 package com.spring.rest.model;
 
+import java.sql.Date;
+
 /**
  * The car characteristics model.
  * This model includes year of car manufacture, car mileage, fuel type of car, transmission type and car model.
@@ -9,7 +11,7 @@ package com.spring.rest.model;
  */
 public class CarCharacteristics {
     private int carId;
-    private int year;
+    private Date year;
     private int mileage;
     private FuelType fuelType;
     private Transmission transmission;
@@ -34,7 +36,7 @@ public class CarCharacteristics {
      * @param transmission the transmission
      * @param carModel     the car model
      */
-    public CarCharacteristics(final int carId, final int year, final int mileage, final FuelType fuelType,
+    public CarCharacteristics(final int carId, final Date year, final int mileage, final FuelType fuelType,
                               final Transmission transmission, final CarModel carModel) {
         this.carId = carId;
         this.year = year;
@@ -67,7 +69,7 @@ public class CarCharacteristics {
      *
      * @return the year
      */
-    public int getYear() {
+    public Date getYear() {
         return year;
     }
 
@@ -76,7 +78,7 @@ public class CarCharacteristics {
      *
      * @param year the year
      */
-    public void setYear(final int year) {
+    public void setYear(final Date year) {
         this.year = year;
     }
 

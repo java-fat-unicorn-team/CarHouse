@@ -64,9 +64,9 @@ public class CarCharacteristicsMapper implements RowMapper<CarCharacteristics> {
     @Override
     public CarCharacteristics mapRow(final ResultSet resultSet, final int i) throws SQLException {
         CarCharacteristics carCharacteristics = new CarCharacteristics(resultSet.getInt(CAR_ID),
-                resultSet.getInt(YEAR), resultSet.getInt(MILEAGE), fuelTypeMapper.mapRow(resultSet, i),
+                resultSet.getDate(YEAR), resultSet.getInt(MILEAGE), fuelTypeMapper.mapRow(resultSet, i),
                 transmissionMapper.mapRow(resultSet, i), carModelMapper.mapRow(resultSet, i));
-        LOGGER.debug("row ({}, {}, {}) has been mapped", resultSet.getInt(CAR_ID), resultSet.getInt(YEAR),
+        LOGGER.debug("row ({}, {}, {}) has been mapped", resultSet.getInt(CAR_ID), resultSet.getDate(YEAR),
                 resultSet.getInt(MILEAGE));
         return carCharacteristics;
     }

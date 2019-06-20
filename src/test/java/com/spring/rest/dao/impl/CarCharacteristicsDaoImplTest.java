@@ -10,6 +10,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+
+import java.sql.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -44,8 +51,8 @@ class CarCharacteristicsDaoImplTest {
     @Test
     void addCarCharacteristics() {
         int size = carCharacteristicsDao.getCarsCharacteristics().size();
-        CarCharacteristics newCarCharacteristics = new CarCharacteristics(2, 2016, 133455,
-                new FuelType(2), new Transmission(1), new CarModel(3,
+        CarCharacteristics newCarCharacteristics = new CarCharacteristics(2, null,
+                133455, new FuelType(2), new Transmission(1), new CarModel(3,
                 new CarMake(2)));
         int index = carCharacteristicsDao.addCarCharacteristics(newCarCharacteristics);
         CarCharacteristics obtainedCarCharacteristics = carCharacteristicsDao.getCarCharacteristics(index);
@@ -61,14 +68,14 @@ class CarCharacteristicsDaoImplTest {
     @Test
     void addCarCharacteristicsWithWrongReferences() {
         assertThrows(DataIntegrityViolationException.class,() -> carCharacteristicsDao.addCarCharacteristics(
-                new CarCharacteristics(2, 2018, 33455, new FuelType(10),
+                new CarCharacteristics(2, Date.valueOf("2018-04-01"), 33455, new FuelType(10),
                         new Transmission(20), new CarModel(15, new CarMake(21)))));
     }
 
     @Test
     void updateCarCharacteristics() {
-        CarCharacteristics newCarCharacteristics = new CarCharacteristics(2, 2017, 233455,
-                new FuelType(2), new Transmission(2), new CarModel(1,
+        CarCharacteristics newCarCharacteristics = new CarCharacteristics(2, null,
+                233455, new FuelType(2), new Transmission(2), new CarModel(1,
                 new CarMake(2)));
         carCharacteristicsDao.updateCarCharacteristics(newCarCharacteristics);
         CarCharacteristics obtainedCarCharacteristics = carCharacteristicsDao.getCarCharacteristics(2);
@@ -82,7 +89,7 @@ class CarCharacteristicsDaoImplTest {
     @Test
     void updateCarCharacteristicsWithWrongReferences() {
         assertThrows(DataIntegrityViolationException.class,() -> carCharacteristicsDao.updateCarCharacteristics(
-                new CarCharacteristics(2, 2016, 233455, new FuelType(10),
+                new CarCharacteristics(2, Date.valueOf("2016-07-01"), 233455, new FuelType(10),
                         new Transmission(20), new CarModel(15, new CarMake(21)))));
     }
 

@@ -34,7 +34,7 @@ public class SpringJDBCConfig {
     @Value("${db.user.name.p}")
     private String DB_USER_NAME;
     /**
-     * The database's password.
+     * The user password.
      */
     @Value("${db.password}")
     private String DB_PASSWORD;

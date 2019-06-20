@@ -16,5 +16,5 @@ Project is created with:
 To run this project, install and run it locally using maven:
 
 ```
-$ mvn clean install
+mvn clean install
 ```

@@ -1,7 +1,6 @@
 package com.spring.rest.dao;
 
 import com.spring.rest.model.CarCharacteristics;
-
 import java.util.List;
 
 /**
