@@ -51,7 +51,7 @@ class CarCharacteristicsDaoImplTest {
     @Test
     void addCarCharacteristics() {
         int size = carCharacteristicsDao.getCarsCharacteristics().size();
-        CarCharacteristics newCarCharacteristics = new CarCharacteristics(2, null,
+        CarCharacteristics newCarCharacteristics = new CarCharacteristics(2, Date.valueOf("2016-03-02"),
                 133455, new FuelType(2), new Transmission(1), new CarModel(3,
                 new CarMake(2)));
         int index = carCharacteristicsDao.addCarCharacteristics(newCarCharacteristics);
@@ -74,7 +74,7 @@ class CarCharacteristicsDaoImplTest {
 
     @Test
     void updateCarCharacteristics() {
-        CarCharacteristics newCarCharacteristics = new CarCharacteristics(2, null,
+        CarCharacteristics newCarCharacteristics = new CarCharacteristics(2, Date.valueOf("2017-04-01"),
                 233455, new FuelType(2), new Transmission(2), new CarModel(1,
                 new CarMake(2)));
         carCharacteristicsDao.updateCarCharacteristics(newCarCharacteristics);

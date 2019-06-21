@@ -8,6 +8,9 @@ There is DB model hierarchy [here](https://github.com/java-fat-unicorn-team/CarS
 Project is created with:
 * Java 11
 * Spring core 5.1.7
+* SpringJDBC 5.1.7
+* MySQL 8.0
+* H2 1.4
 * Maven 3.5+
 * Git 2+
 * JUnit 5+
