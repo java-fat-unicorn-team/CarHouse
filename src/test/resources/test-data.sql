@@ -9,7 +9,6 @@ INSERT INTO `fuel_type` (`fuel_type`)
 VALUES ('Gasoline');
 INSERT INTO `fuel_type` (`fuel_type`)
 VALUES ('Electric');
-
 INSERT INTO `transmission` (`transmission`)
 VALUES ('Automatic');
 INSERT INTO `transmission` (`transmission`)
@@ -27,16 +26,16 @@ VALUES ('M5', '2');
 INSERT INTO `car_model` (`car_model`, `car_make_id`)
 VALUES ('M8', '2');
 
-INSERT INTO `car_characteristics` (`year`, `mileage`, `fuel_type_id`, `transmission_id`, `car_model_id`)
-VALUES ('2017-01-01 00:00:00', '90300', '1', '1', '1');
-INSERT INTO `car_characteristics` (`year`, `mileage`, `fuel_type_id`, `transmission_id`, `car_model_id`)
-VALUES ('2016-05-08 00:00:00', '110300', '1', '2', '2');
-INSERT INTO `car_characteristics` (`year`, `mileage`, `fuel_type_id`, `transmission_id`, `car_model_id`)
-VALUES ('2015-01-01 00:00:00', '130300', '2', '1', '1');
-INSERT INTO `car_characteristics` (`year`, `mileage`, `fuel_type_id`, `transmission_id`, `car_model_id`)
-VALUES ('2017-06-07 16:44:17', '70300', '1', '1', '3');
-INSERT INTO `car_characteristics` (`year`, `mileage`, `fuel_type_id`, `transmission_id`, `car_model_id`)
-VALUES ('2017-06-07 16:44:17', '70300', '2', '2', '1');
+INSERT INTO `car` (`year`, `mileage`, `fuel_type_id`, `transmission_id`, `car_model_id`)
+VALUES ('2017-01-01', '90300', '1', '1', '1');
+INSERT INTO `car` (`year`, `mileage`, `fuel_type_id`, `transmission_id`, `car_model_id`)
+VALUES ('2016-05-08', '110300', '1', '2', '2');
+INSERT INTO `car` (`year`, `mileage`, `fuel_type_id`, `transmission_id`, `car_model_id`)
+VALUES ('2015-01-01', '130300', '2', '1', '1');
+INSERT INTO `car` (`year`, `mileage`, `fuel_type_id`, `transmission_id`, `car_model_id`)
+VALUES ('2017-06-07', '70300', '1', '1', '3');
+INSERT INTO `car` (`year`, `mileage`, `fuel_type_id`, `transmission_id`, `car_model_id`)
+VALUES ('2017-06-07', '70300', '2', '2', '1');
 
 INSERT INTO `car_feature` (`car_feature`, `car_id`)
 VALUES ('Winter tires', '1');
@@ -64,9 +63,3 @@ INSERT INTO `comment` (`user_name`, `comment`, `car_sale_id`)
 VALUES ('Michael', 'Rubbish', '4');
 INSERT INTO `comment` (`user_name`, `comment`, `car_sale_id`)
 VALUES ('David', 'Nice car', '2');
-
-
-
-
-
-

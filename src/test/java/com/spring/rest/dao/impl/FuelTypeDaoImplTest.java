@@ -21,6 +21,7 @@ class FuelTypeDaoImplTest {
 
     @Test
     void getFuelTypes() {
+        fuelTypeDao.getFuelTypes().forEach(System.out::println);
         assertEquals(4, fuelTypeDao.getFuelTypes().size());
     }
 

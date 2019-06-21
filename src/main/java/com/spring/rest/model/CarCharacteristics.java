@@ -1,12 +1,12 @@
 package com.spring.rest.model;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * The car characteristics model.
  * This model includes year of car manufacture, car mileage, fuel type of car, transmission type and car model.
  * Each car includes this model.
+ *
  * @author Katuranau Maksimilyan
  */
 public class CarCharacteristics {
@@ -156,10 +156,8 @@ public class CarCharacteristics {
 
     @Override
     public final String toString() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(year);
         return "carId=" + carId
-                + ", year=" + cal.get(Calendar.YEAR)
+                + ", year=" + year
                 + ", mileage=" + mileage
                 + ", " + fuelType
                 + ", " + transmission
