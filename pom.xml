@@ -8,12 +8,23 @@
   <artifactId>CarSharing</artifactId>
   <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>5.1.7.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>5.1.7.RELEASE</version>
+    </dependency>
+  </dependencies>
 
   <name>CarSharing</name>
 
   <modules>
     <module>model</module>
-    <module>config</module>
     <module>dao</module>
   </modules>
 
@@ -159,11 +170,11 @@
           </executions>
           <configuration>
             <targetClasses>
-              <param>com.spring.dao.*</param>
-              <param>com.spring.model.*</param>
+              <param>com.carhouse.dao.*</param>
+              <param>com.carhouse.model.*</param>
             </targetClasses>
             <targetTests>
-              <param>com.spring.*</param>
+              <param>com.carhouse.*</param>
             </targetTests>
             <testPlugin>junit5</testPlugin>
           </configuration>
