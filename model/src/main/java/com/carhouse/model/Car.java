@@ -9,7 +9,7 @@ import java.sql.Date;
  *
  * @author Katuranau Maksimilyan
  */
-public class CarCharacteristics {
+public class Car {
     private int carId;
     private Date year;
     private int mileage;
@@ -22,12 +22,12 @@ public class CarCharacteristics {
      *
      * @param carId the car id
      */
-    public CarCharacteristics(final int carId) {
+    public Car(final int carId) {
         this.carId = carId;
     }
 
     /**
-     * Instantiates a new CarCharacteristics.
+     * Instantiates a new Car.
      *
      * @param carId        the car id
      * @param year         the year
@@ -36,8 +36,8 @@ public class CarCharacteristics {
      * @param transmission the transmission
      * @param carModel     the car model
      */
-    public CarCharacteristics(final int carId, final Date year, final int mileage, final FuelType fuelType,
-                              final Transmission transmission, final CarModel carModel) {
+    public Car(final int carId, final Date year, final int mileage, final FuelType fuelType,
+               final Transmission transmission, final CarModel carModel) {
         this.carId = carId;
         this.year = year;
         this.mileage = mileage;

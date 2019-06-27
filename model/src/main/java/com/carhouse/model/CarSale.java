@@ -14,7 +14,7 @@ public class CarSale {
     private BigDecimal price;
     private Date date;
     private User user;
-    private CarCharacteristics carCharacteristics;
+    private Car car;
 
     /**
      * Instantiates a new Car sale.
@@ -32,30 +32,30 @@ public class CarSale {
      * @param price              the price
      * @param date               the date
      * @param user               the user
-     * @param carCharacteristics the carCharacteristics
+     * @param car the car
      */
     public CarSale(final int carSaleId, final BigDecimal price, final Date date, final User user,
-                   final CarCharacteristics carCharacteristics) {
+                   final Car car) {
         this.carSaleId = carSaleId;
         this.price = price;
         this.date = date;
         this.user = user;
-        this.carCharacteristics = carCharacteristics;
+        this.car = car;
     }
 
     /**
-     * Gets carCharacteristics sale id.
+     * Gets car sale id.
      *
-     * @return the carCharacteristics sale id
+     * @return the car sale id
      */
     public int getCarSaleId() {
         return carSaleId;
     }
 
     /**
-     * Sets carCharacteristics sale id.
+     * Sets car sale id.
      *
-     * @param carSaleId the carCharacteristics sale id
+     * @param carSaleId the car sale id
      */
     public void setCarSaleId(final int carSaleId) {
         this.carSaleId = carSaleId;
@@ -116,21 +116,21 @@ public class CarSale {
     }
 
     /**
-     * Gets carCharacteristics.
+     * Gets car.
      *
-     * @return the carCharacteristics
+     * @return the car
      */
-    public CarCharacteristics getCarCharacteristics() {
-        return carCharacteristics;
+    public Car getCar() {
+        return car;
     }
 
     /**
-     * Sets carCharacteristics.
+     * Sets car.
      *
-     * @param carCharacteristics the carCharacteristics
+     * @param car the car
      */
-    public void setCarCharacteristics(final CarCharacteristics carCharacteristics) {
-        this.carCharacteristics = carCharacteristics;
+    public void setCar(final Car car) {
+        this.car = car;
     }
 
     @Override
@@ -139,6 +139,6 @@ public class CarSale {
                 + ", price=" + price
                 + ", date=" + date
                 + ", " + user
-                + ", " + carCharacteristics;
+                + ", " + car;
     }
 }

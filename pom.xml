@@ -8,24 +8,14 @@
   <artifactId>CarSharing</artifactId>
   <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
-  <dependencies>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <version>5.1.7.RELEASE</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
-      <version>5.1.7.RELEASE</version>
-    </dependency>
-  </dependencies>
 
   <name>CarSharing</name>
 
   <modules>
     <module>model</module>
     <module>dao</module>
+    <module>service</module>
+    <module>rest</module>
   </modules>
 
   <properties>
@@ -38,6 +28,8 @@
     <pitest.maven>1.4.8</pitest.maven>
     <pitest.junit5.plugin>0.9</pitest.junit5.plugin>
     <spring.version>5.1.7.RELEASE</spring.version>
+    <jackson.databind.version>2.9.9</jackson.databind.version>
+    <javax.servlet.api.version>3.1.0</javax.servlet.api.version>
     <junit.version>5.4.2</junit.version>
     <h2.version>1.4.199</h2.version>
     <mysql.connector.java>8.0.16</mysql.connector.java>
@@ -48,6 +40,7 @@
     <maven.failsafe.plugin>2.22.2</maven.failsafe.plugin>
     <maven.surefire.plugin>2.22.2</maven.surefire.plugin>
     <maven.jar.plugin>3.1.2</maven.jar.plugin>
+    <maven.war.plugin>3.2.3</maven.war.plugin>
     <maven.install.plugin>2.5.2</maven.install.plugin>
     <maven.site.plugin>3.7.1</maven.site.plugin>
     <maven.project.info.reports.plugin>3.0.0</maven.project.info.reports.plugin>
@@ -88,6 +81,26 @@
         <groupId>org.springframework</groupId>
         <artifactId>spring-context</artifactId>
         <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-web</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.databind.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>${javax.servlet.api.version}</version>
       </dependency>
       <dependency>
         <groupId>mysql</groupId>
@@ -142,6 +155,13 @@
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
           <version>${maven.jar.plugin}</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-war-plugin</artifactId>
+          <version>${maven.war.plugin}</version>
+          <configuration>
+            <failOnMissingWebXml>false</failOnMissingWebXml>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
