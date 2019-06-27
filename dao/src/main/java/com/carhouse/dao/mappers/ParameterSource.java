@@ -1,8 +1,8 @@
 package com.carhouse.dao.mappers;
 
+import com.carhouse.model.Car;
 import com.carhouse.model.CarSale;
 import com.carhouse.model.Comment;
-import com.carhouse.model.CarCharacteristics;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ public class ParameterSource {
      * @param car the car
      * @return the car characteristics parameters
      */
-    public SqlParameterSource getCarCharacteristicsParameters(final CarCharacteristics car) {
+    public SqlParameterSource getCarParameters(final Car car) {
         return new MapSqlParameterSource()
                 .addValue("id", car.getCarId())
                 .addValue("year", car.getYear())
@@ -42,7 +42,7 @@ public class ParameterSource {
                 .addValue("id", carSale.getCarSaleId())
                 .addValue("price", carSale.getPrice())
                 .addValue("userId", carSale.getUser().getUserId())
-                .addValue("carCharacteristicsId", carSale.getCarCharacteristics().getCarId());
+                .addValue("carId", carSale.getCar().getCarId());
     }
 
     /**

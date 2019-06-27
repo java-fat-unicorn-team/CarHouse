@@ -25,9 +25,9 @@ public class CarFeatureMapper implements RowMapper<CarFeature> {
      */
     public static final String CAR_FEATURE = "car_feature";
     /**
-     * mapper to get CarCharacteristics object.
+     * mapper to get Car object.
      */
-    private CarCharacteristicsMapper carCharacteristicsMapper;
+    private CarMapper carMapper;
     /**
      * Logger.
      */
@@ -36,17 +36,17 @@ public class CarFeatureMapper implements RowMapper<CarFeature> {
     /**
      * Instantiates a new Car feature mapper.
      *
-     * @param carCharacteristicsMapper the car characteristics mapper
+     * @param carMapper the car characteristics mapper
      */
     @Autowired
-    public CarFeatureMapper(final CarCharacteristicsMapper carCharacteristicsMapper) {
-        this.carCharacteristicsMapper = carCharacteristicsMapper;
+    public CarFeatureMapper(final CarMapper carMapper) {
+        this.carMapper = carMapper;
     }
 
     @Override
     public CarFeature mapRow(final ResultSet resultSet, final int i) throws SQLException {
         CarFeature carFeature = new CarFeature(resultSet.getInt(CAR_FEATURE_ID), resultSet.getString(CAR_FEATURE),
-                carCharacteristicsMapper.mapRow(resultSet, i));
+                carMapper.mapRow(resultSet, i));
         LOGGER.debug("row ({}, {}) has been mapped", resultSet.getInt(CAR_FEATURE_ID),
                 resultSet.getString(CAR_FEATURE));
         return carFeature;

@@ -83,7 +83,7 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
     @Override
     public List<CarFeature> getCarFeatures(final int carCharacteristicsId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("carCharacteristicsId", carCharacteristicsId);
+                .addValue("carId", carCharacteristicsId);
         LOGGER.debug("method getCarFeatures with parameter: {} was called", carCharacteristicsId);
         return namedParameterJdbcTemplate.query(GET_LIST_CAR_FEATURES_SQL, parameters, carFeatureMapper);
     }
@@ -113,7 +113,7 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
     public Integer addCarFeature(final String carFeature, final int carCharacteristicsId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("carFeature", carFeature)
-                .addValue("carCharacteristicsId", carCharacteristicsId);
+                .addValue("carId", carCharacteristicsId);
         LOGGER.debug("method addCarFeature with parameters: {}, {}", carFeature, carCharacteristicsId);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(ADD_CAR_FEATURE_SQL, parameters, keyHolder);

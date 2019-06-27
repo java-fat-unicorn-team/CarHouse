@@ -1,21 +1,21 @@
 package com.carhouse.dao;
 
-import com.carhouse.model.CarCharacteristics;
+import com.carhouse.model.Car;
 
 import java.util.List;
 
 /**
- * The interface provides methods to manage CarCharacteristics model.
+ * The interface provides methods to manage Car model.
  * @author Katuranau Maksimilyan
- * @see CarCharacteristics
+ * @see Car
  */
-public interface CarCharacteristicsDao {
+public interface CarDao {
     /**
      * Gets cars.
      *
      * @return the list of cars
      */
-    List<CarCharacteristics> getCarsCharacteristics();
+    List<Car> getCars();
 
     /**
      * Gets car.
@@ -23,7 +23,7 @@ public interface CarCharacteristicsDao {
      * @param index the index
      * @return the car
      */
-    CarCharacteristics getCarCharacteristics(int index);
+    Car getCar(int index);
 
     /**
      * Add car characteristics.
@@ -31,19 +31,19 @@ public interface CarCharacteristicsDao {
      * @param car the car
      * @return car characteristic id
      */
-    Integer addCarCharacteristics(CarCharacteristics car);
+    Integer addCar(Car car);
 
     /**
      * Update car characteristics.
      *
      * @param car the car
      */
-    void updateCarCharacteristics(CarCharacteristics car);
+    void updateCar(Car car);
 
     /**
      * Delete car.
      *
      * @param index the index
      */
-    void deleteCarCharacteristics(int index);
+    void deleteCar(int index);
 }

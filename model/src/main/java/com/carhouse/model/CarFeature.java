@@ -9,19 +9,19 @@ package com.carhouse.model;
 public class CarFeature {
     private int carFeatureId;
     private String carFeature;
-    private CarCharacteristics carCharacteristics;
+    private Car car;
 
     /**
      * Instantiates a new Car feature.
      *
      * @param carFeatureId       the car feature id
      * @param carFeature         the car feature
-     * @param carCharacteristics the car
+     * @param car the car
      */
-    public CarFeature(final int carFeatureId, final String carFeature, final CarCharacteristics carCharacteristics) {
+    public CarFeature(final int carFeatureId, final String carFeature, final Car car) {
         this.carFeatureId = carFeatureId;
         this.carFeature = carFeature;
-        this.carCharacteristics = carCharacteristics;
+        this.car = car;
     }
 
     /**
@@ -65,22 +65,22 @@ public class CarFeature {
      *
      * @return the car which have this feature
      */
-    public CarCharacteristics getCarCharacteristics() {
-        return carCharacteristics;
+    public Car getCar() {
+        return car;
     }
 
     /**
      * Sets car id.
      *
-     * @param carCharacteristics the car id
+     * @param car the car id
      */
-    public void setCarCharacteristics(final CarCharacteristics carCharacteristics) {
-        this.carCharacteristics = carCharacteristics;
+    public void setCar(final Car car) {
+        this.car = car;
     }
 
     @Override
     public final String toString() {
         return "carFeature='" + carFeature + '\''
-                + carCharacteristics;
+                + car;
     }
 }

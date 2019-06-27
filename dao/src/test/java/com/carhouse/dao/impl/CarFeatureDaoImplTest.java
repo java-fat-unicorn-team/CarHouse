@@ -32,7 +32,7 @@ class CarFeatureDaoImplTest {
     @Test
     void getCarFeature() {
         assertEquals("Winter tires", carFeatureDao.getCarFeature(1).getCarFeature());
-        assertEquals(2, carFeatureDao.getCarFeature(3).getCarCharacteristics().getCarId());
+        assertEquals(2, carFeatureDao.getCarFeature(3).getCar().getCarId());
         assertEquals("Csenon", carFeatureDao.getCarFeature(4).getCarFeature());
     }
 
@@ -48,7 +48,7 @@ class CarFeatureDaoImplTest {
         CarFeature obtainedCarFeature = carFeatureDao.getCarFeature(index);
         assertEquals(size + 1, carFeatureDao.getCarFeatures(2).size());
         assertEquals("Chip", obtainedCarFeature.getCarFeature());
-        assertEquals(2, obtainedCarFeature.getCarCharacteristics().getCarId());
+        assertEquals(2, obtainedCarFeature.getCar().getCarId());
     }
 
     @Test
@@ -59,11 +59,11 @@ class CarFeatureDaoImplTest {
 
     @Test
     void updateCarFeature() {
-        int carCharacteristicsId = carFeatureDao.getCarFeature(3).getCarCharacteristics().getCarId();
+        int carCharacteristicsId = carFeatureDao.getCarFeature(3).getCar().getCarId();
         carFeatureDao.updateCarFeature("Air suspension", 3);
         CarFeature obtainedCarFeature = carFeatureDao.getCarFeature(3);
         assertEquals("Air suspension", obtainedCarFeature.getCarFeature());
-        assertEquals(carCharacteristicsId, obtainedCarFeature.getCarCharacteristics().getCarId());
+        assertEquals(carCharacteristicsId, obtainedCarFeature.getCar().getCarId());
     }
 
     @Test
