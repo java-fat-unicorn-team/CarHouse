@@ -19,6 +19,8 @@ import java.util.List;
 /**
  * The class provides methods to manage Comment model.
  * The class stores date in database
+ * It is realisation of CommentDao interface
+ * @see CommentDao
  * @author Katuranau Maksimilyan
  */
 @Repository
@@ -71,7 +73,7 @@ public class CommentDaoImpl implements CommentDao {
      *
      * @param namedParameterJdbcTemplate the named parameter jdbc template
      * @param commentMapper              the comment mapper
-     * @param parameterSource            the parameter source
+     * @param parameterSource            the class which provides parameters for sql query
      */
     public CommentDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                           final CommentMapper commentMapper, final ParameterSource parameterSource) {
@@ -81,42 +83,43 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     /**
-     * Gets car sale comments.
+     * Gets comments of car sale with provided id.
      *
-     * @param index the index
+     * @param id the car sale id
      * @return the list of car sale comments
      */
     @Override
-    public List<Comment> getCarSaleComments(final int index) {
+    public List<Comment> getCarSaleComments(final int id) {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", index);
-        LOGGER.debug("method getCarSaleComments with parameter: {} was called", index);
+                .addValue("id", id);
+        LOGGER.debug("method getCarSaleComments with parameter: [{}]", id);
         return namedParameterJdbcTemplate.query(GET_LIST_CAR_SALE_COMMENTS_SQL, parameters, commentMapper);
     }
 
     /**
-     * Gets comment.
+     * Gets comment by id.
      *
-     * @param index the index
+     * @param id the comment id
      * @return the comment
      */
     @Override
-    public Comment getComment(final int index) {
+    public Comment getComment(final int id) {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", index);
-        LOGGER.debug("method getComment with parameter: {} was called", index);
+                .addValue("id", id);
+        LOGGER.debug("method getComment with parameter: [{}]", id);
         return namedParameterJdbcTemplate.queryForObject(GET_COMMENT_SQL, parameters, commentMapper);
     }
 
     /**
-     * Add comment.
+     * Add comment to car sale advertisement.
+     * Gets car sale id from comment object
      *
      * @param comment the comment
      * @return comment id
      */
     @Override
     public Integer addComment(final Comment comment) {
-        LOGGER.debug("method addComment with parameter: {}", comment);
+        LOGGER.debug("method addComment with parameter: [{}]", comment);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(ADD_COMMENT_SQL, parameterSource.getCommentParameters(comment), keyHolder);
         return keyHolder.getKey().intValue();
@@ -124,25 +127,26 @@ public class CommentDaoImpl implements CommentDao {
 
     /**
      * Update comment.
+     * Gets id from comment object and rewrite comment with such id in database
      *
      * @param comment the comment
      */
     @Override
     public void updateComment(final Comment comment) {
-        LOGGER.debug("method updateComment with parameter: {}", comment);
+        LOGGER.debug("method updateComment with parameter: [{}]", comment);
         namedParameterJdbcTemplate.update(UPDATE_COMMENT_SQL, parameterSource.getCommentParameters(comment));
     }
 
     /**
-     * Delete comment.
+     * Delete comment by id.
      *
-     * @param index the index
+     * @param id the index
      */
     @Override
-    public void deleteComment(final int index) {
+    public void deleteComment(final int id) {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", index);
-        LOGGER.debug("method deleteComment with parameter: {} was called", index);
+                .addValue("id", id);
+        LOGGER.debug("method deleteComment with parameter: [{}]", id);
         namedParameterJdbcTemplate.update(DELETE_COMMENT_SQL, parameters);
     }
 }

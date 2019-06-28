@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 /**
  * The Class is used to create Transmission from data obtained from database.
+ * @see Transmission
  * @author Katuranau Maksimilyan
  */
 @Component

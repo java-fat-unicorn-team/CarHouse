@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 /**
  * The Class is used to create CarModel from data obtained from database.
+ * @see CarModel
  * @author Katuranau Maksimilyan
  */
 @Component

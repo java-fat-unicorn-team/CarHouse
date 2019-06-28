@@ -11,23 +11,24 @@ import java.util.List;
  */
 public interface CommentDao {
     /**
-     * Gets car sale comments.
+     * Gets comments of car sale with provided id.
      *
-     * @param index the index
-     * @return the list of car sale's comments
+     * @param id the car sale id
+     * @return the list of car sale comments
      */
-    List<Comment> getCarSaleComments(int index);
+    List<Comment> getCarSaleComments(final int id);
 
     /**
-     * Gets comment.
+     * Gets comment by id.
      *
-     * @param index the index
+     * @param id the comment id
      * @return the comment
      */
-    Comment getComment(int index);
+    Comment getComment(final int id);
 
     /**
-     * Add comment.
+     * Add comment to car sale advertisement.
+     * Gets car sale id from comment object
      *
      * @param comment the comment
      * @return comment id
@@ -36,15 +37,16 @@ public interface CommentDao {
 
     /**
      * Update comment.
+     * Gets id from comment object
      *
      * @param comment the comment
      */
     void updateComment(Comment comment);
 
     /**
-     * Delete comment.
+     * Delete comment by id.
      *
-     * @param index the index
+     * @param id the index
      */
-    void deleteComment(int index);
+    void deleteComment(final int id);
 }

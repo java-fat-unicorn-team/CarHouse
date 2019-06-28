@@ -11,39 +11,40 @@ import java.util.List;
  */
 public interface CarDao {
     /**
-     * Gets cars.
+     * Gets all cars from database
      *
      * @return the list of cars
      */
     List<Car> getCars();
 
     /**
-     * Gets car.
+     * Gets one car by id
      *
-     * @param index the index
+     * @param id the car id
      * @return the car
      */
-    Car getCar(int index);
+     Car getCar(final int id);
 
     /**
-     * Add car characteristics.
+     * Add car.
      *
-     * @param car the car
+     * @param car the car model
      * @return car characteristic id
      */
     Integer addCar(Car car);
 
     /**
-     * Update car characteristics.
+     * Update car.
+     * Gets car id from car object
      *
-     * @param car the car
+     * @param car the car model
      */
     void updateCar(Car car);
 
     /**
-     * Delete car.
+     * Delete car by id.
      *
-     * @param index the index
+     * @param id the car id
      */
-    void deleteCar(int index);
+    void deleteCar(final int id);
 }

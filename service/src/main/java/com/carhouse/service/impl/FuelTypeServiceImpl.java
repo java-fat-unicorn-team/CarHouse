@@ -11,8 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * The class provides methods to manage FuelType model.
- *
+ * The class provides methods to manage FuelType model on service layer.
+ * It is realisation of FuelTypeService interface
+ * @see FuelTypeService
  * @author Katuranau Maksimilyan
  */
 @Service
@@ -21,19 +22,19 @@ public class FuelTypeServiceImpl implements FuelTypeService {
     private FuelTypeDao fuelTypeDao;
 
     /**
+     * Logger.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(FuelTypeServiceImpl.class);
+
+    /**
      * Instantiates a new Fuel type service.
      *
-     * @param fuelTypeDao the fuel type dao
+     * @param fuelTypeDao the class is provided CRUD operations for fuel type model.
      */
     @Autowired
     public FuelTypeServiceImpl(final FuelTypeDao fuelTypeDao) {
         this.fuelTypeDao = fuelTypeDao;
     }
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = LogManager.getLogger(FuelTypeServiceImpl.class);
 
     /**
      * Gets fuel types.
@@ -42,54 +43,55 @@ public class FuelTypeServiceImpl implements FuelTypeService {
      */
     @Override
     public List<FuelType> getFuelTypes() {
-        LOGGER.debug("method getFuelTypes was called");
+        LOGGER.debug("method getFuelTypes");
         return fuelTypeDao.getFuelTypes();
     }
 
     /**
-     * Gets fuel type.
+     * Gets fuel type by id.
      *
-     * @param index the index
+     * @param id the fuel type id
      * @return the fuel type
      */
     @Override
-    public FuelType getFuelType(final int index) {
-        LOGGER.debug("method getFuelType with parameter: {} was called", index);
-        return fuelTypeDao.getFuelType(index);
+    public FuelType getFuelType(final int id) {
+        LOGGER.debug("method getFuelType with parameter: [{}]", id);
+        return fuelTypeDao.getFuelType(id);
     }
 
     /**
      * Add fuel type.
+     * Fuel type id is auto generated
      *
      * @param fuelType the fuel type
      * @return fuel type id
      */
     @Override
     public Integer addFuelType(final String fuelType) {
-        LOGGER.debug("method addFuelType with parameter: {} was called", fuelType);
+        LOGGER.debug("method addFuelType with parameter: [{}]", fuelType);
         return fuelTypeDao.addFuelType(fuelType);
     }
 
     /**
-     * Delete fuel type.
+     * Update fuel type by id.
      *
-     * @param index the index
-     */
-    @Override
-    public void deleteFuelType(final int index) {
-        LOGGER.debug("method deleteFuelType with parameter: {} was called", index);
-        fuelTypeDao.deleteFuelType(index);
-    }
-
-    /**
-     * Update fuel type.
-     *
-     * @param index    the index
+     * @param id    the fuel type id
      * @param fuelType the fuel type
      */
     @Override
-    public void updateFuelType(final int index, final String fuelType) {
-        LOGGER.debug("method updateFuelType with parameters: {}, {} was called", index, fuelType);
-        fuelTypeDao.updateFuelType(index, fuelType);
+    public void updateFuelType(final int id, final String fuelType) {
+        LOGGER.debug("method updateFuelType with parameters: [{}, {}]", id, fuelType);
+        fuelTypeDao.updateFuelType(id, fuelType);
+    }
+
+    /**
+     * Delete fuel type by id.
+     *
+     * @param id the fuel type id
+     */
+    @Override
+    public void deleteFuelType(final int id) {
+        LOGGER.debug("method deleteFuelType with parameter: [{}]", id);
+        fuelTypeDao.deleteFuelType(id);
     }
 }

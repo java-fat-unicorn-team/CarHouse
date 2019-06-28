@@ -19,6 +19,8 @@ import java.util.List;
 /**
  * The class provides methods to manage Car model.
  * The class stores date in database
+ * It is realisation of CarDao interface
+ * @see CarDao
  * @author Katuranau Maksimilyan
  */
 @Repository
@@ -70,8 +72,8 @@ public class CarDaoImpl implements CarDao {
      * Instantiates a new Car dao.
      *
      * @param namedParameterJdbcTemplate the jdbc template
-     * @param carMapper   the car mapper
-     * @param parameterSource            the parameter source
+     * @param carMapper                  the car mapper
+     * @param parameterSource            the class which provides parameters for sql query
      */
     @Autowired
     public CarDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
@@ -84,40 +86,41 @@ public class CarDaoImpl implements CarDao {
     }
 
     /**
-     * Gets cars.
+     * Gets all cars from database
      *
      * @return the list of cars
      */
     @Override
     public List<Car> getCars() {
-        LOGGER.debug("method getCars was called");
+        LOGGER.debug("method getCars");
         return namedParameterJdbcTemplate.query(GET_LIST_CARS_SQL, carMapper);
     }
 
     /**
-     * Gets car.
+     * Gets one car by id
      *
-     * @param index the index
+     * @param id the car id
      * @return the car
      */
     @Override
-    public Car getCar(final int index) {
+    public Car getCar(final int id) {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", index);
-        LOGGER.debug("method getCar with parameter: {} was called", index);
+                .addValue("id", id);
+        LOGGER.debug("method getCar with parameter: [{}]", id);
         return namedParameterJdbcTemplate.queryForObject(GET_CAR_SQL, parameters,
                 carMapper);
     }
 
     /**
      * Add car.
+     * The method adds car to the end of list in database
      *
-     * @param car the car
+     * @param car the car model
      * @return car id
      */
     @Override
     public Integer addCar(final Car car) {
-        LOGGER.debug("method addCar with parameter: {}", car);
+        LOGGER.debug("method addCar with parameter: [{}]", car);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(ADD_CAR_SQL,
                 parameterSource.getCarParameters(car), keyHolder);
@@ -126,27 +129,28 @@ public class CarDaoImpl implements CarDao {
 
     /**
      * Update car.
+     * Gets car id from car object and rewrite the car in database
      *
-     * @param car the car
+     * @param car the car model
      */
     @Override
     public void updateCar(final Car car) {
-        LOGGER.debug("method updateCar with parameter: {}", car);
+        LOGGER.debug("method updateCar with parameter: [{}]", car);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(UPDATE_CAR_SQL,
                 parameterSource.getCarParameters(car), keyHolder);
     }
 
     /**
-     * Delete car.
+     * Delete car by id.
      *
-     * @param index the index
+     * @param id the car id
      */
     @Override
-    public void deleteCar(final int index) {
+    public void deleteCar(final int id) {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", index);
-        LOGGER.debug("method deleteCar with parameter: {} was called", index);
+                .addValue("id", id);
+        LOGGER.debug("method deleteCar with parameter: [{}]", id);
         namedParameterJdbcTemplate.update(DELETE_CAR_SQL, parameters);
     }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * The interface of fuel type service.
+ * Provides methods to manage fuel type model on the service layer
  */
 public interface FuelTypeService {
     /**
@@ -16,15 +17,16 @@ public interface FuelTypeService {
     List<FuelType> getFuelTypes();
 
     /**
-     * Gets fuel type.
+     * Gets fuel type by id.
      *
-     * @param index the index
+     * @param id the fuel type id
      * @return the fuel type
      */
-    FuelType getFuelType(int index);
+    FuelType getFuelType(int id);
 
     /**
      * Add fuel type.
+     * Fuel type id is auto generated
      *
      * @param fuelType the fuel type
      * @return fuel type id
@@ -32,17 +34,17 @@ public interface FuelTypeService {
     Integer addFuelType(String fuelType);
 
     /**
-     * Delete fuel type.
+     * Update fuel type by id.
      *
-     * @param index the index
-     */
-    void deleteFuelType(int index);
-
-    /**
-     * Update fuel type.
-     *
-     * @param index    the index
+     * @param id    the fuel type id
      * @param fuelType the fuel type
      */
-    void updateFuelType(int index, String fuelType);
+    void updateFuelType(int id, String fuelType);
+
+    /**
+     * Delete fuel type.
+     *
+     * @param id the fuel type id
+     */
+    void deleteFuelType(int id);
 }

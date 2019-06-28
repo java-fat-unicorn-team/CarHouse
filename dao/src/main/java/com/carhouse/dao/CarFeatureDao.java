@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface CarFeatureDao {
     /**
-     * Gets car features.
+     * Gets all features of car with id which is provided.
      *
      * @param carId the car id
      * @return the list of car features
@@ -19,34 +19,34 @@ public interface CarFeatureDao {
     List<CarFeature> getCarFeatures(int carId);
 
     /**
-     * Gets car feature.
+     * Gets car feature by id
      *
-     * @param index the index
+     * @param id the car feature id
      * @return the car feature
      */
-    CarFeature getCarFeature(int index);
+    CarFeature getCarFeature(final int id);
 
     /**
-     * Add car feature.
+     * Add car feature to car with provided id.
      *
-     * @param carFeature the car feature
+     * @param carFeature the car feature name
      * @param carId      the car id
      * @return car feature id
      */
     Integer addCarFeature(String carFeature, int carId);
 
     /**
-     * Update car feature.
+     * Update car feature by id.
      *
-     * @param carFeature the car feature
-     * @param carId      the car id
+     * @param carFeature   new car feature name
+     * @param carFeatureId the car feature id
      */
-    void updateCarFeature(String carFeature, int carId);
+    void updateCarFeature(final String carFeature, final int carFeatureId);
 
     /**
-     * Delete car feature.
+     * Delete car feature by id.
      *
-     * @param index the index
+     * @param id the index
      */
-    void deleteCarFeature(int index);
+    void deleteCarFeature(final int id);
 }

@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 /**
  * The Class is used to create CarFeature from data obtained from database.
+ * @see CarFeature
  * @author Katuranau Maksimilyan
  */
 @Component

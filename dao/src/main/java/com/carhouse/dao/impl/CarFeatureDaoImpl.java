@@ -18,6 +18,8 @@ import java.util.List;
 /**
  * The class provides methods to manage CarFeature model.
  * The class stores date in database
+ * It is realisation of CarFeatureDao interface
+ * @see CarFeatureDao
  * @author Katuranau Maksimilyan
  */
 @Repository
@@ -75,77 +77,76 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
 
 
     /**
-     * Gets car features.
+     * Gets all features of car with id which is provided.
      *
-     * @param carCharacteristicsId the car id
+     * @param carId the car id
      * @return the list of car features
      */
     @Override
-    public List<CarFeature> getCarFeatures(final int carCharacteristicsId) {
+    public List<CarFeature> getCarFeatures(final int carId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("carId", carCharacteristicsId);
-        LOGGER.debug("method getCarFeatures with parameter: {} was called", carCharacteristicsId);
+                .addValue("carId", carId);
+        LOGGER.debug("method getCarFeatures with parameter: [{}]", carId);
         return namedParameterJdbcTemplate.query(GET_LIST_CAR_FEATURES_SQL, parameters, carFeatureMapper);
     }
 
     /**
-     * Gets car feature.
+     * Gets car feature by id
      *
-     * @param index the index
+     * @param id the car feature id
      * @return the car feature
      */
     @Override
-    public CarFeature getCarFeature(final int index) {
+    public CarFeature getCarFeature(final int id) {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", index);
-        LOGGER.debug("method getCarFeature with parameter: {} was called", index);
+                .addValue("id", id);
+        LOGGER.debug("method getCarFeature with parameter: [{}]", id);
         return namedParameterJdbcTemplate.queryForObject(GET_CAR_FEATURE_SQL, parameters, carFeatureMapper);
     }
 
     /**
-     * Add car feature.
+     * Add car feature to car with provided id.
      *
-     * @param carFeature the car feature
-     * @param carCharacteristicsId      the car id
-     * @return car feature id
+     * @param carFeature                the car feature name
+     * @param carId                     the car id
+     * @return                          car feature id
      */
     @Override
-    public Integer addCarFeature(final String carFeature, final int carCharacteristicsId) {
+    public Integer addCarFeature(final String carFeature, final int carId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("carFeature", carFeature)
-                .addValue("carId", carCharacteristicsId);
-        LOGGER.debug("method addCarFeature with parameters: {}, {}", carFeature, carCharacteristicsId);
+                .addValue("carId", carId);
+        LOGGER.debug("method addCarFeature with parameters: [{}, {}]", carFeature, carId);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(ADD_CAR_FEATURE_SQL, parameters, keyHolder);
         return keyHolder.getKey().intValue();
     }
 
     /**
-     * Update car feature.
+     * Update car feature by id.
      *
-     * @param carFeature   the car feature
+     * @param carFeature   new car feature name
      * @param carFeatureId the car feature id
      */
     @Override
-    public void updateCarFeature(final String carFeature,
-                                 final int carFeatureId) {
+    public void updateCarFeature(final String carFeature, final int carFeatureId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("carFeature", carFeature)
                 .addValue("id", carFeatureId);
-        LOGGER.debug("method updateCarFeature with parameters: {}, {}", carFeature, carFeatureId);
+        LOGGER.debug("method updateCarFeature with parameters: [{}, {}]", carFeature, carFeatureId);
         namedParameterJdbcTemplate.update(UPDATE_CAR_FEATURE_SQL, parameters);
     }
 
     /**
-     * Delete car feature.
+     * Delete car feature by id.
      *
-     * @param index the index
+     * @param id the index
      */
     @Override
-    public void deleteCarFeature(final int index) {
+    public void deleteCarFeature(final int id) {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", index);
-        LOGGER.debug("method deleteCarFeature with parameter: {} was called", index);
+                .addValue("id", id);
+        LOGGER.debug("method deleteCarFeature with parameter: [{}]", id);
         namedParameterJdbcTemplate.update(DELETE_CAR_FEATURE_SQL, parameters);
     }
 }
