@@ -18,12 +18,12 @@ public interface FuelTypeDao {
     List<FuelType> getFuelTypes();
 
     /**
-     * Gets fuel type.
+     * Gets fuel type by id.
      *
-     * @param index the index
+     * @param id the fuel type id.
      * @return the fuel type
      */
-    FuelType getFuelType(int index);
+    FuelType getFuelType(final int id);
 
     /**
      * Add fuel type.
@@ -34,17 +34,17 @@ public interface FuelTypeDao {
     Integer addFuelType(String fuelType);
 
     /**
-     * Delete fuel type.
+     * Update fuel type by id.
      *
-     * @param index the index
+     * @param id        the fuel type id.
+     * @param fuelType  the fuel type
      */
-    void deleteFuelType(int index);
+    void updateFuelType(final int id, final String fuelType);
 
     /**
-     * Update fuel type.
+     * Delete fuel type by id.
      *
-     * @param index    the index
-     * @param fuelType the fuel type
+     * @param id the fuel type id.
      */
-    void updateFuelType(int index, String fuelType);
+    void deleteFuelType(final int id);
 }

@@ -18,10 +18,10 @@ public interface CarMakeDao {
     List<CarMake> getCarMakes();
 
     /**
-     * Gets car make.
+     * Gets car make by id.
      *
-     * @param index the index
+     * @param id the car make id
      * @return the car make
      */
-    CarMake getCarMake(int index);
+    CarMake getCarMake(final int id);
 }

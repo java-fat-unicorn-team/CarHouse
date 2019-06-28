@@ -19,6 +19,8 @@ import java.util.List;
 /**
  * The class provides methods to manage FuelType model.
  * The class stores date in database
+ * It is realisation of FuelTypeDao interface
+ * @see FuelTypeDao
  * @author Katuranau Maksimilyan
  */
 @Repository
@@ -82,26 +84,27 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
      */
     @Override
     public List<FuelType> getFuelTypes() {
-        LOGGER.debug("method getFuelTypes was called");
+        LOGGER.debug("method getFuelTypes");
         return namedParameterJdbcTemplate.query(GET_LIST_FUEL_TYPES_SQL, fuelTypeMapper);
     }
 
     /**
-     * Gets fuel type.
+     * Gets fuel type by id.
      *
-     * @param index the index
+     * @param id the fuel type id.
      * @return the fuel type
      */
     @Override
-    public FuelType getFuelType(final int index) {
+    public FuelType getFuelType(final int id) {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", index);
-        LOGGER.debug("method getFuelType with parameter: {} was called", index);
+                .addValue("id", id);
+        LOGGER.debug("method getFuelType with parameter: [{}]", id);
         return namedParameterJdbcTemplate.queryForObject(GET_FUEL_TYPE_SQL, parameters, fuelTypeMapper);
     }
 
     /**
      * Add fuel type.
+     * Database generate new id.
      *
      * @param fuelType the fuel type
      * @return fuel type id
@@ -110,38 +113,38 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
     public Integer addFuelType(final String fuelType) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("fuelType", fuelType);
-        LOGGER.debug("method addFuelType with parameter: {} was called", fuelType);
+        LOGGER.debug("method addFuelType with parameter: [{}]", fuelType);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(ADD_FUEL_TYPE, parameters, keyHolder);
         return keyHolder.getKey().intValue();
     }
 
     /**
-     * Delete fuel type.
+     * Update fuel type by id.
      *
-     * @param index the index
+     * @param id        the fuel type id.
+     * @param fuelType  the fuel type
      */
     @Override
-    public void deleteFuelType(final int index) {
+    public void updateFuelType(final int id, final String fuelType) {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", index);
-        LOGGER.debug("method deleteFuelType with parameter: {} was called", index);
-        namedParameterJdbcTemplate.update(DELETE_FUEL_TYPE, parameters);
+                .addValue("fuelType", fuelType)
+                .addValue("id", id);
+        LOGGER.debug("method updateFuelType with parameters: [{}, {}]", id, fuelType);
+        namedParameterJdbcTemplate.update(UPDATE_FUEL_TYPE, parameters);
+
     }
 
     /**
-     * Update fuel type.
+     * Delete fuel type by id.
      *
-     * @param index    the index
-     * @param fuelType the fuel type
+     * @param id the fuel type id.
      */
     @Override
-    public void updateFuelType(final int index, final String fuelType) {
+    public void deleteFuelType(final int id) {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("fuelType", fuelType)
-                .addValue("id", index);
-        LOGGER.debug("method updateFuelType with parameters: {}, {} was called", index, fuelType);
-        namedParameterJdbcTemplate.update(UPDATE_FUEL_TYPE, parameters);
-
+                .addValue("id", id);
+        LOGGER.debug("method deleteFuelType with parameter: [{}]", id);
+        namedParameterJdbcTemplate.update(DELETE_FUEL_TYPE, parameters);
     }
 }

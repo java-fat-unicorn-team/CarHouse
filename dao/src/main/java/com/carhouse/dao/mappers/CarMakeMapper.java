@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 /**
  * The Class is used to create CarMake from data obtained from database.
+ * @see CarMake
  * @author Katuranau Maksimilyan
  */
 @Component

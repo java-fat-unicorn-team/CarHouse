@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 /**
  * The Class is used to create CarSale from data obtained from database.
+ * @see CarSale
  * @author Katuranau Maksimilyan
  */
 @Component

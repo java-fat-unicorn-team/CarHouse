@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 /**
  * The Class is used to create User from data obtained from database.
+ * @see User
  * @author Katuranau Maksimilyan
  */
 @Component

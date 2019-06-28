@@ -18,10 +18,10 @@ public interface TransmissionDao {
     List<Transmission> getTransmissions();
 
     /**
-     * Gets transmission.
+     * Gets transmission by id.
      *
-     * @param index the index
+     * @param id the transmission id.
      * @return the transmission
      */
-    Transmission getTransmission(int index);
+    Transmission getTransmission(final int id);
 }

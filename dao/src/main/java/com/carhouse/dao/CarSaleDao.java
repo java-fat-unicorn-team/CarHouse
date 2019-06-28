@@ -18,12 +18,12 @@ public interface CarSaleDao {
     List<CarSale> getCarSales();
 
     /**
-     * Gets car sale.
+     * Gets car sale by id.
      *
-     * @param index the index
-     * @return the car sale
+     * @param id the car sale id
+     * @return the list of car sale
      */
-    CarSale getCarSale(int index);
+    CarSale getCarSale(final int id);
 
 
     /**
@@ -37,15 +37,16 @@ public interface CarSaleDao {
 
     /**
      * Update car sale.
+     * Gets car sale id from carSale object
      *
      * @param carSale the car sale
      */
     void updateCarSale(CarSale carSale);
 
     /**
-     * Delete car sale.
+     * Delete car sale by id.
      *
-     * @param index the index
+     * @param id the car sale id
      */
-    void deleteCarSale(int index);
+    void deleteCarSale(final int id);
 }

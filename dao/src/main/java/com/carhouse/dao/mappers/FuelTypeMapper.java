@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 /**
  * The Class is used to create FuelType from data obtained from database.
+ * @see FuelType
  * @author Katuranau Maksimilyan
  */
 @Component

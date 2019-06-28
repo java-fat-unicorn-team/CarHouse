@@ -18,10 +18,10 @@ public interface CarModelDao {
     List<CarModel> getCarModels();
 
     /**
-     * Gets car model.
+     * Gets car model by id.
      *
-     * @param index the index
+     * @param id the car model id.
      * @return the car model
      */
-    CarModel getCarModel(int index);
+    CarModel getCarModel(final int id);
 }

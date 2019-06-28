@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 /**
  * The Class is used to create Comment from data obtained from database.
+ * @see Comment
  * @author Katuranau Maksimilyan
  */
 @Component
