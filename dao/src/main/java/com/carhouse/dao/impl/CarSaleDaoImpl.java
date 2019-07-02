@@ -113,6 +113,7 @@ public class CarSaleDaoImpl implements CarSaleDao {
     /**
      * Add car sale.
      * Database generate new id and take all data from carSale object
+     * Ads car sale advertisement to the end of list in database
      *
      * @param carSale the car sale
      * @return car sale id

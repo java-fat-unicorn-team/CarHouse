@@ -104,7 +104,7 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
 
     /**
      * Add fuel type.
-     * Database generate new id.
+     * Database generate new id and add the fuel type to the end of list in database
      *
      * @param fuelType the fuel type
      * @return fuel type id

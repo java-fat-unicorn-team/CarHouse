@@ -24,24 +24,24 @@ class CarDaoImplTest {
     }
 
     @Test
-    void getCarsCharacteristics() {
+    void getCars() {
         assertEquals(5, carDao.getCars().size());
     }
 
     @Test
-    void testGetNonExistentCarsCharacteristics() {
+    void testGetNonExistentCars() {
         assertThrows(EmptyResultDataAccessException.class, () -> carDao.getCar(30));
     }
 
     @Test
-    void getCarCharacteristics() {
+    void getCar() {
         assertEquals(1, carDao.getCar(1).getCarId());
         assertEquals(130300, carDao.getCar(3).getMileage());
         assertEquals(3, carDao.getCar(4).getCarModel().getCarModelId());
     }
 
     @Test
-    void addCarCharacteristics() {
+    void addCar() {
         int size = carDao.getCars().size();
         Car newCar = new Car(2, Date.valueOf("2016-03-02"),
                 133455, new FuelType(2), new Transmission(1), new CarModel(3,
@@ -58,14 +58,14 @@ class CarDaoImplTest {
     }
 
     @Test
-    void addCarCharacteristicsWithWrongReferences() {
+    void addCarWithWrongReferences() {
         assertThrows(DataIntegrityViolationException.class,() -> carDao.addCar(
                 new Car(2, Date.valueOf("2018-04-01"), 33455, new FuelType(10),
                         new Transmission(20), new CarModel(15, new CarMake(21)))));
     }
 
     @Test
-    void updateCarCharacteristics() {
+    void updateCar() {
         Car newCar = new Car(2, Date.valueOf("2017-04-01"),
                 233455, new FuelType(2), new Transmission(2), new CarModel(1,
                 new CarMake(2)));
@@ -79,14 +79,14 @@ class CarDaoImplTest {
     }
 
     @Test
-    void updateCarCharacteristicsWithWrongReferences() {
+    void updateCarWithWrongReferences() {
         assertThrows(DataIntegrityViolationException.class,() -> carDao.updateCar(
                 new Car(2, Date.valueOf("2016-07-01"), 233455, new FuelType(10),
                         new Transmission(20), new CarModel(15, new CarMake(21)))));
     }
 
     @Test
-    void deleteCarCharacteristics() {
+    void deleteCar() {
         int size = carDao.getCars().size();
         carDao.deleteCar(5);
         assertEquals(size - 1, carDao.getCars().size());
@@ -94,7 +94,7 @@ class CarDaoImplTest {
     }
 
     @Test
-    void deleteCarCharacteristicsWhichHaveReferences() {
+    void deleteCarWhichHaveReferences() {
         assertThrows(DataIntegrityViolationException.class,
                 () -> carDao.deleteCar(3));
     }

@@ -112,7 +112,7 @@ public class CommentDaoImpl implements CommentDao {
 
     /**
      * Add comment to car sale advertisement.
-     * Gets car sale id from comment object
+     * Gets car sale id from comment object and ads comment to the car sale advertisement
      *
      * @param comment the comment
      * @return comment id

@@ -62,6 +62,7 @@ public class FuelTypeServiceImpl implements FuelTypeService {
     /**
      * Add fuel type.
      * Fuel type id is auto generated
+     * Add fuel type to thew end of list in database
      *
      * @param fuelType the fuel type
      * @return fuel type id
