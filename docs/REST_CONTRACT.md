@@ -1,12 +1,11 @@
 # FUEL TYPE
 ## 1. Get all fuel types  
-HTTP method: GET  
-Resource url: http://localhost:8086/carSale/car/fuelType  
+Resource url: 8086/carSale/car/fuelType  
 Parameters: no  
 Response format: JSON  
 Response status: 200 
   
-Example request: http://localhost:8086/carSale/car/fuelType  
+Example request:GET /carSale/car/fuelType  
 Example response body:  
 ```
 [{"fuelTypeId":1,"fuelType":"Bensin"},
@@ -15,13 +14,12 @@ Example response body:
 
 # CAR
 ## 1. Get all cars  
-HTTP method: GET  
-Resource url: http://localhost:8086/carSale/car  
+Resource url: /carSale/car  
 Parameters: no  
 Response format: JSON  
 Response status: 200 
   
-Example request: http://localhost:8086/carSale/car  
+Example request: GET /carSale/car  
 Example response body: 
 ```
 [{"carId":1,"year":1483218000000,"mileage":90300,"fuelType":{"fuelTypeId":1,"fuelType":"Bensin"},  
@@ -32,14 +30,13 @@ Example response body:
 "carModel":{"carModelId":2,"carMake":{"carMakeId":2,"carMake":"BMW"},"carModel":"M5"}}]
 ```  
 ## 2. Get one car  
-HTTP method: GET  
-Resource url: http://localhost:8086/carSale/car/{id}  
+Resource url: /carSale/car/{id}  
 Parameters:   
 id: required, type = int, example = 1  
 Content-type: application/json  
 Response status: 200 
   
-Example request: http://localhost:8086/carSale/car/1  
+Example request: GET /carSale/car/1  
 Example response body:  
 ```
 {"carId":1,"year":1483218000000,"mileage":90300,"fuelType":{"fuelTypeId":1,"fuelType":"Bensin"},  
@@ -47,13 +44,12 @@ Example response body:
 "carModel":{"carModelId":1,"carMake":{"carMakeId":1,"carMake":"Mercedes"},"carModel":"C63_AMG"}}  
 ```
 ## 3. Add car  
-HTTP method: POST  
-Resource url: http://localhost:8086/carSale/car  
+Resource url: /carSale/car  
 Parameters: no  
 Request body format: JSON  
 Response status: 201 
   
-Example request: http://localhost:8086/carSale/car  
+Example request: POST /carSale/car  
 Example request body:
 ```  
 {"carId":2,"year":1462654800000,"mileage":110300,"fuelType":{"fuelTypeId":1,"fuelType":"Bensin"},  
@@ -61,13 +57,12 @@ Example request body:
 "carModel":{"carModelId":2,"carMake":{"carMakeId":2,"carMake":"BMW"},"carModel":"M5"}}  
 ``` 
 ## 4. Update car  
-HTTP method: PUT  
-Resource url: http://localhost:8086/carSale/car  
+Resource url: /carSale/car  
 Parameters: no    
 Request body format: JSON  
 Response status: 200 
   
-Example request: http://localhost:8086/carSale/car  
+Example request: PUT /carSale/car  
 Example request body:
 ```  
 {"carId":1,"year":1483218000000,"mileage":90300,"fuelType":{"fuelTypeId":1,"fuelType":"Bensin"},  
@@ -75,24 +70,22 @@ Example request body:
 "carModel":{"carModelId":1,"carMake":{"carMakeId":1,"carMake":"Mercedes"},"carModel":"C63_AMG"}  
 ```  
 ## 5. Delete car  
-HTTP method: PUT  
-Resource url: http://localhost:8086/carSale/car/{id}  
+Resource url: /carSale/car/{id}  
 Parameters:   
 id: required, type = int, example = 1    
 Request body: no  
 Response status: 204 
   
-Example request: http://localhost:8086/carSale/car/1   
+Example request: DELETE /carSale/car/1   
 
 # CAR_SALE
 ## 1. Get all car sales    
-HTTP method: GET  
-Resource url: http://localhost:8086/carSale  
+Resource url: /carSale  
 Parameters: no  
 Response format: JSON  
 Response status: 200 
   
-Example request: http://localhost:8086/carSale  
+Example request: GET /carSale  
 Example response body:
 ``` 
 [{"carSaleId":1,"price":36800,"date":1559336400000,  "user":{"userId":1,"userName":"Oleg","phoneNumber":"623-44-21",  
@@ -105,14 +98,13 @@ Example response body:
 "carModel":{"carModelId":2,"carMake":{"carMakeId":2,"carMake":"BMW"},"carModel":"M5"}}}]
 ```  
 ## 2. Get one car sale  
-HTTP method: GET  
-Resource url: http://localhost:8086/carSale/{id}  
+Resource url: /carSale/{id}  
 Parameters:   
 id: required, type = int, example = 1  
 Content-type: application/json  
 Response status: 200 
   
-Example request: http://localhost:8086/carSale/1  
+Example request: GET /carSale/1  
 Example response body:  
 ```
 {"carSaleId":1,"price":36800,"date":1559336400000,  "user":{"userId":1,"userName":"Oleg","phoneNumber":"623-44-21",  
@@ -121,13 +113,12 @@ Example response body:
 "carModel":{"carModelId":1,"carMake":{"carMakeId":1,"carMake":"Mercedes"},"carModel":"C63_AMG"}}}  
 ```  
 ## 3. Add car sale  
-HTTP method: POST  
-Resource url: http://localhost:8086/carSale  
+Resource url: /carSale  
 Parameters: no  
 Request body format: JSON  
 Response status: 201 
   
-Example request: http://localhost:8086/carSale  
+Example request: POST /carSale  
 Example request body:
 ```  
 {"carSaleId":2,"price":40500,"date":1559854800000,"user":{"userId":1,"userName":"Oleg","phoneNumber":"623-44-21",  
@@ -136,13 +127,12 @@ Example request body:
 "carModel":{"carModelId":2,"carMake":{"carMakeId":2,"carMake":"BMW"},"carModel":"M5"}}}  
 ```    
 ## 4. Update car sale  
-HTTP method: PUT  
-Resource url: http://localhost:8086/carSale  
+Resource url: /carSale  
 Parameters: no    
 Request body format: JSON  
 Response status: 200 
   
-Example request: http://localhost:8086/carSale  
+Example request: PUT /carSale  
 Example request body:
 ```  
 {"carSaleId":1,"price":36800,"date":1559336400000,  "user":{"userId":1,"userName":"Oleg","phoneNumber":"623-44-21",  
@@ -151,24 +141,22 @@ Example request body:
 "carModel":{"carModelId":1,"carMake":{"carMakeId":1,"carMake":"Mercedes"},"carModel":"C63_AMG"}}}  
 ```  
 ## 5. Delete car sale  
-HTTP method: PUT  
-Resource url: http://localhost:8086/carSale/{id}  
+Resource url: /carSale/{id}  
 Parameters:   
 id: required, type = int, example = 1    
 Request body: no  
 Response status: 204 
   
-Example request: http://localhost:8086/carSale/1    
+Example request: DELETE /carSale/1    
    
 # CAR_FEATURE
 ## 1. Get all features of the selected car   
-HTTP method: GET  
-Resource url: http://localhost:8086/carSale/car/{id}/carFeature  
+Resource url: /carSale/car/{id}/carFeature  
 Parameters: no  
 Response format: JSON  
 Response status: 200 
   
-Example request: http://localhost:8086/carSale/car/1/carFeature  
+Example request: GET /carSale/car/1/carFeature  
 Example response body:
 ``` 
 [{"carFeatureId":1,"carFeature":"Winter tires","car":{"carId":1,"year":1483218000000,"mileage":90300,  
@@ -180,13 +168,12 @@ Example response body:
 ```  
   
 ## 3. Add car feature  
-HTTP method: POST  
-Resource url: http://localhost:8086/carSale/car/carFeature  
+Resource url: /carSale/car/carFeature  
 Parameters: no  
 Request body format: JSON  
 Response status: 201 
   
-Example request: http://localhost:8086/carSale/car/carFeature  
+Example request: POST /carSale/car/carFeature  
 Example request body:  
 ```
 {"carFeatureId":2,"carFeature":"air conditioning","car":{"carId":1,"year":1483218000000,"mileage":90300,  
@@ -194,13 +181,12 @@ Example request body:
 "carModel":{"carModelId":1,"carMake":{"carMakeId":1,"carMake":"Mercedes"},"carModel":"C63_AMG"}}}  
 ```    
 ## 4. Update car feature  
-HTTP method: PUT  
-Resource url: http://localhost:8086/carSale/car/carFeature  
+Resource url: /carSale/car/carFeature  
 Parameters: no    
 Request body format: JSON  
 Response status: 200 
   
-Example request: http://localhost:8086/carSale/car/carFeature  
+Example request: PUT /carSale/car/carFeature  
 Example request body:  
 ```
 {"carFeatureId":1,"carFeature":"Winter tires","car":{"carId":1,"year":1483218000000,"mileage":90300,  
@@ -208,24 +194,22 @@ Example request body:
 "carModel":{"carModelId":1,"carMake":{"carMakeId":1,"carMake":"Mercedes"},"carModel":"C63_AMG"}}}  
 ```  
 ## 5. Delete car feature  
-HTTP method: PUT  
-Resource url: http://localhost:8086/carSale/car/carFeature/{id}  
+Resource url: DELETE/carSale/car/carFeature/{id}  
 Parameters:   
 id: required, type = int, example = 1    
 Request body: no  
 Response status: 204 
   
-Example request: http://localhost:8086/carSale/car/carFeature/1
+Example request: DELETE /carSale/car/carFeature/1
   
 # COMMENT
 ## 1. Get all comments of the selected car sale   
-HTTP method: GET  
-Resource url: http://localhost:8086/carSale/{id}/comment  
+Resource url: /carSale/{id}/comment  
 Parameters: no  
 Response format: JSON  
 Response status: 200 
   
-Example request: http://localhost:8086/carSale/4/comment  
+Example request: GET /carSale/4/comment  
 Example response body: 
 ```
 [{"commentId":1,"userName":"Pasha","comment":"Good car","carSale":{"carSaleId":4,"price":57900,"date":1559682000000,  
@@ -241,13 +225,12 @@ Example response body:
 ```  
  
 ## 3. Add comment  
-HTTP method: POST  
-Resource url: http://localhost:8086/carSale/comment  
+Resource url: /carSale/comment  
 Parameters: no  
 Request body format: JSON  
 Response status: 201 
   
-Example request: http://localhost:8086/carSale/comment  
+Example request: POST /carSale/comment  
 Example request body:  
 ```
 {"commentId":3,"userName":"Michael","comment":"Rubbish","carSale":{"carSaleId":4,"price":57900,"date":1559682000000,  
@@ -257,13 +240,12 @@ Example request body:
 "carMake":{"carMakeId":2,"carMake":"BMW"},"carModel":"M8"}}}}  
 ```    
 ## 4. Update comment  
-HTTP method: PUT  
-Resource url: http://localhost:8086/carSale/comment  
+Resource url: /carSale/comment  
 Parameters: no    
 Request body format: JSON  
 Response status: 200 
   
-Example request: http://localhost:8086/carSale/comment  
+Example request: PUT /carSale/comment  
 Example request body:  
 ```
 {"commentId":1,"userName":"Pasha","comment":"Good car","carSale":{"carSaleId":4,"price":57900,"date":1559682000000,  
@@ -273,24 +255,22 @@ Example request body:
 "carMake":{"carMakeId":2,"carMake":"BMW"},"carModel":"M8"}}}}  
 ```  
 ## 5. Delete comment  
-HTTP method: PUT  
-Resource url: http://localhost:8086/carSale/comment/{id}  
+Resource url: /carSale/comment/{id}  
 Parameters:   
 id: required, type = int, example = 1    
 Request body: no  
 Response status: 204 
   
-Example request: http://localhost:8086/carSale/comment/1
+Example request: DELETE /carSale/comment/1
 
 # CAR_MODEL
 ## 1. Get all car models    
-HTTP method: GET  
-Resource url: http://localhost:8086/carSale/car/carModel  
+Resource url: /carSale/car/carModel  
 Parameters: no  
 Response format: JSON  
 Response status: 200 
   
-Example request: http://localhost:8086/carSale/car/carModel  
+Example request: GET /carSale/car/carModel  
 Example response body: 
 ```
 [{"carModelId":1,"carMake":{"carMakeId":1,"carMake":"Mercedes"},"carModel":"C63_AMG"},  
@@ -300,13 +280,12 @@ Example response body:
   
 # CAR_MAKE
 ## 1. Get all car makes    
-HTTP method: GET  
-Resource url: http://localhost:8086/carSale/car/carModel/carMake  
+Resource url: /carSale/car/carModel/carMake  
 Parameters: no  
 Response format: JSON  
 Response status: 200 
   
-Example request: http://localhost:8086/carSale/car/carModel/carMake  
+Example request: GET /carSale/car/carModel/carMake  
 Example response body: 
 ```
 [{"carMakeId":1,"carMake":"Mercedes"},
@@ -315,12 +294,11 @@ Example response body:
   
 # TRANSMISSION
 ## 1. Get all transmissions    
-HTTP method: GET  
-Resource url: http://localhost:8086/carSale/car/transmission  
+Resource url: /carSale/car/transmission  
 Response format: JSON  
 Response status: 200 
   
-Example request: http://localhost:8086/carSale/car/transmission  
+Example request: GET /carSale/car/transmission  
 Example response body: 
 ```
 [{"transmissionId":1,"transmission":"Automatic"},
