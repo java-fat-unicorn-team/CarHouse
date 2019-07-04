@@ -1,60 +1,54 @@
 package com.carhouse.conrtoller;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.junit.Rule;
-import org.junit.Test;
+import com.carhouse.model.FuelType;
+import com.carhouse.service.FuelTypeService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class FuelTypeControllerTest {
+@ExtendWith(MockitoExtension.class)
+class FuelTypeControllerTest {
 
-    public static final String RESPONSE_BODY = "[{\"fuelTypeId\":1,\"fuelType\":\"Bensin\"},{\"fuelTypeId\":2," +
-            "\"fuelType\":\"Diesel\"},{\"fuelTypeId\":3,\"fuelType\":\"Gasoline\"},{\"fuelTypeId\":4,\"fuelType\":" +
-            "\"Electric\"},{\"fuelTypeId\":5,\"fuelType\":\"Bensin\"},{\"fuelTypeId\":6,\"fuelType\":\"Diesel\"}," +
-            "{\"fuelTypeId\":7,\"fuelType\":\"Gasoline\"},{\"fuelTypeId\":8,\"fuelType\":\"Electric\"}]";
+    @Mock
+    private FuelTypeService fuelTypeService;
 
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(8088);
+    @InjectMocks
+    private FuelTypeController fuelTypeController;
+
+    private List<FuelType> fuelTypeList;
+    private MockMvc mockMvc;
+
+    @BeforeEach
+    public void setup() {
+        this.mockMvc = MockMvcBuilders.standaloneSetup(fuelTypeController).build();
+        fuelTypeList = new ArrayList<>() {{
+           add(new FuelType(1, "Bensin"));
+           add(new FuelType(2, "Diesel"));
+           add(new FuelType(3, "Electric"));
+        }};
+    }
 
     @Test
-    public void testMethod() throws IOException {
-        stubFor(get(urlEqualTo("/carSale/car/fuelType"))
-                .willReturn(aResponse()
-                        .withHeader("Content-Type", "application/json")
-                        .withStatus(200)
-                        .withBody(RESPONSE_BODY)
-                )
-        );
-
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        HttpGet request = new HttpGet("http://localhost:8088/carSale/car/fuelType");
-        HttpResponse httpResponse = httpClient.execute(request);
-        String stringResponse = convertHttpResponseToString(httpResponse);
-
-        verify(getRequestedFor(urlEqualTo("/carSale/car/fuelType")));
-        assertEquals(200, httpResponse.getStatusLine().getStatusCode());
-        assertEquals("application/json", httpResponse.getFirstHeader("Content-Type").getValue());
-        assertEquals(RESPONSE_BODY, stringResponse);
-    }
-
-    private String convertHttpResponseToString(HttpResponse httpResponse) throws IOException {
-        InputStream inputStream = httpResponse.getEntity().getContent();
-        return convertInputStreamToString(inputStream);
-    }
-
-    private String convertInputStreamToString(InputStream inputStream) {
-        Scanner scanner = new Scanner(inputStream, "UTF-8");
-        String string = scanner.useDelimiter("\\Z").next();
-        scanner.close();
-        return string;
+    void getFuelTypes() throws Exception {
+        when(fuelTypeService.getFuelTypes()).thenReturn(fuelTypeList);
+        mockMvc.perform(get("/carSale/car/fuelType"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+        verify(fuelTypeService, times(1)).getFuelTypes();
     }
 }

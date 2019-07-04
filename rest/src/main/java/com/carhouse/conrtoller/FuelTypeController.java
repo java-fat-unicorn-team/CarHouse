@@ -37,45 +37,4 @@ public class FuelTypeController {
     public List<FuelType> getFuelTypes() {
         return fuelTypeService.getFuelTypes();
     }
-
-    /**
-     * Gets fuel type.
-     *
-     * @param id the id
-     * @return the fuel type
-     */
-    @GetMapping("/{id}")
-    public FuelType getFuelType(@PathVariable final int id) {
-        return fuelTypeService.getFuelType(id);
-    }
-
-    /**
-     * Create fuel type.
-     *
-     * @param fuelType the fuel type
-     */
-    @PostMapping
-    public void createFuelType(@RequestBody final FuelType fuelType) {
-        fuelTypeService.addFuelType(fuelType.getFuelType());
-    }
-
-    /**
-     * Update fuel type.
-     *
-     * @param fuelType the fuel type
-     */
-    @PutMapping
-    public void updateFuelType(@RequestBody final FuelType fuelType) {
-        fuelTypeService.updateFuelType(fuelType.getFuelTypeId(), fuelType.getFuelType());
-    }
-
-    /**
-     * Delete fuel type.
-     *
-     * @param id the id
-     */
-    @DeleteMapping("/{id}")
-    public void deleteFuelType(@PathVariable final int id) {
-        fuelTypeService.deleteFuelType(id);
-    }
 }
