@@ -16,6 +16,14 @@ public interface CarHasCarFeatureDao {
     void addCarFeatureToCar(int carId, int carFeatureId);
 
     /**
+     * delete car feature from car by id.
+     *
+     * @param carId        car id
+     * @param carFeatureId id of car feature to delete
+     */
+    void deleteCarFeatureFromCar(int carId, int carFeatureId);
+
+    /**
      * delete all references between car with provided id and car features.
      *
      * @param carId id of car for which to delete all references

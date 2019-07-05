@@ -28,6 +28,11 @@ public class CarHasCarFeatureDaoImpl implements CarHasCarFeatureDao {
     /**
      * SQL query to delete reference between car and car feature.
      */
+    @Value("${car.feature.delete.from.car}")
+    private String DELETE_CAR_FEATURE_FROM_CAR_SQL;
+    /**
+     * SQL query to delete reference between car and car feature.
+     */
     @Value("${car.feature.list.delete.from.car}")
     private String DELETE_CAR_FEATURE_LIST_FROM_CAR_SQL;
     /**
@@ -58,11 +63,20 @@ public class CarHasCarFeatureDaoImpl implements CarHasCarFeatureDao {
      */
     @Override
     public void addCarFeatureToCar(final int carId, final int carFeatureId) {
-        SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("carId", carId)
-                .addValue("carFeatureId", carFeatureId);
         LOGGER.debug("method addCarFeatureToCar with parameter: [{}, {}]", carId, carFeatureId);
-        namedParameterJdbcTemplate.update(ADD_CAR_FEATURE_TO_CAR_SQL, parameters);
+        namedParameterJdbcTemplate.update(ADD_CAR_FEATURE_TO_CAR_SQL, getParameters(carId, carFeatureId));
+    }
+
+    /**
+     * delete car feature from car by id.
+     *
+     * @param carId        car id
+     * @param carFeatureId id of car feature to delete
+     */
+    @Override
+    public void deleteCarFeatureFromCar(final int carId, final int carFeatureId) {
+        LOGGER.debug("method deleteCarFeatureFromCar with parameter: [{}, {}]", carId, carFeatureId);
+        namedParameterJdbcTemplate.update(DELETE_CAR_FEATURE_FROM_CAR_SQL, getParameters(carId, carFeatureId));
     }
 
     /**
@@ -76,5 +90,18 @@ public class CarHasCarFeatureDaoImpl implements CarHasCarFeatureDao {
                 .addValue("carId", carId);
         LOGGER.debug("method deleteCarFeatureFromCar with parameter: [{}]", carId);
         namedParameterJdbcTemplate.update(DELETE_CAR_FEATURE_LIST_FROM_CAR_SQL, parameters);
+    }
+
+    /**
+     * method to set parameters to SqlParameterSource object.
+     * @param carId        car id
+     * @param carFeatureId car feature id
+     * @return SqlParameterSource object which contains parameters for SQL query
+     */
+    private SqlParameterSource getParameters(final int carId, final int carFeatureId) {
+
+        return new MapSqlParameterSource()
+                .addValue("carId", carId)
+                .addValue("carFeatureId", carFeatureId);
     }
 }

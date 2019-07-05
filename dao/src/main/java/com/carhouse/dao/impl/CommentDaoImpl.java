@@ -1,9 +1,9 @@
 package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CommentDao;
-import com.carhouse.model.Comment;
 import com.carhouse.dao.mappers.CommentMapper;
 import com.carhouse.dao.mappers.ParameterSource;
+import com.carhouse.model.Comment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,8 +20,9 @@ import java.util.List;
  * The class provides methods to manage Comment model.
  * The class stores date in database
  * It is realisation of CommentDao interface
- * @see CommentDao
+ *
  * @author Katuranau Maksimilyan
+ * @see CommentDao
  */
 @Repository
 public class CommentDaoImpl implements CommentDao {
@@ -85,14 +86,14 @@ public class CommentDaoImpl implements CommentDao {
     /**
      * Gets comments of car sale with provided id.
      *
-     * @param id the car sale id
+     * @param carSaleId the car sale id
      * @return the list of car sale comments
      */
     @Override
-    public List<Comment> getCarSaleComments(final int id) {
+    public List<Comment> getCarSaleComments(final int carSaleId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", id);
-        LOGGER.debug("method getCarSaleComments with parameter: [{}]", id);
+                .addValue("id", carSaleId);
+        LOGGER.debug("method getCarSaleComments with parameter: [{}]", carSaleId);
         return namedParameterJdbcTemplate.query(GET_LIST_CAR_SALE_COMMENTS_SQL, parameters, commentMapper);
     }
 
@@ -118,10 +119,12 @@ public class CommentDaoImpl implements CommentDao {
      * @return comment id
      */
     @Override
-    public Integer addComment(final Comment comment) {
+    public Integer addComment(final int carSaleId, final Comment comment) {
+        MapSqlParameterSource parameters = (MapSqlParameterSource) parameterSource.getCommentParameters(comment);
+        parameters.addValue("carSaleId", carSaleId);
         LOGGER.debug("method addComment with parameter: [{}]", comment);
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(ADD_COMMENT_SQL, parameterSource.getCommentParameters(comment), keyHolder);
+        namedParameterJdbcTemplate.update(ADD_COMMENT_SQL, parameters, keyHolder);
         return keyHolder.getKey().intValue();
     }
 
@@ -140,13 +143,13 @@ public class CommentDaoImpl implements CommentDao {
     /**
      * Delete comment by id.
      *
-     * @param id the index
+     * @param carSaleId the index
      */
     @Override
-    public void deleteComment(final int id) {
+    public void deleteComment(final int carSaleId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", id);
-        LOGGER.debug("method deleteComment with parameter: [{}]", id);
+                .addValue("id", carSaleId);
+        LOGGER.debug("method deleteComment with parameter: [{}]", carSaleId);
         namedParameterJdbcTemplate.update(DELETE_COMMENT_SQL, parameters);
     }
 }

@@ -9,7 +9,6 @@ public class Comment {
     private int commentId;
     private String userName;
     private String comment;
-    private CarSale carSale;
 
     /**
      * Instantiates a new Comment.
@@ -17,13 +16,11 @@ public class Comment {
      * @param commentId the comment id
      * @param userName  the user name
      * @param comment   the comment
-     * @param carSale   the car sale
      */
-    public Comment(final int commentId, final String userName, final String comment, final CarSale carSale) {
+    public Comment(final int commentId, final String userName, final String comment) {
         this.commentId = commentId;
         this.userName = userName;
         this.comment = comment;
-        this.carSale = carSale;
     }
 
     /**
@@ -80,28 +77,9 @@ public class Comment {
         this.comment = comment;
     }
 
-    /**
-     * Gets car sale.
-     *
-     * @return the car sale id
-     */
-    public CarSale getCarSale() {
-        return carSale;
-    }
-
-    /**
-     * Sets car sale.
-     *
-     * @param carSale the car sale id
-     */
-    public void setCarSale(final CarSale carSale) {
-        this.carSale = carSale;
-    }
-
     @Override
     public final String toString() {
         return "userName='" + userName + '\''
-                + ", comment='" + comment + "', "
-                + carSale;
+                + ", comment='" + comment;
     }
 }

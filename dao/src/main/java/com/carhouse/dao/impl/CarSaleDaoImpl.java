@@ -1,9 +1,9 @@
 package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CarSaleDao;
-import com.carhouse.model.CarSale;
 import com.carhouse.dao.mappers.CarSaleMapper;
 import com.carhouse.dao.mappers.ParameterSource;
+import com.carhouse.model.CarSale;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +22,9 @@ import java.util.List;
  * The class provides methods to manage CarSale model.
  * The class stores date in database
  * It is realisation of CarSaleDao interface
- * @see CarSaleDao
+ *
  * @author Katuranau Maksimilyan
+ * @see CarSaleDao
  */
 @Repository
 public class CarSaleDaoImpl implements CarSaleDao {
@@ -99,14 +100,14 @@ public class CarSaleDaoImpl implements CarSaleDao {
     /**
      * Gets car sale by id.
      *
-     * @param id the car sale id
+     * @param carSaleId the car sale id
      * @return the list of car sale
      */
     @Override
-    public CarSale getCarSale(final int id) {
+    public CarSale getCarSale(final int carSaleId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", id);
-        LOGGER.debug("method getCarSale with parameter: [{}]", id);
+                .addValue("id", carSaleId);
+        LOGGER.debug("method getCarSale with parameter: [{}]", carSaleId);
         return namedParameterJdbcTemplate.queryForObject(GET_CAR_SALE_SQL, parameters, carSaleMapper);
     }
 
@@ -123,7 +124,7 @@ public class CarSaleDaoImpl implements CarSaleDao {
         LOGGER.debug("method addCarSale with parameter: [{}]", carSale);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(ADD_CAR_SALE_SQL, parameterSource.getCarSaleParameters(carSale), keyHolder,
-                new String[] {"car_sale_id"});
+                new String[]{"car_sale_id"});
         return keyHolder.getKey().intValue();
     }
 
@@ -142,13 +143,13 @@ public class CarSaleDaoImpl implements CarSaleDao {
     /**
      * Delete car sale by id.
      *
-     * @param id the car sale id
+     * @param carSaleId the car sale id
      */
     @Override
-    public void deleteCarSale(final int id) {
+    public void deleteCarSale(final int carSaleId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", id);
-        LOGGER.debug("method deleteCarSale with parameter: [{}]", id);
+                .addValue("id", carSaleId);
+        LOGGER.debug("method deleteCarSale with parameter: [{}]", carSaleId);
         namedParameterJdbcTemplate.update(DELETE_CAR_SALE_SQL, parameters);
     }
 }

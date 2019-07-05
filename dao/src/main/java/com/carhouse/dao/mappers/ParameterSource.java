@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 /**
  * The class is used to add parameters to SqlParameterSource.
  * SqlParameterSource used by NamedParameterJdbcTemplate for SQL queries
+ *
  * @author Katuranau Maksimilyan
  */
 @Component
@@ -55,7 +56,6 @@ public class ParameterSource {
         return new MapSqlParameterSource()
                 .addValue("id", comment.getCommentId())
                 .addValue("userName", comment.getUserName())
-                .addValue("comment", comment.getComment())
-                .addValue("carSaleId", comment.getCarSale().getCarSaleId());
+                .addValue("comment", comment.getComment());
     }
 }
