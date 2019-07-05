@@ -1,9 +1,11 @@
 package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CarDao;
-import com.carhouse.model.Car;
+import com.carhouse.dao.CarFeatureDao;
+import com.carhouse.dao.CarHasCarFeatureDao;
 import com.carhouse.dao.mappers.CarMapper;
 import com.carhouse.dao.mappers.ParameterSource;
+import com.carhouse.model.Car;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +16,16 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 /**
  * The class provides methods to manage Car model.
  * The class stores date in database
  * It is realisation of CarDao interface
- * @see CarDao
+ *
  * @author Katuranau Maksimilyan
+ * @see CarDao
  */
 @Repository
 public class CarDaoImpl implements CarDao {
@@ -51,6 +55,8 @@ public class CarDaoImpl implements CarDao {
     @Value("${car.delete}")
     private String DELETE_CAR_SQL;
 
+    private final CarFeatureDao carFeatureDao;
+    private final CarHasCarFeatureDao carHasCarFeatureDao;
     /**
      * named parameter JDBC template.
      */
@@ -74,15 +80,20 @@ public class CarDaoImpl implements CarDao {
      * @param namedParameterJdbcTemplate the jdbc template
      * @param carMapper                  the car mapper
      * @param parameterSource            the class which provides parameters for sql query
+     * @param carFeatureDao              the car feature dao to adds car features to car
+     * @param carHasCarFeatureDao        the car has car feature dao which provides methods to manage references
+     *                                   between car and car features.
      */
     @Autowired
-    public CarDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
-                      final CarMapper carMapper,
-                      final ParameterSource parameterSource) {
+    public CarDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate, final CarMapper carMapper,
+                      final ParameterSource parameterSource, final CarFeatureDao carFeatureDao,
+                      final CarHasCarFeatureDao carHasCarFeatureDao) {
         LOGGER.debug("CarDaoImpl was created");
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.carMapper = carMapper;
         this.parameterSource = parameterSource;
+        this.carFeatureDao = carFeatureDao;
+        this.carHasCarFeatureDao = carHasCarFeatureDao;
     }
 
     /**
@@ -93,7 +104,11 @@ public class CarDaoImpl implements CarDao {
     @Override
     public List<Car> getCars() {
         LOGGER.debug("method getCars");
-        return namedParameterJdbcTemplate.query(GET_LIST_CARS_SQL, carMapper);
+        List<Car> cars = namedParameterJdbcTemplate.query(GET_LIST_CARS_SQL, carMapper);
+        cars.forEach(car -> {
+            car.setCarFeatureList(carFeatureDao.getCarFeatures(car.getCarId()));
+        });
+        return cars;
     }
 
     /**
@@ -107,8 +122,9 @@ public class CarDaoImpl implements CarDao {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", id);
         LOGGER.debug("method getCar with parameter: [{}]", id);
-        return namedParameterJdbcTemplate.queryForObject(GET_CAR_SQL, parameters,
-                carMapper);
+        Car car = namedParameterJdbcTemplate.queryForObject(GET_CAR_SQL, parameters, carMapper);
+        car.setCarFeatureList(carFeatureDao.getCarFeatures(car.getCarId()));
+        return car;
     }
 
     /**
@@ -124,12 +140,18 @@ public class CarDaoImpl implements CarDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(ADD_CAR_SQL,
                 parameterSource.getCarParameters(car), keyHolder);
-        return keyHolder.getKey().intValue();
+        int carId = keyHolder.getKey().intValue();
+        car.getCarFeatureList().forEach(carFeature -> {
+            carHasCarFeatureDao.addCarFeatureToCar(carId, carFeature.getCarFeatureId());
+        });
+        return carId;
     }
 
     /**
      * Update car.
      * Gets car id from car object and rewrite the car in database
+     * <p>
+     * To correctly change references the method first remove old references and then add new
      *
      * @param car the car model
      */
@@ -139,6 +161,10 @@ public class CarDaoImpl implements CarDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(UPDATE_CAR_SQL,
                 parameterSource.getCarParameters(car), keyHolder);
+        carHasCarFeatureDao.deleteCarFeatureListFromCar(car.getCarId());
+        car.getCarFeatureList().forEach(carFeature -> {
+            carHasCarFeatureDao.addCarFeatureToCar(car.getCarId(), carFeature.getCarFeatureId());
+        });
     }
 
     /**

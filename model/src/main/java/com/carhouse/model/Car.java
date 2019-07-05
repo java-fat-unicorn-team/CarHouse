@@ -1,6 +1,7 @@
 package com.carhouse.model;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
  * The car characteristics model.
@@ -16,6 +17,7 @@ public class Car {
     private FuelType fuelType;
     private Transmission transmission;
     private CarModel carModel;
+    private List<CarFeature> carFeatureList;
 
     /**
      * Instantiates a new Car characteristics.
@@ -29,21 +31,23 @@ public class Car {
     /**
      * Instantiates a new Car.
      *
-     * @param carId        the car id
-     * @param year         the year
-     * @param mileage      the mileage
-     * @param fuelType     the fuel type
-     * @param transmission the transmission
-     * @param carModel     the car model
+     * @param carId          the car id
+     * @param year           the year
+     * @param mileage        the mileage
+     * @param fuelType       the fuel type
+     * @param transmission   the transmission
+     * @param carModel       the car model
+     * @param carFeatureList the car feature list
      */
     public Car(final int carId, final Date year, final int mileage, final FuelType fuelType,
-               final Transmission transmission, final CarModel carModel) {
+               final Transmission transmission, final CarModel carModel, final List<CarFeature> carFeatureList) {
         this.carId = carId;
         this.year = year;
         this.mileage = mileage;
         this.fuelType = fuelType;
         this.transmission = transmission;
         this.carModel = carModel;
+        this.carFeatureList = carFeatureList;
     }
 
     /**
@@ -154,6 +158,24 @@ public class Car {
         this.carModel = carModel;
     }
 
+    /**
+     * Gets car feature list.
+     *
+     * @return the car feature list
+     */
+    public List<CarFeature> getCarFeatureList() {
+        return carFeatureList;
+    }
+
+    /**
+     * Sets car feature list.
+     *
+     * @param carFeatureList the car feature list
+     */
+    public void setCarFeatureList(final List<CarFeature> carFeatureList) {
+        this.carFeatureList = carFeatureList;
+    }
+
     @Override
     public final String toString() {
         return "carId=" + carId
@@ -162,6 +184,7 @@ public class Car {
                 + ", " + fuelType
                 + ", " + transmission
                 + ", " + carModel
+                + ", carFeatures = " + carFeatureList
                 + ';';
     }
 }
