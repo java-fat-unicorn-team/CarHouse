@@ -16,7 +16,7 @@ public interface CommentDao {
      * @param id the car sale id
      * @return the list of car sale comments
      */
-    List<Comment> getCarSaleComments(final int id);
+    List<Comment> getCarSaleComments(int id);
 
     /**
      * Gets comment by id.
@@ -24,7 +24,7 @@ public interface CommentDao {
      * @param id the comment id
      * @return the comment
      */
-    Comment getComment(final int id);
+    Comment getComment(int id);
 
     /**
      * Add comment to car sale advertisement.
@@ -48,5 +48,5 @@ public interface CommentDao {
      *
      * @param id the index
      */
-    void deleteComment(final int id);
+    void deleteComment(int id);
 }

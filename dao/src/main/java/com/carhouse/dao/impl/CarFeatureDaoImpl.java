@@ -91,7 +91,7 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
     }
 
     /**
-     * Gets car feature by id
+     * Gets car feature by.
      *
      * @param id the car feature id
      * @return the car feature

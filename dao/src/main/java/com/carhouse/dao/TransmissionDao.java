@@ -23,5 +23,5 @@ public interface TransmissionDao {
      * @param id the transmission id.
      * @return the transmission
      */
-    Transmission getTransmission(final int id);
+    Transmission getTransmission(int id);
 }
