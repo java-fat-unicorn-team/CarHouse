@@ -19,12 +19,12 @@ public interface CarFeatureDao {
     List<CarFeature> getCarFeatures(int carId);
 
     /**
-     * Gets car feature by id
+     * Gets car feature by id.
      *
      * @param id the car feature id
      * @return the car feature
      */
-    CarFeature getCarFeature(final int id);
+    CarFeature getCarFeature(int id);
 
     /**
      * Add car feature to car with provided id.
@@ -41,12 +41,12 @@ public interface CarFeatureDao {
      * @param carFeature   new car feature name
      * @param carFeatureId the car feature id
      */
-    void updateCarFeature(final String carFeature, final int carFeatureId);
+    void updateCarFeature(String carFeature, int carFeatureId);
 
     /**
      * Delete car feature by id.
      *
      * @param id the index
      */
-    void deleteCarFeature(final int id);
+    void deleteCarFeature(int id);
 }

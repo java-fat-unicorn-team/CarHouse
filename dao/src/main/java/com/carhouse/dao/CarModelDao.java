@@ -23,5 +23,5 @@ public interface CarModelDao {
      * @param id the car model id.
      * @return the car model
      */
-    CarModel getCarModel(final int id);
+    CarModel getCarModel(int id);
 }

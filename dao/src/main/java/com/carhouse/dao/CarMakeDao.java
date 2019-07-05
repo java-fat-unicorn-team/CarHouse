@@ -23,5 +23,5 @@ public interface CarMakeDao {
      * @param id the car make id
      * @return the car make
      */
-    CarMake getCarMake(final int id);
+    CarMake getCarMake(int id);
 }

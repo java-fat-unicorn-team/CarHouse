@@ -23,7 +23,7 @@ public interface CarSaleDao {
      * @param id the car sale id
      * @return the list of car sale
      */
-    CarSale getCarSale(final int id);
+    CarSale getCarSale(int id);
 
 
     /**
@@ -48,5 +48,5 @@ public interface CarSaleDao {
      *
      * @param id the car sale id
      */
-    void deleteCarSale(final int id);
+    void deleteCarSale(int id);
 }

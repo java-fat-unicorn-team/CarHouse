@@ -86,7 +86,7 @@ public class CarDaoImpl implements CarDao {
     }
 
     /**
-     * Gets all cars from database
+     * Gets all cars from database.
      *
      * @return the list of cars
      */
@@ -97,7 +97,7 @@ public class CarDaoImpl implements CarDao {
     }
 
     /**
-     * Gets one car by id
+     * Gets one car by id.
      *
      * @param id the car id
      * @return the car
