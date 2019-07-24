@@ -2,10 +2,16 @@ package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CarDao;
 import com.carhouse.model.*;
+import config.TestConfig;
+import config.TestSpringJDBCConfig;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -13,10 +19,12 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringTestConfiguration
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {TestConfig.class, TestSpringJDBCConfig.class})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class CarDaoImplTest {
 
-    CarDao carDao;
+    private CarDao carDao;
 
     @Autowired
     CarDaoImplTest(CarDao carDao) {

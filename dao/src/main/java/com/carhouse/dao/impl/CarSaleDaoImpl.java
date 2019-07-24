@@ -54,29 +54,20 @@ public class CarSaleDaoImpl implements CarSaleDao {
     @Value("${car.sale.delete}")
     private String DELETE_CAR_SALE_SQL;
 
-    /**
-     * named parameter JDBC template.
-     */
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    /**
-     * mapper to get CarSale object.
-     */
+
     private final CarSaleMapper carSaleMapper;
-    /**
-     * class is used to get parameters for sql query.
-     */
+
     private final ParameterSource parameterSource;
-    /**
-     * Logger.
-     */
+
     private static final Logger LOGGER = LogManager.getLogger(CarSaleDaoImpl.class);
 
     /**
      * Instantiates a new Car sale dao.
      *
-     * @param namedParameterJdbcTemplate the named parameter jdbc template
-     * @param carSaleMapper              the car sale mapper
-     * @param parameterSource            the class which provides parameters for sql query
+     * @param namedParameterJdbcTemplate for connection with database
+     * @param carSaleMapper              mapper to get CarSale object
+     * @param parameterSource            class is used to get parameters for sql query
      */
     @Autowired
     public CarSaleDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,

@@ -33,24 +33,17 @@ public class CarModelDaoImpl implements CarModelDao {
     @Value("${car.models.list.get}")
     private String GET_LIST_CAR_MODELS_SQL;
 
-    /**
-     * named parameter JDBC template.
-     */
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    /**
-     * mapper to get CarModel object.
-     */
+
     private final CarModelMapper carModelMapper;
-    /**
-     * Logger.
-     */
+
     private static final Logger LOGGER = LogManager.getLogger(CarModelDaoImpl.class);
 
     /**
      * Instantiates a new Car model dao.
      *
-     * @param namedParameterJdbcTemplate the named parameter jdbc template
-     * @param carModelMapper             the car model mapper
+     * @param namedParameterJdbcTemplate for connection with database
+     * @param carModelMapper             mapper to get CarModel object
      */
     public CarModelDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                            final CarModelMapper carModelMapper) {

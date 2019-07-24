@@ -57,29 +57,21 @@ public class CarDaoImpl implements CarDao {
 
     private final CarFeatureDao carFeatureDao;
     private final CarHasCarFeatureDao carHasCarFeatureDao;
-    /**
-     * named parameter JDBC template.
-     */
+
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    /**
-     * mapper to get Car object.
-     */
+
     private final CarMapper carMapper;
-    /**
-     * class is used to get parameters for sql query.
-     */
+
     private final ParameterSource parameterSource;
-    /**
-     * Logger.
-     */
+
     private static final Logger LOGGER = LogManager.getLogger(CarDaoImpl.class);
 
     /**
      * Instantiates a new Car dao.
      *
-     * @param namedParameterJdbcTemplate the jdbc template
-     * @param carMapper                  the car mapper
-     * @param parameterSource            the class which provides parameters for sql query
+     * @param namedParameterJdbcTemplate for connection with database
+     * @param carMapper                  mapper to get Car object
+     * @param parameterSource            the class is used to get parameters for sql query
      * @param carFeatureDao              the car feature dao to adds car features to car
      * @param carHasCarFeatureDao        the car has car feature dao which provides methods to manage references
      *                                   between car and car features.
@@ -142,7 +134,7 @@ public class CarDaoImpl implements CarDao {
                 parameterSource.getCarParameters(car), keyHolder);
         int carId = keyHolder.getKey().intValue();
         car.getCarFeatureList().forEach(carFeature -> {
-            carHasCarFeatureDao.addCarFeatureToCar(carId, carFeature.getCarFeatureId());
+            carHasCarFeatureDao.addCarFeature(carId, carFeature.getCarFeatureId());
         });
         return carId;
     }
@@ -161,9 +153,9 @@ public class CarDaoImpl implements CarDao {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(UPDATE_CAR_SQL,
                 parameterSource.getCarParameters(car), keyHolder);
-        carHasCarFeatureDao.deleteCarFeatureListFromCar(car.getCarId());
+        carHasCarFeatureDao.deleteAllCarFeatures(car.getCarId());
         car.getCarFeatureList().forEach(carFeature -> {
-            carHasCarFeatureDao.addCarFeatureToCar(car.getCarId(), carFeature.getCarFeatureId());
+            carHasCarFeatureDao.addCarFeature(car.getCarId(), carFeature.getCarFeatureId());
         });
     }
 

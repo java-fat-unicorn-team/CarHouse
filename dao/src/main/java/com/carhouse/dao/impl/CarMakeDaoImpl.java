@@ -33,24 +33,17 @@ public class CarMakeDaoImpl implements CarMakeDao {
     @Value("${car.makes.list.get}")
     private String GET_LIST_CARS_MAKES_SQL;
 
-    /**
-     * named parameter JDBC template.
-     */
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    /**
-     * mapper to get CarMake object.
-     */
+
     private final CarMakeMapper carMakeMapper;
-    /**
-     * Logger.
-     */
+
     private static final Logger LOGGER = LogManager.getLogger(CarMakeDaoImpl.class);
 
     /**
      * Instantiates a new Car make dao.
      *
-     * @param namedParameterJdbcTemplate the named parameter jdbc template
-     * @param carMakeMapper              the car make mapper
+     * @param namedParameterJdbcTemplate for connection with database
+     * @param carMakeMapper              mapper to get CarMake object
      */
     public CarMakeDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                           final CarMakeMapper carMakeMapper) {
