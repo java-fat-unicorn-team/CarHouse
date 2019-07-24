@@ -37,14 +37,23 @@ VALUES ('2017-06-07', '70300', '1', '1', '3');
 INSERT INTO `car` (`year`, `mileage`, `fuel_type_id`, `transmission_id`, `car_model_id`)
 VALUES ('2017-06-07', '70300', '2', '2', '1');
 
-INSERT INTO `car_feature` (`car_feature`, `car_id`)
-VALUES ('Winter tires', '1');
-INSERT INTO `car_feature` (`car_feature`, `car_id`)
-VALUES ('air conditioning', '1');
-INSERT INTO `car_feature` (`car_feature`, `car_id`)
-VALUES ('Leather interior', '2');
-INSERT INTO `car_feature` (`car_feature`, `car_id`)
-VALUES ('Csenon', '1');
+INSERT INTO `car_feature` (`car_feature`)
+VALUES ('Winter tires');
+INSERT INTO `car_feature` (`car_feature`)
+VALUES ('air conditioning');
+INSERT INTO `car_feature` (`car_feature`)
+VALUES ('Leather interior');
+INSERT INTO `car_feature` (`car_feature`)
+VALUES ('Csenon');
+
+INSERT INTO `car_has_car_feature` (`car_id`, `car_feature_id`)
+VALUES ('2', '3');
+INSERT INTO `car_has_car_feature` (`car_id`, `car_feature_id`)
+VALUES ('1', '2');
+INSERT INTO `car_has_car_feature` (`car_id`, `car_feature_id`)
+VALUES ('2', '4');
+INSERT INTO `car_has_car_feature` (`car_id`, `car_feature_id`)
+VALUES ('1', '1');
 
 INSERT INTO `car_sale` (`price`, `date`, `user_id`, `car_id`)
 VALUES ('36800', '2019-06-01 00:00:00', '1', '1');

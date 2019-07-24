@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * The interface provides methods to manage CarSale model.
+ *
  * @author Katuranau Maksimilyan
  * @see CarSale
  */
@@ -20,10 +21,10 @@ public interface CarSaleDao {
     /**
      * Gets car sale by id.
      *
-     * @param id the car sale id
+     * @param carSaleId the car sale id
      * @return the list of car sale
      */
-    CarSale getCarSale(int id);
+    CarSale getCarSale(int carSaleId);
 
 
     /**
@@ -46,7 +47,7 @@ public interface CarSaleDao {
     /**
      * Delete car sale by id.
      *
-     * @param id the car sale id
+     * @param carSaleId the car sale id
      */
-    void deleteCarSale(int id);
+    void deleteCarSale(int carSaleId);
 }

@@ -32,8 +32,6 @@
     <javax.servlet.api.version>3.1.0</javax.servlet.api.version>
     <junit.version>5.4.2</junit.version>
     <mockito.junit>2.28.2</mockito.junit>
-    <wiremock.version>2.23.2</wiremock.version>
-    <rest.assured.version>4.0.0</rest.assured.version>
     <h2.version>1.4.199</h2.version>
     <mysql.connector.java>8.0.16</mysql.connector.java>
     <maven.clean.plugin>3.1.0</maven.clean.plugin>
@@ -80,18 +78,6 @@
         <groupId>org.springframework</groupId>
         <artifactId>spring-test</artifactId>
         <version>${spring.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>com.github.tomakehurst</groupId>
-        <artifactId>wiremock</artifactId>
-        <version>${wiremock.version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>io.rest-assured</groupId>
-        <artifactId>rest-assured</artifactId>
-        <version>${rest.assured.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -224,8 +210,7 @@
           </executions>
           <configuration>
             <targetClasses>
-              <param>com.carhouse.dao.*</param>
-              <param>com.carhouse.model.*</param>
+              <param>com.carhouse.*</param>
             </targetClasses>
             <targetTests>
               <param>com.carhouse.*</param>

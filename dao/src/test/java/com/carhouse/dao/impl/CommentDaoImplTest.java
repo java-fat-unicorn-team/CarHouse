@@ -1,7 +1,6 @@
 package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CommentDao;
-import com.carhouse.model.CarSale;
 import com.carhouse.model.Comment;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,6 @@ class CommentDaoImplTest {
     void getComment() {
         assertEquals("Good car", commentDao.getComment(1).getComment());
         assertEquals("Alex", commentDao.getComment(2).getUserName());
-        assertEquals(4, commentDao.getComment(3).getCarSale().getCarSaleId());
     }
 
     @Test
@@ -40,23 +38,22 @@ class CommentDaoImplTest {
     @Test
     void addComment() {
         int size = commentDao.getCarSaleComments(4).size();
-        Comment newComment = new Comment(4, "David", "Good", new CarSale(4));
-        int index = commentDao.addComment(newComment);
+        Comment newComment = new Comment(4, "David", "Good");
+        int index = commentDao.addComment(4, newComment);
         Comment obtainedComment = commentDao.getComment(index);
         assertEquals(size + 1, commentDao.getCarSaleComments(4).size());
         assertEquals(newComment.getUserName(), obtainedComment.getUserName());
-        assertEquals(newComment.getCarSale().getCarSaleId(), obtainedComment.getCarSale().getCarSaleId());
     }
 
     @Test
     void addCommentWithWrongReference() {
-        assertThrows(DataIntegrityViolationException.class, () -> commentDao.addComment(new Comment(2,
-                "Vasya", "Nice car", new CarSale(9))));
+        assertThrows(DataIntegrityViolationException.class, () -> commentDao.addComment(9,
+                new Comment(2, "Vasya", "Nice car")));
     }
 
     @Test
     void updateComment() {
-        Comment newComment = new Comment(2, "David", "Very Good", new CarSale(4));
+        Comment newComment = new Comment(2, "David", "Very Good");
         commentDao.updateComment(newComment);
         Comment obtainedComment = commentDao.getComment(2);
         assertEquals(newComment.getComment(), obtainedComment.getComment());

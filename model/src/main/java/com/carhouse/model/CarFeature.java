@@ -4,24 +4,22 @@ package com.carhouse.model;
  * The car feature model is used to describe feature.
  * The model includes feature description and car characteristics model which contains the feature.
  * One car can have more then one feature.
+ *
  * @author Katuranau Maksimilyan
  */
 public class CarFeature {
     private int carFeatureId;
     private String carFeature;
-    private Car car;
 
     /**
      * Instantiates a new Car feature.
      *
-     * @param carFeatureId       the car feature id
-     * @param carFeature         the car feature
-     * @param car the car
+     * @param carFeatureId the car feature id
+     * @param carFeature   the car feature
      */
-    public CarFeature(final int carFeatureId, final String carFeature, final Car car) {
+    public CarFeature(final int carFeatureId, final String carFeature) {
         this.carFeatureId = carFeatureId;
         this.carFeature = carFeature;
-        this.car = car;
     }
 
     /**
@@ -60,27 +58,8 @@ public class CarFeature {
         this.carFeature = carFeature;
     }
 
-    /**
-     * Gets car id.
-     *
-     * @return the car which have this feature
-     */
-    public Car getCar() {
-        return car;
-    }
-
-    /**
-     * Sets car id.
-     *
-     * @param car the car id
-     */
-    public void setCar(final Car car) {
-        this.car = car;
-    }
-
     @Override
     public final String toString() {
-        return "carFeature='" + carFeature + '\''
-                + car;
+        return carFeature;
     }
 }
