@@ -26,7 +26,7 @@ public class CarMakeServiceImpl implements CarMakeService {
      * @param carMakeDao the class is provided CRUD operations for fuel type model.
      */
     @Autowired
-    public CarMakeServiceImpl(CarMakeDao carMakeDao) {
+    public CarMakeServiceImpl(final CarMakeDao carMakeDao) {
         this.carMakeDao = carMakeDao;
     }
 
@@ -47,7 +47,7 @@ public class CarMakeServiceImpl implements CarMakeService {
      * @return the car make
      */
     @Override
-    public CarMake getCarMake(int id) {
+    public CarMake getCarMake(final int id) {
         return carMakeDao.getCarMake(id);
     }
 }

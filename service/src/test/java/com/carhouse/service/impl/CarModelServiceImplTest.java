@@ -53,7 +53,7 @@ class CarModelServiceImplTest {
     }
 
     @Test
-    void gerNonExistentCatModel() {
+    void gerNonExistentCarModel() {
         when(carModelDao.getCarModel(10)).thenThrow(EmptyResultDataAccessException.class);
         assertThrows(EmptyResultDataAccessException.class, () -> carModelService.getCarModel(10));
     }

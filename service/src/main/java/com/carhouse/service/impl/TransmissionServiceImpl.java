@@ -26,7 +26,7 @@ public class TransmissionServiceImpl implements TransmissionService {
      * @param transmissionDao the class is provided CRUD operations for transmission model.
      */
     @Autowired
-    public TransmissionServiceImpl(TransmissionDao transmissionDao) {
+    public TransmissionServiceImpl(final TransmissionDao transmissionDao) {
         this.transmissionDao = transmissionDao;
     }
 
@@ -47,7 +47,7 @@ public class TransmissionServiceImpl implements TransmissionService {
      * @return transmission with selected id
      */
     @Override
-    public Transmission getTransmission(int id) {
+    public Transmission getTransmission(final int id) {
         return transmissionDao.getTransmission(id);
     }
 }

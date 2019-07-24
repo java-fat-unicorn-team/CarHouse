@@ -26,7 +26,7 @@ public class CarServiceImpl implements CarService {
      * @param carDao the class is provided CRUD operations for fuel type model.
      */
     @Autowired
-    public CarServiceImpl(CarDao carDao) {
+    public CarServiceImpl(final CarDao carDao) {
         this.carDao = carDao;
     }
 
@@ -47,7 +47,7 @@ public class CarServiceImpl implements CarService {
      * @return the car
      */
     @Override
-    public Car getCar(int id) {
+    public Car getCar(final int id) {
         return carDao.getCar(id);
     }
 
@@ -58,7 +58,7 @@ public class CarServiceImpl implements CarService {
      * @return car characteristic id
      */
     @Override
-    public Integer addCar(Car car) {
+    public Integer addCar(final Car car) {
         return carDao.addCar(car);
     }
 
@@ -69,7 +69,7 @@ public class CarServiceImpl implements CarService {
      * @param car the car model
      */
     @Override
-    public void updateCar(Car car) {
+    public void updateCar(final Car car) {
         carDao.updateCar(car);
     }
 
@@ -79,7 +79,7 @@ public class CarServiceImpl implements CarService {
      * @param id the car id
      */
     @Override
-    public void deleteCar(int id) {
+    public void deleteCar(final int id) {
         carDao.deleteCar(id);
     }
 }

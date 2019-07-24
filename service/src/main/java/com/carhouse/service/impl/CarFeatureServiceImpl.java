@@ -26,7 +26,7 @@ public class CarFeatureServiceImpl implements CarFeatureService {
      * @param carFeatureDao the class is provided CRUD operations for fuel type model.
      */
     @Autowired
-    public CarFeatureServiceImpl(CarFeatureDao carFeatureDao) {
+    public CarFeatureServiceImpl(final CarFeatureDao carFeatureDao) {
         this.carFeatureDao = carFeatureDao;
     }
 
@@ -37,7 +37,7 @@ public class CarFeatureServiceImpl implements CarFeatureService {
      * @return the list of car features
      */
     @Override
-    public List<CarFeature> getCarFeatures(int carId) {
+    public List<CarFeature> getCarFeatures(final int carId) {
         return carFeatureDao.getCarFeatures(carId);
     }
 }

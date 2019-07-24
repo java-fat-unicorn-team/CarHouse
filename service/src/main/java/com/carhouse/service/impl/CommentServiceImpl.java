@@ -26,7 +26,7 @@ public class CommentServiceImpl implements CommentService {
      * @param commentDao the class is provided CRUD operations for fuel type model.
      */
     @Autowired
-    public CommentServiceImpl(CommentDao commentDao) {
+    public CommentServiceImpl(final CommentDao commentDao) {
         this.commentDao = commentDao;
     }
 
@@ -37,7 +37,7 @@ public class CommentServiceImpl implements CommentService {
      * @return the list of car sale comments
      */
     @Override
-    public List<Comment> getCarSaleComments(int carSaleId) {
+    public List<Comment> getCarSaleComments(final int carSaleId) {
         return commentDao.getCarSaleComments(carSaleId);
     }
 
@@ -48,7 +48,7 @@ public class CommentServiceImpl implements CommentService {
      * @return the comment
      */
     @Override
-    public Comment getComment(int id) {
+    public Comment getComment(final int id) {
         return commentDao.getComment(id);
     }
 
@@ -61,7 +61,7 @@ public class CommentServiceImpl implements CommentService {
      * @return comment id
      */
     @Override
-    public Integer addComment(int carSaleId, Comment comment) {
+    public Integer addComment(final int carSaleId, final Comment comment) {
         return commentDao.addComment(carSaleId, comment);
     }
 
@@ -72,7 +72,7 @@ public class CommentServiceImpl implements CommentService {
      * @param comment the comment
      */
     @Override
-    public void updateComment(Comment comment) {
+    public void updateComment(final Comment comment) {
         commentDao.updateComment(comment);
     }
 
@@ -82,7 +82,7 @@ public class CommentServiceImpl implements CommentService {
      * @param id the index
      */
     @Override
-    public void deleteComment(int id) {
+    public void deleteComment(final int id) {
         commentDao.deleteComment(id);
     }
 }
