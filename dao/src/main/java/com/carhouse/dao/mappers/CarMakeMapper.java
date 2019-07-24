@@ -32,7 +32,7 @@ public class CarMakeMapper implements RowMapper<CarMake> {
     @Override
     public CarMake mapRow(final ResultSet resultSet, final int i) throws SQLException {
         CarMake carMake = new CarMake(resultSet.getInt(CAR_MAKE_ID), resultSet.getString(CAR_MAKE));
-        LOGGER.debug("row ({}, {}) has been mapped", resultSet.getInt(CAR_MAKE_ID), resultSet.getString(CAR_MAKE));
+        LOGGER.debug("row ({}, {}) has been mapped", carMake.getCarMakeId(), carMake.getCarMake());
         return carMake;
     }
 }

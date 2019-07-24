@@ -34,8 +34,8 @@ public class TransmissionMapper implements RowMapper<Transmission> {
     public Transmission mapRow(final ResultSet resultSet, final int i) throws SQLException {
         Transmission transmission = new Transmission(resultSet.getInt(TRANSMISSION_ID),
                 resultSet.getString(TRANSMISSION));
-        LOGGER.debug("row ({}, {}) has been mapped", resultSet.getInt(TRANSMISSION_ID),
-                resultSet.getString(TRANSMISSION));
+        LOGGER.debug("row ({}, {}) has been mapped", transmission.getTransmissionId(),
+                transmission.getTransmission());
         return transmission;
     }
 }

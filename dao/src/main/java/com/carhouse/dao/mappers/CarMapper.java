@@ -71,8 +71,7 @@ public class CarMapper implements RowMapper<Car> {
                 .setFuelType(fuelTypeMapper.mapRow(resultSet, i))
                 .setTransmission(transmissionMapper.mapRow(resultSet, i))
                 .setCarModel(carModelMapper.mapRow(resultSet, i));
-        LOGGER.debug("row ({}, {}, {}) has been mapped", resultSet.getInt(CAR_ID), resultSet.getDate(YEAR),
-                resultSet.getInt(MILEAGE));
+        LOGGER.debug("row ({}, {}, {}) has been mapped", car.getCarId(), car.getYear(), car.getMileage());
         return car;
     }
 }

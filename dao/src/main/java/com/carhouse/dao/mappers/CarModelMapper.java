@@ -48,7 +48,7 @@ public class CarModelMapper implements RowMapper<CarModel> {
     public CarModel mapRow(final ResultSet resultSet, final int i) throws SQLException {
         CarModel carModel = new CarModel(resultSet.getInt(CAR_MODEL_ID), carMakeMapper.mapRow(resultSet, i),
                 resultSet.getString(CAR_MODEL));
-        LOGGER.debug("row ({}, {}) has been mapped", resultSet.getInt(CAR_MODEL_ID), resultSet.getString(CAR_MODEL));
+        LOGGER.debug("row ({}, {}) has been mapped", carModel.getCarModelId(), carModel.getCarModel());
         return carModel;
     }
 }

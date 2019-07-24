@@ -33,8 +33,7 @@ public class CarFeatureMapper implements RowMapper<CarFeature> {
     @Override
     public CarFeature mapRow(final ResultSet resultSet, final int i) throws SQLException {
         CarFeature carFeature = new CarFeature(resultSet.getInt(CAR_FEATURE_ID), resultSet.getString(CAR_FEATURE));
-        LOGGER.debug("row ({}, {}) has been mapped", resultSet.getInt(CAR_FEATURE_ID),
-                resultSet.getString(CAR_FEATURE));
+        LOGGER.debug("row ({}, {}) has been mapped", carFeature.getCarFeatureId(), carFeature.getCarFeature());
         return carFeature;
     }
 }

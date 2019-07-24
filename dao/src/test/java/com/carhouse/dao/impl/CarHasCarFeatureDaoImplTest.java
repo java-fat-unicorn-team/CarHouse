@@ -30,9 +30,11 @@ class CarHasCarFeatureDaoImplTest {
 
     @Test
     void addCarFeatureToCar() {
-        int size = carDao.getCar(2).getCarFeatureList().size();
-        carHasCarFeatureDao.addCarFeature(2, 1);
-        assertEquals(size + 1, carDao.getCar(2).getCarFeatureList().size());
+        int carId = 2;
+        int carFeatureId = 1;
+        int size = carDao.getCar(carId).getCarFeatureList().size();
+        carHasCarFeatureDao.addCarFeature(carId, carFeatureId);
+        assertEquals(size + 1, carDao.getCar(carId).getCarFeatureList().size());
     }
 
     @Test
@@ -55,14 +57,17 @@ class CarHasCarFeatureDaoImplTest {
 
     @Test
     void deleteCarFeatureFromCar() {
-        int size = carDao.getCar(2).getCarFeatureList().size();
-        carHasCarFeatureDao.deleteCarFeature(2, 3);
-        assertEquals(size - 1, carDao.getCar(2).getCarFeatureList().size());
+        int carId = 2;
+        int carFeatureId = 3;
+        int size = carDao.getCar(carId).getCarFeatureList().size();
+        carHasCarFeatureDao.deleteCarFeature(carId, carFeatureId);
+        assertEquals(size - 1, carDao.getCar(carId).getCarFeatureList().size());
     }
 
     @Test
     void deleteCarFeatureListFromCar() {
-        carHasCarFeatureDao.deleteAllCarFeatures(2);
-        assertEquals(0, carDao.getCar(2).getCarFeatureList().size());
+        int carId = 2;
+        carHasCarFeatureDao.deleteAllCarFeatures(carId);
+        assertEquals(0, carDao.getCar(carId).getCarFeatureList().size());
     }
 }
