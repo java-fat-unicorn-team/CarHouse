@@ -3,6 +3,8 @@ package com.carhouse.service.impl;
 import com.carhouse.dao.CarSaleDao;
 import com.carhouse.model.CarSale;
 import com.carhouse.service.CarSaleService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import java.util.List;
 public class CarSaleServiceImpl implements CarSaleService {
 
     private CarSaleDao carSaleDao;
+
+    private static final Logger LOGGER = LogManager.getLogger(CarSaleServiceImpl.class);
 
     /**
      * Instantiates a new Car sale service.
@@ -37,6 +41,7 @@ public class CarSaleServiceImpl implements CarSaleService {
      */
     @Override
     public List<CarSale> getCarSales() {
+        LOGGER.debug("method getCarSales");
         return carSaleDao.getCarSales();
     }
 
@@ -48,6 +53,7 @@ public class CarSaleServiceImpl implements CarSaleService {
      */
     @Override
     public CarSale getCarSale(final int carSaleId) {
+        LOGGER.debug("method getCarSale with parameter: [{}]", carSaleId);
         return carSaleDao.getCarSale(carSaleId);
     }
 
@@ -59,6 +65,7 @@ public class CarSaleServiceImpl implements CarSaleService {
      */
     @Override
     public Integer addCarSale(final CarSale carSale) {
+        LOGGER.debug("method addCarSale with parameter: [{}]", carSale);
         return carSaleDao.addCarSale(carSale);
     }
 
@@ -70,6 +77,7 @@ public class CarSaleServiceImpl implements CarSaleService {
      */
     @Override
     public void updateCarSale(final CarSale carSale) {
+        LOGGER.debug("method updateCarSale with parameter: [{}]", carSale);
         carSaleDao.updateCarSale(carSale);
     }
 
@@ -80,6 +88,7 @@ public class CarSaleServiceImpl implements CarSaleService {
      */
     @Override
     public void deleteCarSale(final int carSaleId) {
+        LOGGER.debug("method deleteCarSale with parameter: [{}]", carSaleId);
         carSaleDao.deleteCarSale(carSaleId);
     }
 }

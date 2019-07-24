@@ -3,6 +3,8 @@ package com.carhouse.service.impl;
 import com.carhouse.dao.CarDao;
 import com.carhouse.model.Car;
 import com.carhouse.service.CarService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import java.util.List;
 public class CarServiceImpl implements CarService {
 
     private CarDao carDao;
+
+    private static final Logger LOGGER = LogManager.getLogger(CarServiceImpl.class);
 
     /**
      * Instantiates a new Car service.
@@ -37,6 +41,7 @@ public class CarServiceImpl implements CarService {
      */
     @Override
     public List<Car> getCars() {
+        LOGGER.debug("method getCars");
         return carDao.getCars();
     }
 
@@ -48,6 +53,7 @@ public class CarServiceImpl implements CarService {
      */
     @Override
     public Car getCar(final int id) {
+        LOGGER.debug("method getCar with parameter: [{}]", id);
         return carDao.getCar(id);
     }
 
@@ -59,6 +65,7 @@ public class CarServiceImpl implements CarService {
      */
     @Override
     public Integer addCar(final Car car) {
+        LOGGER.debug("method addCar with parameter: [{}]", car);
         return carDao.addCar(car);
     }
 
@@ -70,6 +77,7 @@ public class CarServiceImpl implements CarService {
      */
     @Override
     public void updateCar(final Car car) {
+        LOGGER.debug("method updateCar with parameter: [{}]", car);
         carDao.updateCar(car);
     }
 
@@ -80,6 +88,7 @@ public class CarServiceImpl implements CarService {
      */
     @Override
     public void deleteCar(final int id) {
+        LOGGER.debug("method deleteCar with parameter: [{}]", id);
         carDao.deleteCar(id);
     }
 }

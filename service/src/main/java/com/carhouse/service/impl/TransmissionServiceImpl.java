@@ -3,6 +3,8 @@ package com.carhouse.service.impl;
 import com.carhouse.dao.TransmissionDao;
 import com.carhouse.model.Transmission;
 import com.carhouse.service.TransmissionService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import java.util.List;
 public class TransmissionServiceImpl implements TransmissionService {
 
     private TransmissionDao transmissionDao;
+
+    private static final Logger LOGGER = LogManager.getLogger(TransmissionServiceImpl.class);
 
     /**
      * Instantiates a new Transmission service.
@@ -37,6 +41,7 @@ public class TransmissionServiceImpl implements TransmissionService {
      */
     @Override
     public List<Transmission> getTransmissions() {
+        LOGGER.debug("method getTransmissions");
         return transmissionDao.getTransmissions();
     }
 
@@ -48,6 +53,7 @@ public class TransmissionServiceImpl implements TransmissionService {
      */
     @Override
     public Transmission getTransmission(final int id) {
+        LOGGER.debug("method getTransmission with parameter: [{}]", id);
         return transmissionDao.getTransmission(id);
     }
 }

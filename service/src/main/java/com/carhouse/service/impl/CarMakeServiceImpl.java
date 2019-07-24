@@ -3,6 +3,8 @@ package com.carhouse.service.impl;
 import com.carhouse.dao.CarMakeDao;
 import com.carhouse.model.CarMake;
 import com.carhouse.service.CarMakeService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import java.util.List;
 public class CarMakeServiceImpl implements CarMakeService {
 
     private CarMakeDao carMakeDao;
+
+    private static final Logger LOGGER = LogManager.getLogger(CarMakeServiceImpl.class);
 
     /**
      * Instantiates a new Car make service.
@@ -37,6 +41,7 @@ public class CarMakeServiceImpl implements CarMakeService {
      */
     @Override
     public List<CarMake> getCarMakes() {
+        LOGGER.debug("method getCarFeatures");
         return carMakeDao.getCarMakes();
     }
 
@@ -48,6 +53,7 @@ public class CarMakeServiceImpl implements CarMakeService {
      */
     @Override
     public CarMake getCarMake(final int id) {
+        LOGGER.debug("method getCarMake with parameter: [{}]", id);
         return carMakeDao.getCarMake(id);
     }
 }

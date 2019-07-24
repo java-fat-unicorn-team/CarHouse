@@ -2,7 +2,7 @@ package com.carhouse.service.impl;
 
 import com.carhouse.dao.CarFeatureDao;
 import com.carhouse.model.CarFeature;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,7 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,10 +24,10 @@ class CarFeatureServiceImplTest {
     @InjectMocks
     private CarFeatureServiceImpl carFeatureService;
 
-    private List<CarFeature> listCarFeature;
+    private static List<CarFeature> listCarFeature;
 
-    @BeforeEach
-    void addCarFeature() {
+    @BeforeAll
+    static void addCarFeature() {
         listCarFeature = new ArrayList<>() {{
             add(new CarFeature(1, "Winter tires"));
             add(new CarFeature(2, "Air conditioning"));

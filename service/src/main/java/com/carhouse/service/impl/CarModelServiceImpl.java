@@ -3,6 +3,8 @@ package com.carhouse.service.impl;
 import com.carhouse.dao.CarModelDao;
 import com.carhouse.model.CarModel;
 import com.carhouse.service.CarModelService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import java.util.List;
 public class CarModelServiceImpl implements CarModelService {
 
     private CarModelDao carModelDao;
+
+    private static final Logger LOGGER = LogManager.getLogger(CarModelServiceImpl.class);
 
     /**
      * Instantiates a new Car model service.
@@ -37,6 +41,7 @@ public class CarModelServiceImpl implements CarModelService {
      */
     @Override
     public List<CarModel> getCarModels() {
+        LOGGER.debug("method getCarModels");
         return carModelDao.getCarModels();
     }
 
@@ -48,6 +53,7 @@ public class CarModelServiceImpl implements CarModelService {
      */
     @Override
     public CarModel getCarModel(final int id) {
+        LOGGER.debug("method getCarModel with parameter: [{}]", id);
         return carModelDao.getCarModel(id);
     }
 }

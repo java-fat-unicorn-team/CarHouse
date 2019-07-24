@@ -2,8 +2,7 @@ package com.carhouse.service.impl;
 
 import com.carhouse.dao.TransmissionDao;
 import com.carhouse.model.Transmission;
-import com.carhouse.service.TransmissionService;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,7 +13,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,12 +26,13 @@ class TransmissionServiceImplTest {
     @InjectMocks
     private TransmissionServiceImpl transmissionService;
 
-    private List<Transmission> listTransmissions;
-    @BeforeEach
-    public void addTransmissions() {
+    private static List<Transmission> listTransmissions;
+
+    @BeforeAll
+    static void addTransmissions() {
         listTransmissions = new ArrayList<>() {{
-            add(new Transmission(1,"Manual"));
-            add(new Transmission(2,"Stick"));
+            add(new Transmission(1, "Manual"));
+            add(new Transmission(2, "Stick"));
         }};
     }
 

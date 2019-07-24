@@ -3,7 +3,7 @@ package com.carhouse.service.impl;
 import com.carhouse.dao.CarModelDao;
 import com.carhouse.model.CarMake;
 import com.carhouse.model.CarModel;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,13 +27,13 @@ class CarModelServiceImplTest {
     @InjectMocks
     private CarModelServiceImpl carModelService;
 
-    private List<CarModel> listCarModel;
+    private static List<CarModel> listCarModel;
 
-    @BeforeEach
-    void addCarModels() {
+    @BeforeAll
+    static void addCarModels() {
         listCarModel = new ArrayList<>() {{
-            add(new CarModel(1, new CarMake(1,"Mercedes")));
-            add(new CarModel(2, new CarMake(2,"BMW")));
+            add(new CarModel(1, new CarMake(1, "Mercedes")));
+            add(new CarModel(2, new CarMake(2, "BMW")));
         }};
     }
 

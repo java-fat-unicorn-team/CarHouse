@@ -2,7 +2,7 @@ package com.carhouse.service.impl;
 
 import com.carhouse.dao.CommentDao;
 import com.carhouse.model.Comment;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,7 +14,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,10 +27,10 @@ class CommentServiceImplTest {
     @InjectMocks
     private CommentServiceImpl commentService;
 
-    private List<Comment> listComments;
+    private static List<Comment> listComments;
 
-    @BeforeEach
-    public void addComments() {
+    @BeforeAll
+    static void addComments() {
         listComments = new ArrayList<>() {{
             add(new Comment(1, "Kolya", "Very good"));
             add(new Comment(2, "Julia", "Nice"));

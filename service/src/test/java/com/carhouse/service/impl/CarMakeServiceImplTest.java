@@ -2,7 +2,7 @@ package com.carhouse.service.impl;
 
 import com.carhouse.dao.CarMakeDao;
 import com.carhouse.model.CarMake;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,7 +13,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,10 +26,10 @@ class CarMakeServiceImplTest {
     @InjectMocks
     private CarMakeServiceImpl carMakeService;
 
-    private List<CarMake> listCarMake;
+    private static List<CarMake> listCarMake;
 
-    @BeforeEach
-    void addCarMakes() {
+    @BeforeAll
+    static void addCarMakes() {
         listCarMake = new ArrayList<>() {{
             add(new CarMake(1, "Mercedes"));
             add(new CarMake(2, "BMW"));
