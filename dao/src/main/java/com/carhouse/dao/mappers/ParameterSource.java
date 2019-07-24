@@ -52,7 +52,7 @@ public class ParameterSource {
      * @param comment the comment
      * @return the comment parameters
      */
-    public SqlParameterSource getCommentParameters(final Comment comment) {
+    public MapSqlParameterSource getCommentParameters(final Comment comment) {
         return new MapSqlParameterSource()
                 .addValue("id", comment.getCommentId())
                 .addValue("userName", comment.getUserName())

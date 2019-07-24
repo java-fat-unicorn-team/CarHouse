@@ -29,24 +29,17 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
     @Value("${car.features.list.get}")
     private String GET_LIST_CAR_FEATURES_SQL;
 
-    /**
-     * named parameter JDBC template.
-     */
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    /**
-     * mapper to get CarFeature object.
-     */
+
     private final CarFeatureMapper carFeatureMapper;
-    /**
-     * Logger.
-     */
+
     private static final Logger LOGGER = LogManager.getLogger(CarFeatureDaoImpl.class);
 
     /**
      * Instantiates a new Car feature dao.
      *
-     * @param namedParameterJdbcTemplate the named parameter jdbc template
-     * @param carFeatureMapper           the car feature mapper
+     * @param namedParameterJdbcTemplate for connection with database
+     * @param carFeatureMapper           mapper to get CarFeature object.
      */
     public CarFeatureDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                              final CarFeatureMapper carFeatureMapper) {

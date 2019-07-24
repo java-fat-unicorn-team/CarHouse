@@ -38,7 +38,8 @@ public class CommentMapper implements RowMapper<Comment> {
     public Comment mapRow(final ResultSet resultSet, final int i) throws SQLException {
         Comment comment = new Comment(resultSet.getInt(COMMENT_ID), resultSet.getString(USER_NAME),
                 resultSet.getString(COMMENT));
-        LOGGER.debug("row ({}, {}, {}) has been mapped", resultSet.getInt(COMMENT_ID), resultSet.getString(USER_NAME),
+        LOGGER.debug("row ({}, {}, {}) has been mapped", resultSet.getInt(COMMENT_ID),
+                resultSet.getString(USER_NAME),
                 resultSet.getString(COMMENT));
         return comment;
     }

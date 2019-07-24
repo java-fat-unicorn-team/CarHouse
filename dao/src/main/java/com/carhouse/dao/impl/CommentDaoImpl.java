@@ -52,29 +52,20 @@ public class CommentDaoImpl implements CommentDao {
     @Value("${comment.delete}")
     private String DELETE_COMMENT_SQL;
 
-    /**
-     * named parameter JDBC template.
-     */
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    /**
-     * mapper to get Comment object.
-     */
+
     private final CommentMapper commentMapper;
-    /**
-     * class is used to get parameters for sql query.
-     */
+
     private final ParameterSource parameterSource;
-    /**
-     * Logger.
-     */
+
     private static final Logger LOGGER = LogManager.getLogger(CommentDaoImpl.class);
 
     /**
      * Instantiates a new Comment dao.
      *
-     * @param namedParameterJdbcTemplate the named parameter jdbc template
-     * @param commentMapper              the comment mapper
-     * @param parameterSource            the class which provides parameters for sql query
+     * @param namedParameterJdbcTemplate for connection with database
+     * @param commentMapper              mapper to get Comment object
+     * @param parameterSource            class is used to get parameters for sql query
      */
     public CommentDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                           final CommentMapper commentMapper, final ParameterSource parameterSource) {
@@ -120,7 +111,7 @@ public class CommentDaoImpl implements CommentDao {
      */
     @Override
     public Integer addComment(final int carSaleId, final Comment comment) {
-        MapSqlParameterSource parameters = (MapSqlParameterSource) parameterSource.getCommentParameters(comment);
+        MapSqlParameterSource parameters = parameterSource.getCommentParameters(comment);
         parameters.addValue("carSaleId", carSaleId);
         LOGGER.debug("method addComment with parameter: [{}]", comment);
         KeyHolder keyHolder = new GeneratedKeyHolder();

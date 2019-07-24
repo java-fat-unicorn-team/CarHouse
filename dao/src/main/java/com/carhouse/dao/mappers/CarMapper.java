@@ -65,9 +65,12 @@ public class CarMapper implements RowMapper<Car> {
 
     @Override
     public Car mapRow(final ResultSet resultSet, final int i) throws SQLException {
-        Car car = new Car(resultSet.getInt(CAR_ID),
-                resultSet.getDate(YEAR), resultSet.getInt(MILEAGE), fuelTypeMapper.mapRow(resultSet, i),
-                transmissionMapper.mapRow(resultSet, i), carModelMapper.mapRow(resultSet, i), null);
+        Car car = new Car(resultSet.getInt(CAR_ID))
+                .setYear(resultSet.getDate(YEAR))
+                .setMileage(resultSet.getInt(MILEAGE))
+                .setFuelType(fuelTypeMapper.mapRow(resultSet, i))
+                .setTransmission(transmissionMapper.mapRow(resultSet, i))
+                .setCarModel(carModelMapper.mapRow(resultSet, i));
         LOGGER.debug("row ({}, {}, {}) has been mapped", resultSet.getInt(CAR_ID), resultSet.getDate(YEAR),
                 resultSet.getInt(MILEAGE));
         return car;

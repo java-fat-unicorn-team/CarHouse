@@ -35,20 +35,15 @@ public class CarHasCarFeatureDaoImpl implements CarHasCarFeatureDao {
      */
     @Value("${car.feature.list.delete.from.car}")
     private String DELETE_CAR_FEATURE_LIST_FROM_CAR_SQL;
-    /**
-     * named parameter JDBC template.
-     */
+
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    /**
-     * Logger.
-     */
     private static final Logger LOGGER = LogManager.getLogger(CarHasCarFeatureDaoImpl.class);
 
     /**
      * Instantiates a new Car has car feature.
      *
-     * @param namedParameterJdbcTemplate the named parameter jdbc template
+     * @param namedParameterJdbcTemplate for connection with database
      */
     @Autowired
     public CarHasCarFeatureDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -62,8 +57,8 @@ public class CarHasCarFeatureDaoImpl implements CarHasCarFeatureDao {
      * @param carFeatureId id of car feature to add
      */
     @Override
-    public void addCarFeatureToCar(final int carId, final int carFeatureId) {
-        LOGGER.debug("method addCarFeatureToCar with parameter: [{}, {}]", carId, carFeatureId);
+    public void addCarFeature(final int carId, final int carFeatureId) {
+        LOGGER.debug("method addCarFeature with parameters: [{}, {}]", carId, carFeatureId);
         namedParameterJdbcTemplate.update(ADD_CAR_FEATURE_TO_CAR_SQL, getParameters(carId, carFeatureId));
     }
 
@@ -74,8 +69,8 @@ public class CarHasCarFeatureDaoImpl implements CarHasCarFeatureDao {
      * @param carFeatureId id of car feature to delete
      */
     @Override
-    public void deleteCarFeatureFromCar(final int carId, final int carFeatureId) {
-        LOGGER.debug("method deleteCarFeatureFromCar with parameter: [{}, {}]", carId, carFeatureId);
+    public void deleteCarFeature(final int carId, final int carFeatureId) {
+        LOGGER.debug("method deleteCarFeature with parameters: [{}, {}]", carId, carFeatureId);
         namedParameterJdbcTemplate.update(DELETE_CAR_FEATURE_FROM_CAR_SQL, getParameters(carId, carFeatureId));
     }
 
@@ -85,10 +80,10 @@ public class CarHasCarFeatureDaoImpl implements CarHasCarFeatureDao {
      * @param carId id of car for which to delete all references
      */
     @Override
-    public void deleteCarFeatureListFromCar(final int carId) {
+    public void deleteAllCarFeatures(final int carId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("carId", carId);
-        LOGGER.debug("method deleteCarFeatureFromCar with parameter: [{}]", carId);
+        LOGGER.debug("method deleteCarFeature with parameter: [{}]", carId);
         namedParameterJdbcTemplate.update(DELETE_CAR_FEATURE_LIST_FROM_CAR_SQL, parameters);
     }
 

@@ -63,9 +63,11 @@ public class Car {
      * Sets car id.
      *
      * @param carId the car id
+     * @return car object
      */
-    public void setCarId(final int carId) {
+    public Car setCarId(final int carId) {
         this.carId = carId;
+        return this;
     }
 
     /**
@@ -81,9 +83,11 @@ public class Car {
      * Sets year.
      *
      * @param year the year
+     * @return car object
      */
-    public void setYear(final Date year) {
+    public Car setYear(final Date year) {
         this.year = year;
+        return this;
     }
 
     /**
@@ -99,9 +103,11 @@ public class Car {
      * Sets mileage.
      *
      * @param mileage the mileage
+     * @return car object
      */
-    public void setMileage(final int mileage) {
+    public Car setMileage(final int mileage) {
         this.mileage = mileage;
+        return this;
     }
 
     /**
@@ -117,9 +123,11 @@ public class Car {
      * Sets fuel type.
      *
      * @param fuelType the fuel type
+     * @return car object
      */
-    public void setFuelType(final FuelType fuelType) {
+    public Car setFuelType(final FuelType fuelType) {
         this.fuelType = fuelType;
+        return this;
     }
 
     /**
@@ -135,9 +143,11 @@ public class Car {
      * Sets transmission.
      *
      * @param transmission the transmission
+     * @return car object
      */
-    public void setTransmission(final Transmission transmission) {
+    public Car setTransmission(final Transmission transmission) {
         this.transmission = transmission;
+        return this;
     }
 
     /**
@@ -153,9 +163,11 @@ public class Car {
      * Sets car model.
      *
      * @param carModel the car model
+     * @return car object
      */
-    public void setCarModel(final CarModel carModel) {
+    public Car setCarModel(final CarModel carModel) {
         this.carModel = carModel;
+        return this;
     }
 
     /**
@@ -171,9 +183,11 @@ public class Car {
      * Sets car feature list.
      *
      * @param carFeatureList the car feature list
+     * @return car object
      */
-    public void setCarFeatureList(final List<CarFeature> carFeatureList) {
+    public Car setCarFeatureList(final List<CarFeature> carFeatureList) {
         this.carFeatureList = carFeatureList;
+        return this;
     }
 
     @Override

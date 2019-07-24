@@ -33,24 +33,17 @@ public class TransmissionDaoImpl implements TransmissionDao {
     @Value("${transmissions.list.get}")
     private String GET_LIST_TRANSMISSIONS_SQL;
 
-    /**
-     * named parameter JDBC template.
-     */
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    /**
-     * mapper to get Transmission object.
-     */
+
     private final TransmissionMapper transmissionMapper;
-    /**
-     * Logger.
-     */
+
     private static final Logger LOGGER = LogManager.getLogger(TransmissionDaoImpl.class);
 
     /**
      * Instantiates a new Transmission dao.
      *
-     * @param namedParameterJdbcTemplate the named parameter jdbc template
-     * @param transmissionMapper         the transmission mapper
+     * @param namedParameterJdbcTemplate for connection with database
+     * @param transmissionMapper         mapper to get Transmission object
      */
     public TransmissionDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                                final TransmissionMapper transmissionMapper) {

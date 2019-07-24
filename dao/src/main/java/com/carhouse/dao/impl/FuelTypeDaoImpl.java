@@ -27,24 +27,18 @@ public class FuelTypeDaoImpl implements FuelTypeDao {
      */
     @Value("${fuel.types.list.get}")
     private String GET_LIST_FUEL_TYPES_SQL;
-    /**
-     * named parameter JDBC template.
-     */
+
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    /**
-     * mapper to get FuelType object.
-     */
+
     private final FuelTypeMapper fuelTypeMapper;
-    /**
-     * Logger.
-     */
+
     private static final Logger LOGGER = LogManager.getLogger(FuelTypeDaoImpl.class);
 
     /**
      * Instantiates a new Fuel type dao.
      *
-     * @param namedParameterJdbcTemplate the named parameter jdbc template
-     * @param fuelTypeMapper             the fuel type mapper
+     * @param namedParameterJdbcTemplate for connection with database
+     * @param fuelTypeMapper             mapper to get FuelType object
      */
     @Autowired
     public FuelTypeDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
