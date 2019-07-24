@@ -32,7 +32,7 @@ public class FuelTypeMapper implements RowMapper<FuelType> {
     @Override
     public FuelType mapRow(final ResultSet resultSet, final int i) throws SQLException {
         FuelType fuelType = new FuelType(resultSet.getInt(FUEL_TYPE_ID), resultSet.getString(FUEL_TYPE));
-        LOGGER.debug("row ({}, {}) has been mapped", resultSet.getInt(FUEL_TYPE_ID), resultSet.getString(FUEL_TYPE));
+        LOGGER.debug("row ({}, {}) has been mapped", fuelType.getFuelTypeId(), fuelType.getFuelType());
         return fuelType;
     }
 }

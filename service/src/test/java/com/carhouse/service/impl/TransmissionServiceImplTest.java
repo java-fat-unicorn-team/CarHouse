@@ -44,16 +44,18 @@ class TransmissionServiceImplTest {
 
     @Test
     void getTransmission() {
-        int id = 1;
-        Transmission transmission = listTransmissions.get(id);
-        when(transmissionDao.getTransmission(id)).thenReturn(transmission);
-        assertEquals(transmission.getTransmission(), transmissionService.getTransmission(id).getTransmission());
-        verify(transmissionDao, times(1)).getTransmission(id);
+        int transmissionId = 1;
+        Transmission transmission = listTransmissions.get(transmissionId);
+        when(transmissionDao.getTransmission(transmissionId)).thenReturn(transmission);
+        assertEquals(transmission.getTransmission(),
+                transmissionService.getTransmission(transmissionId).getTransmission());
+        verify(transmissionDao, times(1)).getTransmission(transmissionId);
     }
 
     @Test
     void getNonExistentTransmission() {
-        when(transmissionDao.getTransmission(1)).thenThrow(EmptyResultDataAccessException.class);
-        assertThrows(EmptyResultDataAccessException.class, () -> transmissionService.getTransmission(1));
+        int transmissionId = 1;
+        when(transmissionDao.getTransmission(transmissionId)).thenThrow(EmptyResultDataAccessException.class);
+        assertThrows(EmptyResultDataAccessException.class, () -> transmissionService.getTransmission(transmissionId));
     }
 }

@@ -46,15 +46,16 @@ class CarModelServiceImplTest {
 
     @Test
     void getCarModel() {
-        int id = 1;
-        when(carModelDao.getCarModel(id)).thenReturn(listCarModel.get(id));
-        assertEquals(listCarModel.get(id).getCarModelId(), carModelService.getCarModel(id).getCarModelId());
-        verify(carModelDao, times(1)).getCarModel(id);
+        int carModelId = 1;
+        when(carModelDao.getCarModel(carModelId)).thenReturn(listCarModel.get(carModelId));
+        assertEquals(listCarModel.get(carModelId).getCarModelId(), carModelService.getCarModel(carModelId).getCarModelId());
+        verify(carModelDao, times(1)).getCarModel(carModelId);
     }
 
     @Test
     void gerNonExistentCarModel() {
-        when(carModelDao.getCarModel(10)).thenThrow(EmptyResultDataAccessException.class);
-        assertThrows(EmptyResultDataAccessException.class, () -> carModelService.getCarModel(10));
+        int carModelId = 10;
+        when(carModelDao.getCarModel(carModelId)).thenThrow(EmptyResultDataAccessException.class);
+        assertThrows(EmptyResultDataAccessException.class, () -> carModelService.getCarModel(carModelId));
     }
 }

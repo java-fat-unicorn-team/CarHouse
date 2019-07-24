@@ -58,8 +58,8 @@ public class CarSaleMapper implements RowMapper<CarSale> {
     public CarSale mapRow(final ResultSet resultSet, final int i) throws SQLException {
         CarSale carSale = new CarSale(resultSet.getInt(CAR_SALE_ID), resultSet.getBigDecimal(PRICE),
                 resultSet.getDate(DATE), userMapper.mapRow(resultSet, i), carMapper.mapRow(resultSet, i));
-        LOGGER.debug("row ({}, {}, {}) has been mapped", resultSet.getInt(CAR_SALE_ID),
-                resultSet.getBigDecimal(PRICE), resultSet.getDate(DATE));
+        LOGGER.debug("row ({}, {}, {}) has been mapped", carSale.getCarSaleId(), carSale.getPrice(),
+                carSale.getDate());
         return carSale;
     }
 }

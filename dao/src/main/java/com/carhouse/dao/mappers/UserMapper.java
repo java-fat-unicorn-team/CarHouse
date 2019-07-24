@@ -46,9 +46,8 @@ public class UserMapper implements RowMapper<User> {
     public User mapRow(final ResultSet resultSet, final int i) throws SQLException {
         User user = new User(resultSet.getInt(USER_ID), resultSet.getString(USER_NAME),
                 resultSet.getString(PHONE_NUMBER), resultSet.getString(LOGIN), resultSet.getString(PASSWORD));
-        LOGGER.debug("row ({},{},{},{},{}) has been mapped", resultSet.getInt(USER_ID),
-                resultSet.getString(USER_NAME), resultSet.getString(PHONE_NUMBER), resultSet.getString(LOGIN),
-                resultSet.getString(PASSWORD));
+        LOGGER.debug("row ({},{},{},{},{}) has been mapped", user.getUserId(), user.getUserName(),
+                user.getPhoneNumber(), user.getLogin(), user.getPassword());
         return user;
     }
 }

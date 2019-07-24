@@ -46,10 +46,10 @@ class CarServiceImplTest {
 
     @Test
     void getCar() {
-        int id = 1;
-        when(carDao.getCar(id)).thenReturn(listCars.get(id));
-        assertEquals(listCars.get(id).getCarId(), carService.getCar(id).getCarId());
-        verify(carDao, times(1)).getCar(id);
+        int carId = 1;
+        when(carDao.getCar(carId)).thenReturn(listCars.get(carId));
+        assertEquals(listCars.get(carId).getCarId(), carService.getCar(carId).getCarId());
+        verify(carDao, times(1)).getCar(carId);
     }
 
     @Test
@@ -68,7 +68,8 @@ class CarServiceImplTest {
 
     @Test
     void deleteCar() {
-        carService.deleteCar(2);
-        verify(carDao, times(1)).deleteCar(2);
+        int carId = 2;
+        carService.deleteCar(carId);
+        verify(carDao, times(1)).deleteCar(carId);
     }
 }

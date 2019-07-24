@@ -53,8 +53,9 @@ class CarSaleServiceImplTest {
 
     @Test
     void getNonExistentCarSale() {
-        when(carSaleDao.getCarSale(10)).thenThrow(EmptyResultDataAccessException.class);
-        assertThrows(EmptyResultDataAccessException.class, () -> carSaleService.getCarSale(10));
+        int carSaleId = 10;
+        when(carSaleDao.getCarSale(carSaleId)).thenThrow(EmptyResultDataAccessException.class);
+        assertThrows(EmptyResultDataAccessException.class, () -> carSaleService.getCarSale(carSaleId));
     }
 
     @Test
@@ -80,7 +81,8 @@ class CarSaleServiceImplTest {
 
     @Test
     void deleteCarSale() {
-        carSaleService.deleteCarSale(3);
-        verify(carSaleDao, times(1)).deleteCarSale(3);
+        int carSaleId = 3;
+        carSaleService.deleteCarSale(carSaleId);
+        verify(carSaleDao, times(1)).deleteCarSale(carSaleId);
     }
 }

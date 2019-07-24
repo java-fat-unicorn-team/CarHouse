@@ -37,8 +37,9 @@ class CarFeatureServiceImplTest {
 
     @Test
     void getCarFeatures() {
-        when(carFeatureDao.getCarFeatures(2)).thenReturn(listCarFeature);
-        assertEquals(listCarFeature.size(), carFeatureService.getCarFeatures(2).size());
-        verify(carFeatureDao, times(1)).getCarFeatures(2);
+        int carId = 2;
+        when(carFeatureDao.getCarFeatures(carId)).thenReturn(listCarFeature);
+        assertEquals(listCarFeature.size(), carFeatureService.getCarFeatures(carId).size());
+        verify(carFeatureDao, times(1)).getCarFeatures(carId);
     }
 }

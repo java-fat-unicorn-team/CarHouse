@@ -47,30 +47,33 @@ class CommentServiceImplTest {
 
     @Test
     void getComment() {
-        int id = 2;
-        when(commentDao.getComment(id)).thenReturn(listComments.get(id));
-        assertEquals(listComments.get(id).getUserName(), commentService.getComment(id).getUserName());
-        verify(commentDao, times(1)).getComment(id);
+        int commentId = 2;
+        when(commentDao.getComment(commentId)).thenReturn(listComments.get(commentId));
+        assertEquals(listComments.get(commentId).getUserName(), commentService.getComment(commentId).getUserName());
+        verify(commentDao, times(1)).getComment(commentId);
     }
 
     @Test
     void getNonExistentComment() {
-        when(commentDao.getComment(5)).thenThrow(EmptyResultDataAccessException.class);
-        assertThrows(EmptyResultDataAccessException.class, () -> commentService.getComment(5));
+        int commentId = 2;
+        when(commentDao.getComment(commentId)).thenThrow(EmptyResultDataAccessException.class);
+        assertThrows(EmptyResultDataAccessException.class, () -> commentService.getComment(commentId));
     }
 
     @Test
     void addComment() {
+        int carSaleId = 3;
         Comment comment = new Comment(5, "Sasha", "Cool");
-        commentService.addComment(3, comment);
-        verify(commentDao, times(1)).addComment(3, comment);
+        commentService.addComment(carSaleId, comment);
+        verify(commentDao, times(1)).addComment(carSaleId, comment);
     }
 
     @Test
     void addCommentWithWrongReference() {
+        int carSaleId = 7;
         Comment comment = new Comment(5, "Pasha", "Good");
-        when(commentDao.addComment(7, comment)).thenThrow(DataIntegrityViolationException.class);
-        assertThrows(DataIntegrityViolationException.class, () -> commentService.addComment(7, comment));
+        when(commentDao.addComment(carSaleId, comment)).thenThrow(DataIntegrityViolationException.class);
+        assertThrows(DataIntegrityViolationException.class, () -> commentService.addComment(carSaleId, comment));
     }
 
     @Test
@@ -82,7 +85,8 @@ class CommentServiceImplTest {
 
     @Test
     void deleteComment() {
-        commentService.deleteComment(2);
-        verify(commentDao, times(1)).deleteComment(2);
+        int commentId = 2;
+        commentService.deleteComment(commentId);
+        verify(commentDao, times(1)).deleteComment(commentId);
     }
 }
