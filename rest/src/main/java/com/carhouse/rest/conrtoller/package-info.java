@@ -1,4 +1,4 @@
 /**
  * This package contains controllers.
  */
-package com.carhouse.conrtoller;
+package com.carhouse.rest.conrtoller;

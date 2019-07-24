@@ -30,6 +30,7 @@
     <spring.version>5.1.7.RELEASE</spring.version>
     <jackson.databind.version>2.9.9.1</jackson.databind.version>
     <javax.servlet.api.version>3.1.0</javax.servlet.api.version>
+    <jacoco.maven.plugin>0.8.4</jacoco.maven.plugin>
     <junit.version>5.4.2</junit.version>
     <mockito.junit>2.28.2</mockito.junit>
     <h2.version>1.4.199</h2.version>
@@ -217,6 +218,30 @@
             </targetTests>
             <testPlugin>junit5</testPlugin>
           </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.jacoco</groupId>
+          <artifactId>jacoco-maven-plugin</artifactId>
+          <version>${jacoco.maven.plugin}</version>
+          <configuration>
+            <excludes>
+              <exclude>com.carhouse.rest.config.*</exclude>
+            </excludes>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>prepare-agent</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>report</id>
+              <phase>test</phase>
+              <goals>
+                <goal>report</goal>
+              </goals>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>

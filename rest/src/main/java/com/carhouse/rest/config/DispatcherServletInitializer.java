@@ -1,4 +1,4 @@
-package com.carhouse.config;
+package com.carhouse.rest.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
