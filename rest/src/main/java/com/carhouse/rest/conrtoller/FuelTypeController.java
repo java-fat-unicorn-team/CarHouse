@@ -1,4 +1,4 @@
-package com.carhouse.conrtoller;
+package com.carhouse.rest.conrtoller;
 
 import com.carhouse.model.FuelType;
 import com.carhouse.service.FuelTypeService;

@@ -21,9 +21,6 @@ public class FuelTypeServiceImpl implements FuelTypeService {
 
     private FuelTypeDao fuelTypeDao;
 
-    /**
-     * Logger.
-     */
     private static final Logger LOGGER = LogManager.getLogger(FuelTypeServiceImpl.class);
 
     /**

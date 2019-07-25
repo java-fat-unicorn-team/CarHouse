@@ -2,7 +2,7 @@ package com.carhouse.service.impl;
 
 import com.carhouse.dao.FuelTypeDao;
 import com.carhouse.model.FuelType;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,10 +25,10 @@ class FuelTypeServiceImplTest {
     @InjectMocks
     private FuelTypeServiceImpl fuelTypeService;
 
-    private List<FuelType> listFuelTypes;
+    private static List<FuelType> listFuelTypes;
 
-    @BeforeEach
-    void addFuelTypesToService() {
+    @BeforeAll
+    static void addFuelTypesToService() {
         listFuelTypes = new ArrayList<>() {{
             add(new FuelType(1, "Bensin"));
             add(new FuelType(2, "Diesel"));

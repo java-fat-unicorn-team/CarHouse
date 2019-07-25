@@ -1,21 +1,18 @@
 package com.carhouse.service.impl;
 
 import com.carhouse.dao.CarDao;
-import com.carhouse.model.*;
-import com.carhouse.service.CarService;
-import org.junit.jupiter.api.BeforeEach;
+import com.carhouse.model.Car;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.DataIntegrityViolationException;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,14 +24,14 @@ class CarServiceImplTest {
     @InjectMocks
     private CarServiceImpl carService;
 
-    private List<Car> listCars;
+    private static List<Car> listCars;
 
-    @BeforeEach
-    void addCars() {
+    @BeforeAll
+    static void addCars() {
         listCars = new ArrayList<>() {{
-           add(new Car(1));
-           add(new Car(2));
-           add(new Car(3));
+            add(new Car(1));
+            add(new Car(2));
+            add(new Car(3));
         }};
     }
 

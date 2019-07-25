@@ -3,6 +3,8 @@ package com.carhouse.service.impl;
 import com.carhouse.dao.CarFeatureDao;
 import com.carhouse.model.CarFeature;
 import com.carhouse.service.CarFeatureService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import java.util.List;
 public class CarFeatureServiceImpl implements CarFeatureService {
 
     private CarFeatureDao carFeatureDao;
+
+    private static final Logger LOGGER = LogManager.getLogger(CarFeatureServiceImpl.class);
 
     /**
      * Instantiates a new Car feature service.
@@ -38,6 +42,7 @@ public class CarFeatureServiceImpl implements CarFeatureService {
      */
     @Override
     public List<CarFeature> getCarFeatures(final int carId) {
+        LOGGER.debug("method getCarFeatures with parameter: [{}]", carId);
         return carFeatureDao.getCarFeatures(carId);
     }
 }

@@ -1,5 +1,6 @@
 # CarSale
 [![Build Status](https://travis-ci.com/java-fat-unicorn-team/CarSale.svg?branch=dev)](https://travis-ci.com/java-fat-unicorn-team/CarSale)
+[![codecov](https://codecov.io/gh/java-fat-unicorn-team/CarSale/branch/master/graph/badge.svg)](https://codecov.io/gh/java-fat-unicorn-team/CarSale)
 ## Main topic of project
 It will be a web application where you can place an advertisement for the sale of a car or find a car for yourself.\
 There is DB model hierarchy [here](https://github.com/java-fat-unicorn-team/CarSale/blob/dev/docs/diagram.png).

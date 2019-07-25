@@ -3,6 +3,8 @@ package com.carhouse.service.impl;
 import com.carhouse.dao.CommentDao;
 import com.carhouse.model.Comment;
 import com.carhouse.service.CommentService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
 
     private CommentDao commentDao;
+
+    private static final Logger LOGGER = LogManager.getLogger(CommentServiceImpl.class);
 
     /**
      * Instantiates a new Comment service.
@@ -38,6 +42,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public List<Comment> getCarSaleComments(final int carSaleId) {
+        LOGGER.debug("method getCarSaleComments with parameter: [{}]", carSaleId);
         return commentDao.getCarSaleComments(carSaleId);
     }
 
@@ -49,6 +54,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public Comment getComment(final int id) {
+        LOGGER.debug("method getComment with parameter: [{}]", id);
         return commentDao.getComment(id);
     }
 
@@ -62,6 +68,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public Integer addComment(final int carSaleId, final Comment comment) {
+        LOGGER.debug("method addComment with parameters: [{}, {}]", carSaleId, comment);
         return commentDao.addComment(carSaleId, comment);
     }
 
@@ -73,6 +80,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public void updateComment(final Comment comment) {
+        LOGGER.debug("method updateComment with parameter: [{}]", comment);
         commentDao.updateComment(comment);
     }
 
@@ -83,6 +91,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public void deleteComment(final int id) {
+        LOGGER.debug("method deleteComment with parameter: [{}]", id);
         commentDao.deleteComment(id);
     }
 }
