@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * The interface provides methods to manage Car model.
+ *
  * @author Katuranau Maksimilyan
  * @see Car
  */
@@ -23,7 +24,7 @@ public interface CarDao {
      * @param id the car id
      * @return the car
      */
-     Car getCar(int id);
+    Car getCar(int id);
 
     /**
      * Add car.
@@ -45,6 +46,7 @@ public interface CarDao {
      * Delete car by id.
      *
      * @param id the car id
+     * @return check or car is deleted
      */
-    void deleteCar(int id);
+    boolean deleteCar(int id);
 }

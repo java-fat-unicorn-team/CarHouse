@@ -75,4 +75,10 @@ class CommentDaoImplTest {
         assertEquals(size- 1, commentDao.getCarSaleComments(4).size());
         assertThrows(EmptyResultDataAccessException.class, () -> commentDao.getComment(3));
     }
+
+
+    @Test
+    void deleteNotExistComment() {
+        assertFalse(commentDao.deleteComment(10));
+    }
 }

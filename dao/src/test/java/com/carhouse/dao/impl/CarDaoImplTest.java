@@ -16,8 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.sql.Date;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {TestConfig.class, TestSpringJDBCConfig.class})
@@ -104,9 +103,14 @@ class CarDaoImplTest {
     @Test
     void deleteCar() {
         int size = carDao.getCars().size();
-        carDao.deleteCar(5);
+        carDao.deleteCar(10);
         assertEquals(size - 1, carDao.getCars().size());
         assertThrows(EmptyResultDataAccessException.class, () -> carDao.getCar(5));
+    }
+
+    @Test
+    void deleteNotExistCar() {
+        assertFalse(carDao.deleteCar(10));
     }
 
     @Test

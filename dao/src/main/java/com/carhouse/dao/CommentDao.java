@@ -49,6 +49,7 @@ public interface CommentDao {
      * Delete comment by id.
      *
      * @param id the index
+     * @return check or comment is deleted
      */
-    void deleteComment(int id);
+    boolean deleteComment(int id);
 }

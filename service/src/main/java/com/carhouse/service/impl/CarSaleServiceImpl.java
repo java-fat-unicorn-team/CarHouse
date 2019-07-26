@@ -3,9 +3,12 @@ package com.carhouse.service.impl;
 import com.carhouse.dao.CarSaleDao;
 import com.carhouse.model.CarSale;
 import com.carhouse.service.CarSaleService;
+import com.carhouse.service.exception.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,7 +57,11 @@ public class CarSaleServiceImpl implements CarSaleService {
     @Override
     public CarSale getCarSale(final int carSaleId) {
         LOGGER.debug("method getCarSale with parameter: [{}]", carSaleId);
-        return carSaleDao.getCarSale(carSaleId);
+        try {
+            return carSaleDao.getCarSale(carSaleId);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new NotFoundException("there is not such car sale");
+        }
     }
 
     /**
@@ -66,7 +73,11 @@ public class CarSaleServiceImpl implements CarSaleService {
     @Override
     public Integer addCarSale(final CarSale carSale) {
         LOGGER.debug("method addCarSale with parameter: [{}]", carSale);
-        return carSaleDao.addCarSale(carSale);
+        try {
+            return carSaleDao.addCarSale(carSale);
+        } catch (DataIntegrityViolationException ex) {
+            throw new WrongReferenceException("there is wrong references in your car sale");
+        }
     }
 
     /**
@@ -78,7 +89,12 @@ public class CarSaleServiceImpl implements CarSaleService {
     @Override
     public void updateCarSale(final CarSale carSale) {
         LOGGER.debug("method updateCarSale with parameter: [{}]", carSale);
-        carSaleDao.updateCarSale(carSale);
+        getCarSale(carSale.getCarSaleId());
+        try {
+            carSaleDao.updateCarSale(carSale);
+        } catch (DataIntegrityViolationException ex) {
+            throw new WrongReferenceException("there is wrong references in your car sale");
+        }
     }
 
     /**
@@ -89,6 +105,12 @@ public class CarSaleServiceImpl implements CarSaleService {
     @Override
     public void deleteCarSale(final int carSaleId) {
         LOGGER.debug("method deleteCarSale with parameter: [{}]", carSaleId);
-        carSaleDao.deleteCarSale(carSaleId);
+        try {
+            if (!carSaleDao.deleteCarSale(carSaleId)) {
+                throw new NotFoundException("car sale you try to delete does not exist");
+            }
+        } catch (DataIntegrityViolationException ex) {
+            throw new WrongReferenceException("car sale you try to delete has references");
+        }
     }
 }
