@@ -46,7 +46,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> getCarSaleComments(final int carSaleId) {
         LOGGER.debug("method getCarSaleComments with parameter: [{}]", carSaleId);
-        return commentDao.getCarSaleComments(carSaleId);
+        try {
+            return commentDao.getCarSaleComments(carSaleId);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new NotFoundException("there is not such comment");
+        }
     }
 
     /**
@@ -76,6 +80,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Integer addComment(final int carSaleId, final Comment comment) {
         LOGGER.debug("method addComment with parameters: [{}, {}]", carSaleId, comment);
+        getCarSaleComments(carSaleId);
         try {
             return commentDao.addComment(carSaleId, comment);
         } catch (DataIntegrityViolationException ex) {
@@ -92,6 +97,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void updateComment(final Comment comment) {
         LOGGER.debug("method updateComment with parameter: [{}]", comment);
+        getComment(comment.getCommentId());
         try {
             commentDao.updateComment(comment);
         } catch (DataIntegrityViolationException ex) {
@@ -107,7 +113,6 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteComment(final int id) {
         LOGGER.debug("method deleteComment with parameter: [{}]", id);
-        commentDao.deleteComment(id);
         try {
             if (!commentDao.deleteComment(id)) {
                 throw new NotFoundException("comment you are trying to delete does not exist");

@@ -146,16 +146,17 @@ public class CarDaoImpl implements CarDao {
      * To correctly change references the method first remove old references and then add new
      *
      * @param car the car model
+     * @return check or car is update
      */
     @Override
-    public void updateCar(final Car car) {
+    public boolean updateCar(final Car car) {
         LOGGER.debug("method updateCar with parameter: [{}]", car);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         carHasCarFeatureDao.deleteAllCarFeatures(car.getCarId());
         car.getCarFeatureList().forEach(carFeature -> {
             carHasCarFeatureDao.addCarFeature(car.getCarId(), carFeature.getCarFeatureId());
         });
-        namedParameterJdbcTemplate.update(UPDATE_CAR_SQL, parameterSource.getCarParameters(car), keyHolder);
+        return namedParameterJdbcTemplate.update(UPDATE_CAR_SQL, parameterSource.getCarParameters(car), keyHolder) == 1;
     }
 
     /**

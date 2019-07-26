@@ -94,12 +94,15 @@ class CarSaleDaoImplTest {
     }
 
     @Test
-    void deleteNotExistCarSale() {
-        assertFalse(carSaleDao.deleteCarSale(10));
+    void deleteCarSaleWhichHaveReferences() {
+        int size = carSaleDao.getCarSales().size();
+        carSaleDao.deleteCarSale(4);
+        assertEquals(size - 1, carSaleDao.getCarSales().size());
+        assertThrows(EmptyResultDataAccessException.class, () -> carSaleDao.getCarSale(4));
     }
 
     @Test
-    void deleteCarSaleWhichHaveReferences() {
-        assertThrows(DataIntegrityViolationException.class, () -> carSaleDao.deleteCarSale(4));
+    void deleteNotExistCarSale() {
+        assertFalse(carSaleDao.deleteCarSale(10));
     }
 }

@@ -125,7 +125,7 @@ CREATE TABLE `comment`
     `car_sale_id` int(11)      NOT NULL,
     PRIMARY KEY (`comment_id`),
     CONSTRAINT `fk_car_sale_id` FOREIGN KEY (`car_sale_id`) REFERENCES `car_sale` (`car_sale_id`)
-        ON DELETE NO ACTION ON UPDATE NO ACTION
+        ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8;

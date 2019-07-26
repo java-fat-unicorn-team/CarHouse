@@ -89,6 +89,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public void updateCar(final Car car) {
         LOGGER.debug("method updateCar with parameter: [{}]", car);
+        getCar(car.getCarId());
         try {
             carDao.updateCar(car);
         } catch (DataIntegrityViolationException ex) {

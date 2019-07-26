@@ -42,8 +42,9 @@ public interface CommentDao {
      * Gets id from comment object
      *
      * @param comment the comment
+     * @return check or car is update
      */
-    void updateComment(Comment comment);
+    boolean updateComment(Comment comment);
 
     /**
      * Delete comment by id.

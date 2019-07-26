@@ -2,6 +2,8 @@ package com.carhouse.service.impl;
 
 import com.carhouse.dao.CommentDao;
 import com.carhouse.model.Comment;
+import com.carhouse.service.exception.NotFoundException;
+import com.carhouse.service.exception.WrongReferenceException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,7 +60,7 @@ class CommentServiceImplTest {
     void getNonExistentComment() {
         int commentId = 2;
         when(commentDao.getComment(commentId)).thenThrow(EmptyResultDataAccessException.class);
-        assertThrows(EmptyResultDataAccessException.class, () -> commentService.getComment(commentId));
+        assertThrows(NotFoundException.class, () -> commentService.getComment(commentId));
     }
 
     @Test
@@ -74,7 +76,7 @@ class CommentServiceImplTest {
         int carSaleId = 7;
         Comment comment = new Comment(5, "Pasha", "Good");
         when(commentDao.addComment(carSaleId, comment)).thenThrow(DataIntegrityViolationException.class);
-        assertThrows(DataIntegrityViolationException.class, () -> commentService.addComment(carSaleId, comment));
+        assertThrows(WrongReferenceException.class, () -> commentService.addComment(carSaleId, comment));
     }
 
     @Test
@@ -85,9 +87,24 @@ class CommentServiceImplTest {
     }
 
     @Test
+    void updateNotExistComment() {
+        Comment comment = new Comment(5, "Masha", "Very good");
+        when(commentDao.getComment(comment.getCommentId())).thenThrow(EmptyResultDataAccessException.class);
+        assertThrows(NotFoundException.class, () -> commentService.updateComment(comment));
+    }
+
+    @Test
     void deleteComment() {
         int commentId = 2;
+        when(commentDao.deleteComment(commentId)).thenReturn(true);
         commentService.deleteComment(commentId);
         verify(commentDao, times(1)).deleteComment(commentId);
+    }
+
+    @Test
+    void deleteNotExistCar() {
+        int commentId = 12;
+        when(commentDao.deleteComment(commentId)).thenReturn(false);
+        assertThrows(NotFoundException.class, () -> commentService.deleteComment(commentId));
     }
 }

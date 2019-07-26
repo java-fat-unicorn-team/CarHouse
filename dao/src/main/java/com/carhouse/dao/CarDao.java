@@ -39,8 +39,9 @@ public interface CarDao {
      * Gets car id from car object
      *
      * @param car the car model
+     * @return check or car is update
      */
-    void updateCar(Car car);
+    boolean updateCar(Car car);
 
     /**
      * Delete car by id.

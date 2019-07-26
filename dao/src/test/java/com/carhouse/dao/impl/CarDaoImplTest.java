@@ -97,25 +97,19 @@ class CarDaoImplTest {
         assertThrows(DataIntegrityViolationException.class, () -> carDao.updateCar(
                 new Car(2, Date.valueOf("2016-07-01"), 233455, new FuelType(10),
                         new Transmission(20), new CarModel(15, new CarMake(21)),
-                        null)));
+                        new ArrayList<>())));
     }
 
     @Test
     void deleteCar() {
         int size = carDao.getCars().size();
-        carDao.deleteCar(10);
+        carDao.deleteCar(4);
         assertEquals(size - 1, carDao.getCars().size());
-        assertThrows(EmptyResultDataAccessException.class, () -> carDao.getCar(5));
+        assertThrows(EmptyResultDataAccessException.class, () -> carDao.getCar(4));
     }
 
     @Test
     void deleteNotExistCar() {
         assertFalse(carDao.deleteCar(10));
-    }
-
-    @Test
-    void deleteCarWhichHaveReferences() {
-        assertThrows(DataIntegrityViolationException.class,
-                () -> carDao.deleteCar(3));
     }
 }
