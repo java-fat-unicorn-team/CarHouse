@@ -1,0 +1,65 @@
+[
+  {
+    "carSaleId": 1,
+    "price": 23200,
+    "date": 1564151591106,
+    "user": {
+      "userId": 1,
+      "userName": null,
+      "phoneNumber": null,
+      "login": null,
+      "password": null
+    },
+    "car": {
+      "carId": 3,
+      "year": null,
+      "mileage": 0,
+      "fuelType": null,
+      "transmission": null,
+      "carModel": null,
+      "carFeatureList": null
+    }
+  },
+  {
+    "carSaleId": 2,
+    "price": 50250,
+    "date": 1564151591106,
+    "user": {
+      "userId": 1,
+      "userName": null,
+      "phoneNumber": null,
+      "login": null,
+      "password": null
+    },
+    "car": {
+      "carId": 3,
+      "year": null,
+      "mileage": 0,
+      "fuelType": null,
+      "transmission": null,
+      "carModel": null,
+      "carFeatureList": null
+    }
+  },
+  {
+    "carSaleId": 3,
+    "price": 47320,
+    "date": 1564151591106,
+    "user": {
+      "userId": 1,
+      "userName": null,
+      "phoneNumber": null,
+      "login": null,
+      "password": null
+    },
+    "car": {
+      "carId": 3,
+      "year": null,
+      "mileage": 0,
+      "fuelType": null,
+      "transmission": null,
+      "carModel": null,
+      "carFeatureList": null
+    }
+  }
+]

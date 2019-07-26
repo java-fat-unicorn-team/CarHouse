@@ -1,23 +1,24 @@
 package com.carhouse.rest.conrtoller;
 
 import com.carhouse.model.*;
-import com.carhouse.rest.JsonConverter;
 import com.carhouse.service.CarService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.sql.Date;
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -26,30 +27,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 class CarControllerTest {
 
+    private static final String CARS_LIST_STORAGE_JSON = "car-list-storage.json";
+
     @Mock
     private CarService carService;
 
     @InjectMocks
     private CarController carController;
 
-    private JsonConverter jsonConverter = new JsonConverter();
+    private ObjectMapper objectMapper = new ObjectMapper();
     private List<Car> carList;
     private MockMvc mockMvc;
 
     @BeforeEach
-    void setup() {
+    void setup() throws IOException {
         mockMvc = MockMvcBuilders.standaloneSetup(carController).build();
-        Car newCar = new Car(2, Date.valueOf("2016-03-02"),
-                133455, new FuelType(2), new Transmission(1), new CarModel(3,
-                new CarMake(2)), new ArrayList<>() {{
-            add(new CarFeature(2, ""));
-            add(new CarFeature(1, ""));
-        }});
-        carList = new ArrayList<>() {{
-            add(new Car(1));
-            add(newCar);
-            add(new Car(3));
-        }};
+        File file = new ClassPathResource(CARS_LIST_STORAGE_JSON).getFile();
+        carList = objectMapper.readValue(file, new TypeReference<List<Car>>(){});
     }
 
     @Test
@@ -58,7 +52,7 @@ class CarControllerTest {
         mockMvc.perform(get("/carSale/car"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(content().json(jsonConverter.asJsonString(carList)));
+                .andExpect(content().json(objectMapper.writeValueAsString(carList)));
         verify(carService, times(1)).getCars();
     }
 
@@ -70,7 +64,7 @@ class CarControllerTest {
         mockMvc.perform(get("/carSale/car/{carId}", carId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(content().json(jsonConverter.asJsonString(car)));
+                .andExpect(content().json(objectMapper.writeValueAsString(car)));
         verify(carService, times(1)).getCar(carId);
     }
 
@@ -81,9 +75,9 @@ class CarControllerTest {
         when(carService.addCar(any(Car.class))).thenReturn(carId);
         mockMvc.perform(post("/carSale/car")
             .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-            .content(jsonConverter.asJsonString(car)))
+            .content(objectMapper.writeValueAsString(car)))
                 .andExpect(status().isCreated())
-                .andExpect(content().json(jsonConverter.asJsonString(carId)));
+                .andExpect(content().json(objectMapper.writeValueAsString(carId)));
         verify(carService, times(1)).addCar(any(Car.class));
     }
 
@@ -93,7 +87,7 @@ class CarControllerTest {
         Car car = carList.get(carId);
         mockMvc.perform(put("/carSale/car")
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .content(jsonConverter.asJsonString(car)))
+                .content(objectMapper.writeValueAsString(car)))
                 .andExpect(status().isOk());
         verify(carService, times(1)).updateCar(any(Car.class));
     }

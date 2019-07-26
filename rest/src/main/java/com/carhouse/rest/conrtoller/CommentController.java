@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * The Transmission controller.
- * It is rest controller which sends data as JSON.
+ * Provide endpoints to manage comment model
  *
  * @author Katuranau Maksimilyan
  */
@@ -20,9 +20,9 @@ import java.util.List;
 @RestController
 public class CommentController {
 
-    private CommentService commentService;
-
     private static final Logger LOGGER = LogManager.getLogger(CommentController.class);
+
+    private CommentService commentService;
 
     /**
      * Instantiates a new Comment controller.

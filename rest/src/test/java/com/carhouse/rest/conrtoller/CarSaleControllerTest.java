@@ -1,23 +1,22 @@
 package com.carhouse.rest.conrtoller;
 
-import com.carhouse.model.Car;
 import com.carhouse.model.CarSale;
-import com.carhouse.model.User;
-import com.carhouse.rest.JsonConverter;
 import com.carhouse.service.CarSaleService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
@@ -28,24 +27,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 class CarSaleControllerTest {
 
+    public static final String CAR_SALE_LIST_STORAGE_JSON = "car-sale-list-storage.json";
+
     @Mock
     private CarSaleService carSaleService;
 
     @InjectMocks
     private CarSaleController carSaleController;
 
-    private JsonConverter jsonConverter = new JsonConverter();
+    private ObjectMapper objectMapper = new ObjectMapper();
     private List<CarSale> listCarSale;
     private MockMvc mockMvc;
 
     @BeforeEach
-    void setup() {
+    void setup() throws IOException {
         mockMvc = MockMvcBuilders.standaloneSetup(carSaleController).build();
-        listCarSale = new ArrayList<>() {{
-            add(new CarSale(1, new BigDecimal(23200), new Date(), new User(1), new Car(3)));
-            add(new CarSale(2, new BigDecimal(50250), new Date(), new User(1), new Car(3)));
-            add(new CarSale(3, new BigDecimal(47320), new Date(), new User(1), new Car(3)));
-        }};
+        File file = new ClassPathResource(CAR_SALE_LIST_STORAGE_JSON).getFile();
+        listCarSale = objectMapper.readValue(file, new TypeReference<List<CarSale>>() {
+        });
     }
 
     @Test
@@ -54,7 +53,7 @@ class CarSaleControllerTest {
         mockMvc.perform(get("/carSale"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(content().json(jsonConverter.asJsonString(listCarSale)));
+                .andExpect(content().json(objectMapper.writeValueAsString(listCarSale)));
         verify(carSaleService, times(1)).getCarSales();
     }
 
@@ -65,7 +64,7 @@ class CarSaleControllerTest {
         mockMvc.perform(get("/carSale/{carSaleId}", carSaleId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(content().json(jsonConverter.asJsonString(listCarSale.get(carSaleId))));
+                .andExpect(content().json(objectMapper.writeValueAsString(listCarSale.get(carSaleId))));
         verify(carSaleService, times(1)).getCarSale(carSaleId);
     }
 
@@ -76,10 +75,10 @@ class CarSaleControllerTest {
         when(carSaleService.addCarSale(any(CarSale.class))).thenReturn(carSaleId);
         mockMvc.perform(post("/carSale")
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .content(jsonConverter.asJsonString(carSale)))
+                .content(objectMapper.writeValueAsString(carSale)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(content().json(jsonConverter.asJsonString(carSaleId)));
+                .andExpect(content().json(objectMapper.writeValueAsString(carSaleId)));
         verify(carSaleService, times(1)).addCarSale(any(CarSale.class));
     }
 
@@ -89,7 +88,7 @@ class CarSaleControllerTest {
         CarSale carSale = listCarSale.get(carSaleId);
         mockMvc.perform(put("/carSale")
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .content(jsonConverter.asJsonString(carSale)))
+                .content(objectMapper.writeValueAsString(carSale)))
                 .andExpect(status().isOk());
         verify(carSaleService, times(1)).updateCarSale(any(CarSale.class));
     }

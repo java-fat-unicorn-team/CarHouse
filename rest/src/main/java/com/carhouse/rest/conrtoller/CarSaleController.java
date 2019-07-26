@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * The Car sale controller.
- * It is rest controller which sends data as JSON.
+ * Provide endpoints to manage car sale model
  *
  * @author Katuranau Maksimilyan
  */
@@ -20,9 +20,9 @@ import java.util.List;
 @RestController
 public class CarSaleController {
 
-    private CarSaleService carSaleService;
-
     private static final Logger LOGGER = LogManager.getLogger(CarSaleController.class);
+
+    private CarSaleService carSaleService;
 
     /**
      * Instantiates a new Car sale controller.

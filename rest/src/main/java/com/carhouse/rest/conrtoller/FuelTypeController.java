@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * The Fuel type controller.
- * It is rest controller which sends data as JSON.
+ * Provide endpoints to manage fuel type model
  *
  * @author Katuranau Maksimilyan
  */
@@ -19,9 +19,9 @@ import java.util.List;
 @RestController
 public class FuelTypeController {
 
-    private FuelTypeService fuelTypeService;
-
     private static final Logger LOGGER = LogManager.getLogger(FuelTypeController.class);
+
+    private FuelTypeService fuelTypeService;
 
     /**
      * Instantiates a new Fuel type controller.

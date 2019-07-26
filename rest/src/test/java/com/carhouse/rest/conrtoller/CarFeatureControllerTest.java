@@ -1,8 +1,8 @@
 package com.carhouse.rest.conrtoller;
 
 import com.carhouse.model.CarFeature;
-import com.carhouse.rest.JsonConverter;
 import com.carhouse.service.CarFeatureService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -31,7 +30,7 @@ class CarFeatureControllerTest {
     @InjectMocks
     private CarFeatureController carFeatureController;
 
-    private JsonConverter jsonConverter = new JsonConverter();
+    private ObjectMapper objectMapper = new ObjectMapper();
     private List<CarFeature> listCarFeature;
     private MockMvc mockMvc;
 
@@ -52,7 +51,7 @@ class CarFeatureControllerTest {
         mockMvc.perform(get("/carSale/car/{carId}/carFeature", carId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(content().json(jsonConverter.asJsonString(listCarFeature)));
+                .andExpect(content().json(objectMapper.writeValueAsString(listCarFeature)));
         verify(carFeatureService, times(1)).getCarFeatures(carId);
     }
 
@@ -62,7 +61,7 @@ class CarFeatureControllerTest {
         mockMvc.perform(get("/carSale/car/carFeature"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(content().json(jsonConverter.asJsonString(listCarFeature)));
+                .andExpect(content().json(objectMapper.writeValueAsString(listCarFeature)));
         verify(carFeatureService, times(1)).getAllFeatures();
     }
 }
