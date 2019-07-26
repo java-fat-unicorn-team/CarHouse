@@ -94,6 +94,11 @@ class CarSaleDaoImplTest {
     }
 
     @Test
+    void deleteNotExistCarSale() {
+        assertFalse(carSaleDao.deleteCarSale(10));
+    }
+
+    @Test
     void deleteCarSaleWhichHaveReferences() {
         assertThrows(DataIntegrityViolationException.class, () -> carSaleDao.deleteCarSale(4));
     }

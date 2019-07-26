@@ -151,24 +151,24 @@ public class CarDaoImpl implements CarDao {
     public void updateCar(final Car car) {
         LOGGER.debug("method updateCar with parameter: [{}]", car);
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(UPDATE_CAR_SQL,
-                parameterSource.getCarParameters(car), keyHolder);
         carHasCarFeatureDao.deleteAllCarFeatures(car.getCarId());
         car.getCarFeatureList().forEach(carFeature -> {
             carHasCarFeatureDao.addCarFeature(car.getCarId(), carFeature.getCarFeatureId());
         });
+        namedParameterJdbcTemplate.update(UPDATE_CAR_SQL, parameterSource.getCarParameters(car), keyHolder);
     }
 
     /**
      * Delete car by id.
      *
      * @param id the car id
+     * @return check or car is deleted
      */
     @Override
-    public void deleteCar(final int id) {
+    public boolean deleteCar(final int id) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", id);
         LOGGER.debug("method deleteCar with parameter: [{}]", id);
-        namedParameterJdbcTemplate.update(DELETE_CAR_SQL, parameters);
+        return namedParameterJdbcTemplate.update(DELETE_CAR_SQL, parameters) == 1;
     }
 }

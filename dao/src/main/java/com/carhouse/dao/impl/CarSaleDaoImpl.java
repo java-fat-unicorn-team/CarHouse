@@ -135,12 +135,13 @@ public class CarSaleDaoImpl implements CarSaleDao {
      * Delete car sale by id.
      *
      * @param carSaleId the car sale id
+     * @return check or car sale is deleted
      */
     @Override
-    public void deleteCarSale(final int carSaleId) {
+    public boolean deleteCarSale(final int carSaleId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", carSaleId);
         LOGGER.debug("method deleteCarSale with parameter: [{}]", carSaleId);
-        namedParameterJdbcTemplate.update(DELETE_CAR_SALE_SQL, parameters);
+        return namedParameterJdbcTemplate.update(DELETE_CAR_SALE_SQL, parameters) == 1;
     }
 }

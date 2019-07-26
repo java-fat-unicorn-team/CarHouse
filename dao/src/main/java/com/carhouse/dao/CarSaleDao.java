@@ -48,6 +48,7 @@ public interface CarSaleDao {
      * Delete car sale by id.
      *
      * @param carSaleId the car sale id
+     * @return check or car sale is deleted
      */
-    void deleteCarSale(int carSaleId);
+    boolean deleteCarSale(int carSaleId);
 }

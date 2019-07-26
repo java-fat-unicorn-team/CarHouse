@@ -3,9 +3,12 @@ package com.carhouse.service.impl;
 import com.carhouse.dao.CarDao;
 import com.carhouse.model.Car;
 import com.carhouse.service.CarService;
+import com.carhouse.service.exception.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,7 +57,11 @@ public class CarServiceImpl implements CarService {
     @Override
     public Car getCar(final int id) {
         LOGGER.debug("method getCar with parameter: [{}]", id);
-        return carDao.getCar(id);
+        try {
+            return carDao.getCar(id);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new NotFoundException("there is not such car");
+        }
     }
 
     /**
@@ -66,7 +73,11 @@ public class CarServiceImpl implements CarService {
     @Override
     public Integer addCar(final Car car) {
         LOGGER.debug("method addCar with parameter: [{}]", car);
-        return carDao.addCar(car);
+        try {
+            return carDao.addCar(car);
+        } catch (DataIntegrityViolationException ex) {
+            throw new WrongReferenceException("there is wrong references in your car");
+        }
     }
 
     /**
@@ -78,7 +89,11 @@ public class CarServiceImpl implements CarService {
     @Override
     public void updateCar(final Car car) {
         LOGGER.debug("method updateCar with parameter: [{}]", car);
-        carDao.updateCar(car);
+        try {
+            carDao.updateCar(car);
+        } catch (DataIntegrityViolationException ex) {
+            throw new WrongReferenceException("there is wrong references in your car");
+        }
     }
 
     /**
@@ -89,6 +104,12 @@ public class CarServiceImpl implements CarService {
     @Override
     public void deleteCar(final int id) {
         LOGGER.debug("method deleteCar with parameter: [{}]", id);
-        carDao.deleteCar(id);
+        try {
+            if (!carDao.deleteCar(id)) {
+                throw new NotFoundException("car you are trying to delete does not exist");
+            }
+        } catch (DataIntegrityViolationException ex) {
+            throw new WrongReferenceException("car you are trying to delete has references");
+        }
     }
 }

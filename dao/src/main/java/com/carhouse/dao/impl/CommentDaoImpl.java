@@ -128,19 +128,21 @@ public class CommentDaoImpl implements CommentDao {
     @Override
     public void updateComment(final Comment comment) {
         LOGGER.debug("method updateComment with parameter: [{}]", comment);
-        namedParameterJdbcTemplate.update(UPDATE_COMMENT_SQL, parameterSource.getCommentParameters(comment));
+        namedParameterJdbcTemplate.update(UPDATE_COMMENT_SQL,
+                parameterSource.getCommentParameters(comment));
     }
 
     /**
      * Delete comment by id.
      *
      * @param carSaleId the index
+     * @return check or comment is deleted
      */
     @Override
-    public void deleteComment(final int carSaleId) {
+    public boolean deleteComment(final int carSaleId) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", carSaleId);
         LOGGER.debug("method deleteComment with parameter: [{}]", carSaleId);
-        namedParameterJdbcTemplate.update(DELETE_COMMENT_SQL, parameters);
+        return namedParameterJdbcTemplate.update(DELETE_COMMENT_SQL, parameters) == 1;
     }
 }

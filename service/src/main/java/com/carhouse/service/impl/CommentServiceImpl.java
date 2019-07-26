@@ -3,9 +3,12 @@ package com.carhouse.service.impl;
 import com.carhouse.dao.CommentDao;
 import com.carhouse.model.Comment;
 import com.carhouse.service.CommentService;
+import com.carhouse.service.exception.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,7 +58,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment getComment(final int id) {
         LOGGER.debug("method getComment with parameter: [{}]", id);
-        return commentDao.getComment(id);
+        try {
+            return commentDao.getComment(id);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new NotFoundException("there is not such comment");
+        }
     }
 
     /**
@@ -69,7 +76,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Integer addComment(final int carSaleId, final Comment comment) {
         LOGGER.debug("method addComment with parameters: [{}, {}]", carSaleId, comment);
-        return commentDao.addComment(carSaleId, comment);
+        try {
+            return commentDao.addComment(carSaleId, comment);
+        } catch (DataIntegrityViolationException ex) {
+            throw new WrongReferenceException("there is wrong references in your comment");
+        }
     }
 
     /**
@@ -81,7 +92,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void updateComment(final Comment comment) {
         LOGGER.debug("method updateComment with parameter: [{}]", comment);
-        commentDao.updateComment(comment);
+        try {
+            commentDao.updateComment(comment);
+        } catch (DataIntegrityViolationException ex) {
+            throw new WrongReferenceException("there is wrong references in your comment");
+        }
     }
 
     /**
@@ -93,5 +108,12 @@ public class CommentServiceImpl implements CommentService {
     public void deleteComment(final int id) {
         LOGGER.debug("method deleteComment with parameter: [{}]", id);
         commentDao.deleteComment(id);
+        try {
+            if (!commentDao.deleteComment(id)) {
+                throw new NotFoundException("comment you are trying to delete does not exist");
+            }
+        } catch (DataIntegrityViolationException ex) {
+            throw new WrongReferenceException("comment you are trying to delete has references");
+        }
     }
 }
