@@ -105,12 +105,8 @@ public class CarSaleServiceImpl implements CarSaleService {
     @Override
     public void deleteCarSale(final int carSaleId) {
         LOGGER.debug("method deleteCarSale with parameter: [{}]", carSaleId);
-        try {
-            if (!carSaleDao.deleteCarSale(carSaleId)) {
-                throw new NotFoundException("car sale you try to delete does not exist");
-            }
-        } catch (DataIntegrityViolationException ex) {
-            throw new WrongReferenceException("car sale you try to delete has references");
+        if (!carSaleDao.deleteCarSale(carSaleId)) {
+            throw new NotFoundException("car sale you try to delete does not exist");
         }
     }
 }

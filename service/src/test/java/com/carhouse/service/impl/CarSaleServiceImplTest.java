@@ -2,6 +2,8 @@ package com.carhouse.service.impl;
 
 import com.carhouse.dao.CarSaleDao;
 import com.carhouse.model.CarSale;
+import com.carhouse.service.exception.NotFoundException;
+import com.carhouse.service.exception.WrongReferenceException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,7 +58,7 @@ class CarSaleServiceImplTest {
     void getNonExistentCarSale() {
         int carSaleId = 10;
         when(carSaleDao.getCarSale(carSaleId)).thenThrow(EmptyResultDataAccessException.class);
-        assertThrows(EmptyResultDataAccessException.class, () -> carSaleService.getCarSale(carSaleId));
+        assertThrows(NotFoundException.class, () -> carSaleService.getCarSale(carSaleId));
     }
 
     @Test
@@ -70,7 +72,7 @@ class CarSaleServiceImplTest {
     void addCarSaleWithWrongReference() {
         CarSale carSale = new CarSale(7);
         when(carSaleDao.addCarSale(carSale)).thenThrow(DataIntegrityViolationException.class);
-        assertThrows(DataIntegrityViolationException.class, () -> carSaleDao.addCarSale(carSale));
+        assertThrows(WrongReferenceException.class, () -> carSaleService.addCarSale(carSale));
     }
 
     @Test
@@ -81,9 +83,31 @@ class CarSaleServiceImplTest {
     }
 
     @Test
+    void updateCarSaleWithWrongReference() {
+        CarSale carSale = new CarSale(4);
+        when(carSaleDao.updateCarSale(carSale)).thenThrow(DataIntegrityViolationException.class);
+        assertThrows(WrongReferenceException.class, () -> carSaleService.updateCarSale(carSale));
+    }
+
+    @Test
+    void updateNotExistCarSale() {
+        CarSale carSale = new CarSale(17);
+        when(carSaleDao.getCarSale(carSale.getCarSaleId())).thenThrow(EmptyResultDataAccessException.class);
+        assertThrows(NotFoundException.class, () -> carSaleService.updateCarSale(carSale));
+    }
+
+    @Test
     void deleteCarSale() {
         int carSaleId = 3;
+        when(carSaleDao.deleteCarSale(carSaleId)).thenReturn(true);
         carSaleService.deleteCarSale(carSaleId);
         verify(carSaleDao, times(1)).deleteCarSale(carSaleId);
+    }
+
+    @Test
+    void deleteNotExistCarSale() {
+        int carSaleId = 12;
+        when(carSaleDao.deleteCarSale(carSaleId)).thenReturn(false);
+        assertThrows(NotFoundException.class, () -> carSaleService.deleteCarSale(carSaleId));
     }
 }

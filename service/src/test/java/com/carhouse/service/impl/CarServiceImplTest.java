@@ -2,6 +2,8 @@ package com.carhouse.service.impl;
 
 import com.carhouse.dao.CarDao;
 import com.carhouse.model.Car;
+import com.carhouse.service.exception.NotFoundException;
+import com.carhouse.service.exception.WrongReferenceException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,7 +58,7 @@ class CarServiceImplTest {
     void getNotExistCar() {
         int carId = 10;
         when(carDao.getCar(carId)).thenThrow(EmptyResultDataAccessException.class);
-        assertThrows(EmptyResultDataAccessException.class, () -> carService.getCar(carId));
+        assertThrows(NotFoundException.class, () -> carService.getCar(carId));
     }
 
     @Test
@@ -70,7 +72,7 @@ class CarServiceImplTest {
     void addCarWithWrongReference() {
         Car car = new Car(13);
         when(carDao.addCar(car)).thenThrow(DataIntegrityViolationException.class);
-        assertThrows(DataIntegrityViolationException.class, () -> carService.addCar(car));
+        assertThrows(WrongReferenceException.class, () -> carService.addCar(car));
     }
 
     @Test
@@ -81,9 +83,31 @@ class CarServiceImplTest {
     }
 
     @Test
+    void updateCarWithWrongReference() {
+        Car car = new Car(5);
+        when(carDao.updateCar(car)).thenThrow(DataIntegrityViolationException.class);
+        assertThrows(WrongReferenceException.class, () -> carService.updateCar(car));
+    }
+
+    @Test
+    void updateNotExistCar() {
+        Car car = new Car(5);
+        when(carDao.getCar(car.getCarId())).thenThrow(EmptyResultDataAccessException.class);
+        assertThrows(NotFoundException.class, () -> carService.updateCar(car));
+    }
+
+    @Test
     void deleteCar() {
         int carId = 2;
+        when(carDao.deleteCar(carId)).thenReturn(true);
         carService.deleteCar(carId);
         verify(carDao, times(1)).deleteCar(carId);
+    }
+
+    @Test
+    void deleteNotExistCar() {
+        int carId = 12;
+        when(carDao.deleteCar(carId)).thenReturn(false);
+        assertThrows(NotFoundException.class, () -> carService.deleteCar(carId));
     }
 }

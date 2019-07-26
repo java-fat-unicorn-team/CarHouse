@@ -124,11 +124,13 @@ public class CarSaleDaoImpl implements CarSaleDao {
      * Gets car sale id from carSale object and rewrite the carSale in database
      *
      * @param carSale the car sale
+     * @return check or car sale is updated
      */
     @Override
-    public void updateCarSale(final CarSale carSale) {
+    public boolean updateCarSale(final CarSale carSale) {
         LOGGER.debug("method updateCarSale with parameter: [{}]", carSale);
-        namedParameterJdbcTemplate.update(UPDATE_CAR_SALE_SQL, parameterSource.getCarSaleParameters(carSale));
+        return namedParameterJdbcTemplate.update(UPDATE_CAR_SALE_SQL,
+                parameterSource.getCarSaleParameters(carSale)) == 1;
     }
 
     /**

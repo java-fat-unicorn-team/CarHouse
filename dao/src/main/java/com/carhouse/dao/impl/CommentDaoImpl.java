@@ -124,12 +124,13 @@ public class CommentDaoImpl implements CommentDao {
      * Gets id from comment object and rewrite comment with such id in database
      *
      * @param comment the comment
+     * @return check or car is update
      */
     @Override
-    public void updateComment(final Comment comment) {
+    public boolean updateComment(final Comment comment) {
         LOGGER.debug("method updateComment with parameter: [{}]", comment);
-        namedParameterJdbcTemplate.update(UPDATE_COMMENT_SQL,
-                parameterSource.getCommentParameters(comment));
+        return namedParameterJdbcTemplate.update(UPDATE_COMMENT_SQL,
+                parameterSource.getCommentParameters(comment)) == 1;
     }
 
     /**
