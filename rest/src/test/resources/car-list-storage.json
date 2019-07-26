@@ -1,0 +1,95 @@
+[
+  {
+    "carId": 2,
+    "year": 1456866000000,
+    "mileage": 133455,
+    "fuelType": {
+      "fuelTypeId": 2,
+      "fuelType": null
+    },
+    "transmission": {
+      "transmissionId": 1,
+      "transmission": null
+    },
+    "carModel": {
+      "carModelId": 3,
+      "carMake": {
+        "carMakeId": 2,
+        "carMake": null
+      },
+      "carModel": null
+    },
+    "carFeatureList": [
+      {
+        "carFeatureId": 2,
+        "carFeature": ""
+      },
+      {
+        "carFeatureId": 1,
+        "carFeature": ""
+      }
+    ]
+  },
+  {
+    "carId": 2,
+    "year": 1456866000000,
+    "mileage": 133455,
+    "fuelType": {
+      "fuelTypeId": 2,
+      "fuelType": null
+    },
+    "transmission": {
+      "transmissionId": 1,
+      "transmission": null
+    },
+    "carModel": {
+      "carModelId": 3,
+      "carMake": {
+        "carMakeId": 2,
+        "carMake": null
+      },
+      "carModel": null
+    },
+    "carFeatureList": [
+      {
+        "carFeatureId": 2,
+        "carFeature": ""
+      },
+      {
+        "carFeatureId": 1,
+        "carFeature": ""
+      }
+    ]
+  },
+  {
+    "carId": 2,
+    "year": 1456866000000,
+    "mileage": 133455,
+    "fuelType": {
+      "fuelTypeId": 2,
+      "fuelType": null
+    },
+    "transmission": {
+      "transmissionId": 1,
+      "transmission": null
+    },
+    "carModel": {
+      "carModelId": 3,
+      "carMake": {
+        "carMakeId": 2,
+        "carMake": null
+      },
+      "carModel": null
+    },
+    "carFeatureList": [
+      {
+        "carFeatureId": 2,
+        "carFeature": ""
+      },
+      {
+        "carFeatureId": 1,
+        "carFeature": ""
+      }
+    ]
+  }
+]

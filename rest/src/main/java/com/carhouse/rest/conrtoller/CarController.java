@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * The Car controller.
- * It is rest controller which sends data as JSON.
+ * The Car rest controller.
+ * Provide endpoints to manage car model
  *
  * @author Katuranau Maksimilyan
  */
@@ -20,9 +20,9 @@ import java.util.List;
 @RestController
 public class CarController {
 
-    private CarService carService;
-
     private static final Logger LOGGER = LogManager.getLogger(CarController.class);
+
+    private CarService carService;
 
     /**
      * Instantiates a new Car controller.

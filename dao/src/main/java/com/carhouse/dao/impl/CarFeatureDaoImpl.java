@@ -67,6 +67,11 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
         return namedParameterJdbcTemplate.query(GET_LIST_CAR_FEATURES_SQL, parameters, carFeatureMapper);
     }
 
+    /**
+     * Gets all available car features.
+     *
+     * @return the list of features
+     */
     @Override
     public List<CarFeature> getAllFeatures() {
         LOGGER.debug("method getAllFeatures");

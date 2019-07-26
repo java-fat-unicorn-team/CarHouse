@@ -1,8 +1,8 @@
 package com.carhouse.rest.conrtoller;
 
 import com.carhouse.model.Comment;
-import com.carhouse.rest.JsonConverter;
 import com.carhouse.service.CommentService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +30,7 @@ class CommentControllerTest {
     @InjectMocks
     private CommentController commentController;
 
-    private JsonConverter jsonConverter = new JsonConverter();
+    private ObjectMapper objectMapper = new ObjectMapper();
     private List<Comment> listComment;
     private MockMvc mockMvc;
 
@@ -61,7 +61,7 @@ class CommentControllerTest {
         when(commentService.addComment(anyInt(), any(Comment.class))).thenReturn(comment.getCommentId());
         mockMvc.perform(post("/carSale/{carSaleId}/comment", carSaleId)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .content(jsonConverter.asJsonString(comment)))
+                .content(objectMapper.writeValueAsString(comment)))
                 .andExpect(status().isCreated());
         verify(commentService, times(1)).addComment(anyInt(), any(Comment.class));
     }
@@ -71,7 +71,7 @@ class CommentControllerTest {
         Comment comment = listComment.get(1);
         mockMvc.perform(put("/carSale/comment")
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .content(jsonConverter.asJsonString(comment)))
+                .content(objectMapper.writeValueAsString(comment)))
                 .andExpect(status().isOk());
         verify(commentService, times(1)).updateComment(any(Comment.class));
     }

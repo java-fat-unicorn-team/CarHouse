@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * The Transmission controller.
- * It is rest controller which sends data as JSON.
+ * Provide endpoints to manage transmission model
  *
  * @author Katuranau Maksimilyan
  */
@@ -21,9 +21,9 @@ import java.util.List;
 @RestController
 public class TransmissionController {
 
-    private TransmissionService transmissionService;
-
     private static final Logger LOGGER = LogManager.getLogger(TransmissionController.class);
+
+    private TransmissionService transmissionService;
 
     /**
      * Instantiates a new Transmission controller.

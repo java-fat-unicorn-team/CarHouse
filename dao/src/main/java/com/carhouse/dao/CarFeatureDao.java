@@ -20,7 +20,7 @@ public interface CarFeatureDao {
     List<CarFeature> getCarFeatures(int carId);
 
     /**
-     * Gets all possible car features.
+     * Gets all available car features.
      *
      * @return the list of features
      */

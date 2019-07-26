@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * The Car feature controller.
- * It is rest controller which sends data as JSON.
+ * Provide endpoints to manage car feature model
  *
  * @author Katuranau Maksimilyan
  */
@@ -22,9 +22,9 @@ import java.util.List;
 @RestController
 public class CarFeatureController {
 
-    private CarFeatureService carFeatureService;
-
     private static final Logger LOGGER = LogManager.getLogger(CarFeatureController.class);
+
+    private CarFeatureService carFeatureService;
 
     /**
      * Instantiates a new Car feature controller.

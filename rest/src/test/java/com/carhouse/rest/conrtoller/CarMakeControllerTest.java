@@ -1,8 +1,8 @@
 package com.carhouse.rest.conrtoller;
 
 import com.carhouse.model.CarMake;
-import com.carhouse.rest.JsonConverter;
 import com.carhouse.service.CarMakeService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +30,7 @@ class CarMakeControllerTest {
     @InjectMocks
     private CarMakeController carMakeController;
 
-    private JsonConverter jsonConverter = new JsonConverter();
+    private ObjectMapper objectMapper = new ObjectMapper();
     private List<CarMake> listCarMake;
     private MockMvc mockMvc;
 
@@ -50,7 +50,7 @@ class CarMakeControllerTest {
         mockMvc.perform(get("/carSale/car/carModel/carMake"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(content().json(jsonConverter.asJsonString(listCarMake)));
+                .andExpect(content().json(objectMapper.writeValueAsString(listCarMake)));
         verify(carMakeService, times(1)).getCarMakes();
     }
 }

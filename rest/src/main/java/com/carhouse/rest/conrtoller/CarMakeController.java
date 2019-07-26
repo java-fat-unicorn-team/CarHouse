@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * The Car make controller.
- * It is rest controller which sends data as JSON.
+ * Provide endpoints to manage car make model
  *
  * @author Katuranau Maksimilyan
  */
@@ -21,9 +21,9 @@ import java.util.List;
 @RestController
 public class CarMakeController {
 
-    private CarMakeService carMakeService;
-
     private static final Logger LOGGER = LogManager.getLogger(CarMakeController.class);
+
+    private CarMakeService carMakeService;
 
     /**
      * Instantiates a new Car make controller.
