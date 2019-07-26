@@ -13,6 +13,12 @@ public class CarFeature {
 
     /**
      * Instantiates a new Car feature.
+     */
+    public CarFeature() {
+    }
+
+    /**
+     * Instantiates a new Car feature.
      *
      * @param carFeatureId the car feature id
      * @param carFeature   the car feature

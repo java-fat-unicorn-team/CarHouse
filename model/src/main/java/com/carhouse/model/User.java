@@ -15,6 +15,12 @@ public class User {
 
     /**
      * Instantiates a new User.
+     */
+    public User() {
+    }
+
+    /**
+     * Instantiates a new User.
      *
      * @param userId the user id
      */

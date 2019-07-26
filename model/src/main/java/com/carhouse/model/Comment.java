@@ -12,6 +12,12 @@ public class Comment {
 
     /**
      * Instantiates a new Comment.
+     */
+    public Comment() {
+    }
+
+    /**
+     * Instantiates a new Comment.
      *
      * @param commentId the comment id
      * @param userName  the user name

@@ -1,7 +1,8 @@
 package com.carhouse.rest.conrtoller;
 
-import com.carhouse.model.FuelType;
-import com.carhouse.service.FuelTypeService;
+import com.carhouse.model.CarMake;
+import com.carhouse.model.CarModel;
+import com.carhouse.service.CarModelService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,33 +22,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-class FuelTypeControllerTest {
+class CarModelControllerTest {
 
     @Mock
-    private FuelTypeService fuelTypeService;
+    private CarModelService carModelService;
 
     @InjectMocks
-    private FuelTypeController fuelTypeController;
+    private CarModelController carModelController;
 
-    private List<FuelType> fuelTypeList;
+    private List<CarModel> listCarModel;
     private MockMvc mockMvc;
 
     @BeforeEach
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(fuelTypeController).build();
-        fuelTypeList = new ArrayList<>() {{
-            add(new FuelType(1, "Bensin"));
-            add(new FuelType(2, "Diesel"));
-            add(new FuelType(3, "Electric"));
+    void setup() {
+        mockMvc = MockMvcBuilders.standaloneSetup(carModelController).build();
+        listCarModel = new ArrayList<>() {{
+            add(new CarModel(1, new CarMake(1, "Mercedes")));
+            add(new CarModel(2, new CarMake(2, "BMW")));
         }};
     }
 
     @Test
-    void getFuelTypes() throws Exception {
-        when(fuelTypeService.getFuelTypes()).thenReturn(fuelTypeList);
-        mockMvc.perform(get("/carSale/car/fuelType"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
-        verify(fuelTypeService, times(1)).getFuelTypes();
+    void getCarModels() throws Exception {
+        when(carModelService.getCarModels()).thenReturn(listCarModel);
+        mockMvc.perform(get("/carSale/car/carModel"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(status().isOk());
+        verify(carModelService, times(1)).getCarModels();
     }
 }

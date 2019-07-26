@@ -12,6 +12,12 @@ public class FuelType {
 
     /**
      * Instantiates a new Fuel type.
+     */
+    public FuelType() {
+    }
+
+    /**
+     * Instantiates a new Fuel type.
      *
      * @param fuelTypeId the fuel type id
      */
