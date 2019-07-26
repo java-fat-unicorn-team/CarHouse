@@ -18,4 +18,12 @@ public interface CarFeatureService {
      * @return the list of car features
      */
     List<CarFeature> getCarFeatures(int carId);
+
+
+    /**
+     * Gets all possible car features.
+     *
+     * @return the list of features
+     */
+    List<CarFeature> getAllFeatures();
 }

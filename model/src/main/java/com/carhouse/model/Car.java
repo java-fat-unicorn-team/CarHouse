@@ -20,6 +20,12 @@ public class Car {
     private List<CarFeature> carFeatureList;
 
     /**
+     * Instantiates a new Car.
+     */
+    public Car() {
+    }
+
+    /**
      * Instantiates a new Car characteristics.
      *
      * @param carId the car id

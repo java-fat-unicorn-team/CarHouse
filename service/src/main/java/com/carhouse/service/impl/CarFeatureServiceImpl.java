@@ -45,4 +45,14 @@ public class CarFeatureServiceImpl implements CarFeatureService {
         LOGGER.debug("method getCarFeatures with parameter: [{}]", carId);
         return carFeatureDao.getCarFeatures(carId);
     }
+
+    /**
+     * Gets all possible car features.
+     *
+     * @return the list of features
+     */
+    @Override
+    public List<CarFeature> getAllFeatures() {
+        return carFeatureDao.getAllFeatures();
+    }
 }

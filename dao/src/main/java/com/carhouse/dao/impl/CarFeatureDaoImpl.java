@@ -28,6 +28,11 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
      */
     @Value("${car.features.list.get}")
     private String GET_LIST_CAR_FEATURES_SQL;
+    /**
+     * SQL query to get list of all features.
+     */
+    @Value("${features.list.get}")
+    private String GET_LIST_FEATURES_SQL;
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -60,5 +65,11 @@ public class CarFeatureDaoImpl implements CarFeatureDao {
                 .addValue("carId", carId);
         LOGGER.debug("method getCarFeatures with parameter: [{}]", carId);
         return namedParameterJdbcTemplate.query(GET_LIST_CAR_FEATURES_SQL, parameters, carFeatureMapper);
+    }
+
+    @Override
+    public List<CarFeature> getAllFeatures() {
+        LOGGER.debug("method getAllFeatures");
+        return namedParameterJdbcTemplate.query(GET_LIST_FEATURES_SQL, carFeatureMapper);
     }
 }

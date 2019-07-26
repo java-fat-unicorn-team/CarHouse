@@ -18,6 +18,12 @@ public class CarSale {
 
     /**
      * Instantiates a new Car sale.
+     */
+    public CarSale() {
+    }
+
+    /**
+     * Instantiates a new Car sale.
      *
      * @param carSaleId the car sale id
      */

@@ -33,4 +33,9 @@ class CarFeatureDaoImplTest {
     void getNonExistentCarFeatures() {
         assertEquals(0, carFeatureDao.getCarFeatures(10).size());
     }
+
+    @Test
+    void getAllFeatures() {
+        assertEquals(4, carFeatureDao.getAllFeatures().size());
+    }
 }

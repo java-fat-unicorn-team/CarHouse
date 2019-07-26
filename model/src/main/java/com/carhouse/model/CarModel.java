@@ -13,6 +13,12 @@ public class CarModel {
 
     /**
      * Instantiates a new Car model.
+     */
+    public CarModel() {
+    }
+
+    /**
+     * Instantiates a new Car model.
      *
      * @param carModelId the car model id
      * @param carMake    the car make

@@ -4,6 +4,7 @@ package com.carhouse.model;
  * The Transmission model.
  * The model includes only transmission's name and transmission id to get this model faster.
  * The model can be used by different cars.
+ *
  * @author Katuranau Maksimilyan
  */
 public class Transmission {
@@ -15,6 +16,12 @@ public class Transmission {
      * transmission's name.
      */
     private String transmission;
+
+    /**
+     * Instantiates a new Transmission.
+     */
+    public Transmission() {
+    }
 
     /**
      * Instantiates a new Transmission.

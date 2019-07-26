@@ -36,9 +36,9 @@ class FuelTypeControllerTest {
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(fuelTypeController).build();
         fuelTypeList = new ArrayList<>() {{
-           add(new FuelType(1, "Bensin"));
-           add(new FuelType(2, "Diesel"));
-           add(new FuelType(3, "Electric"));
+            add(new FuelType(1, "Bensin"));
+            add(new FuelType(2, "Diesel"));
+            add(new FuelType(3, "Electric"));
         }};
     }
 
