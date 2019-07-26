@@ -8,11 +8,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -50,10 +53,24 @@ class CarServiceImplTest {
     }
 
     @Test
+    void getNotExistCar() {
+        int carId = 10;
+        when(carDao.getCar(carId)).thenThrow(EmptyResultDataAccessException.class);
+        assertThrows(EmptyResultDataAccessException.class, () -> carService.getCar(carId));
+    }
+
+    @Test
     void addCar() {
         Car car = new Car(3);
         carService.addCar(car);
         verify(carDao, times(1)).addCar(car);
+    }
+
+    @Test
+    void addCarWithWrongReference() {
+        Car car = new Car(13);
+        when(carDao.addCar(car)).thenThrow(DataIntegrityViolationException.class);
+        assertThrows(DataIntegrityViolationException.class, () -> carService.addCar(car));
     }
 
     @Test
