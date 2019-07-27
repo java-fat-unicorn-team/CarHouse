@@ -1,4 +1,4 @@
-package com.carhouse.rest.conrtoller;
+package com.carhouse.rest.controller;
 
 import com.carhouse.model.Car;
 import com.carhouse.service.CarService;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * The Car rest controller.
+ * The Car rest com.carhouse.rest.controller.
  * Provide endpoints to manage car model
  *
  * @author Katuranau Maksimilyan
@@ -25,7 +25,7 @@ public class CarController {
     private CarService carService;
 
     /**
-     * Instantiates a new Car controller.
+     * Instantiates a new Car com.carhouse.rest.controller.
      *
      * @param carService the car service to manage car object
      */

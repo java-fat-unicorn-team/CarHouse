@@ -42,13 +42,15 @@ public interface CarSaleService {
      * Gets car sale id from carSale object
      *
      * @param carSale the car sale
+     * @return check or car sale is updated
      */
-    void updateCarSale(CarSale carSale);
+    boolean updateCarSale(CarSale carSale);
 
     /**
      * Delete car sale by id.
      *
      * @param carSaleId the car sale id
+     * @return check or car sale is deleted
      */
-    void deleteCarSale(int carSaleId);
+    boolean deleteCarSale(int carSaleId);
 }

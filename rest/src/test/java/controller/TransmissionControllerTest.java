@@ -1,14 +1,16 @@
-package com.carhouse.rest.conrtoller;
+package controller;
 
 import com.carhouse.model.Transmission;
+import config.RestTestConfig;
+import com.carhouse.rest.controller.TransmissionController;
 import com.carhouse.service.TransmissionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -20,13 +22,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = RestTestConfig.class)
 class TransmissionControllerTest {
 
-    @Mock
+    @Autowired
     private TransmissionService transmissionService;
 
-    @InjectMocks
+    @Autowired
     private TransmissionController transmissionController;
 
     private List<Transmission> listTransmission;

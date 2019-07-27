@@ -1,4 +1,4 @@
-package com.carhouse.rest.conrtoller;
+package com.carhouse.rest.controller;
 
 import com.carhouse.model.CarMake;
 import com.carhouse.service.CarMakeService;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * The Car make controller.
+ * The Car make com.carhouse.rest.controller.
  * Provide endpoints to manage car make model
  *
  * @author Katuranau Maksimilyan
@@ -26,7 +26,7 @@ public class CarMakeController {
     private CarMakeService carMakeService;
 
     /**
-     * Instantiates a new Car make controller.
+     * Instantiates a new Car make com.carhouse.rest.controller.
      *
      * @param carMakeService the car make service to manage car make object
      */

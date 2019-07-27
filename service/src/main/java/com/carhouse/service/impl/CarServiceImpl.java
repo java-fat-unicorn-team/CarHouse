@@ -85,13 +85,14 @@ public class CarServiceImpl implements CarService {
      * Gets car id from car object
      *
      * @param car the car model
+     * @return check or car is updated
      */
     @Override
-    public void updateCar(final Car car) {
+    public boolean updateCar(final Car car) {
         LOGGER.debug("method updateCar with parameter: [{}]", car);
         getCar(car.getCarId());
         try {
-            carDao.updateCar(car);
+            return carDao.updateCar(car);
         } catch (DataIntegrityViolationException ex) {
             throw new WrongReferenceException("there is wrong references in your car");
         }
@@ -101,16 +102,14 @@ public class CarServiceImpl implements CarService {
      * Delete car by id.
      *
      * @param id the car id
+     * @return check or car is deleted
      */
     @Override
-    public void deleteCar(final int id) {
+    public boolean deleteCar(final int id) {
         LOGGER.debug("method deleteCar with parameter: [{}]", id);
-        try {
-            if (!carDao.deleteCar(id)) {
-                throw new NotFoundException("car you are trying to delete does not exist");
-            }
-        } catch (DataIntegrityViolationException ex) {
-            throw new WrongReferenceException("car you are trying to delete has references");
+        if (!carDao.deleteCar(id)) {
+            throw new NotFoundException("car you are trying to delete does not exist");
         }
+        return true;
     }
 }

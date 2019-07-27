@@ -42,13 +42,15 @@ public interface CommentService {
      * Gets id from comment object
      *
      * @param comment the comment
+     * @return check or car is updated
      */
-    void updateComment(Comment comment);
+    boolean updateComment(Comment comment);
 
     /**
      * Delete comment by id.
      *
      * @param id the index
+     * @return check or car is deleted
      */
-    void deleteComment(int id);
+    boolean deleteComment(int id);
 }
