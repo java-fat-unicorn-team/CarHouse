@@ -1,4 +1,4 @@
-package com.carhouse.rest.conrtoller;
+package com.carhouse.rest.controller;
 
 import com.carhouse.model.Comment;
 import com.carhouse.service.CommentService;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * The Transmission controller.
+ * The Transmission com.carhouse.rest.controller.
  * Provide endpoints to manage comment model
  *
  * @author Katuranau Maksimilyan
@@ -25,7 +25,7 @@ public class CommentController {
     private CommentService commentService;
 
     /**
-     * Instantiates a new Comment controller.
+     * Instantiates a new Comment com.carhouse.rest.controller.
      *
      * @param commentService the comment service to manage comment object
      */
@@ -57,7 +57,7 @@ public class CommentController {
      */
     @PostMapping("/{carSaleId}/comment")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public Integer addComment(@PathVariable final int carSaleId, @RequestBody Comment comment) {
+    public Integer addComment(@PathVariable final int carSaleId, @RequestBody final Comment comment) {
         LOGGER.debug("method addComment wit parameters: [{}, {}]", carSaleId, comment);
         return commentService.addComment(carSaleId, comment);
     }

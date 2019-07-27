@@ -1,17 +1,23 @@
-package com.carhouse.rest.conrtoller;
+package controller;
 
 import com.carhouse.model.CarSale;
+import com.carhouse.rest.handler.RestExceptionHandler;
+import com.carhouse.service.exception.WrongReferenceException;
+import config.RestTestConfig;
+import com.carhouse.rest.controller.CarSaleController;
 import com.carhouse.service.CarSaleService;
+import com.carhouse.service.exception.NotFoundException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -24,16 +30,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = RestTestConfig.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class CarSaleControllerTest {
 
     public static final String CAR_SALE_LIST_STORAGE_JSON = "car-sale-list-storage.json";
 
-    @Mock
+    @Autowired
     private CarSaleService carSaleService;
 
-    @InjectMocks
+    @Autowired
     private CarSaleController carSaleController;
+
+    @Autowired
+    private RestExceptionHandler restExceptionHandler;
 
     private ObjectMapper objectMapper = new ObjectMapper();
     private List<CarSale> listCarSale;
@@ -41,7 +52,9 @@ class CarSaleControllerTest {
 
     @BeforeEach
     void setup() throws IOException {
-        mockMvc = MockMvcBuilders.standaloneSetup(carSaleController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(carSaleController)
+                .setControllerAdvice(restExceptionHandler)
+                .build();
         File file = new ClassPathResource(CAR_SALE_LIST_STORAGE_JSON).getFile();
         listCarSale = objectMapper.readValue(file, new TypeReference<List<CarSale>>() {
         });
@@ -69,6 +82,15 @@ class CarSaleControllerTest {
     }
 
     @Test
+    void getNotExistCarSale() throws Exception {
+        int carSaleId = 21;
+        when(carSaleService.getCarSale(carSaleId)).thenThrow(NotFoundException.class);
+        mockMvc.perform(get("/carSale/{carSaleId}", carSaleId))
+                .andExpect(status().isNotFound());
+        verify(carSaleService, times(1)).getCarSale(carSaleId);
+    }
+
+    @Test
     void addCarSale() throws Exception {
         int carSaleId = 2;
         CarSale carSale = listCarSale.get(carSaleId);
@@ -83,9 +105,22 @@ class CarSaleControllerTest {
     }
 
     @Test
+    void addCarSaleWithWrongReference() throws Exception {
+        int carSaleId = 2;
+        CarSale carSale = listCarSale.get(carSaleId);
+        when(carSaleService.addCarSale(any(CarSale.class))).thenThrow(WrongReferenceException.class);
+        mockMvc.perform(post("/carSale")
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .content(objectMapper.writeValueAsString(carSale)))
+                .andExpect(status().isFailedDependency());
+        verify(carSaleService, times(1)).addCarSale(any(CarSale.class));
+    }
+
+    @Test
     void updateCarSale() throws Exception {
         int carSaleId = 2;
         CarSale carSale = listCarSale.get(carSaleId);
+        when(carSaleService.updateCarSale(any(CarSale.class))).thenReturn(true);
         mockMvc.perform(put("/carSale")
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(carSale)))
@@ -94,10 +129,44 @@ class CarSaleControllerTest {
     }
 
     @Test
+    void updateCarSaleWithWrongReference() throws Exception {
+        int carSaleId = 2;
+        CarSale carSale = listCarSale.get(carSaleId);
+        when(carSaleService.updateCarSale(any(CarSale.class))).thenThrow(WrongReferenceException.class);
+        mockMvc.perform(put("/carSale")
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .content(objectMapper.writeValueAsString(carSale)))
+                .andExpect(status().isFailedDependency());
+        verify(carSaleService, times(1)).updateCarSale(any(CarSale.class));
+    }
+
+    @Test
+    void updateNotExistCarSale() throws Exception {
+        int carSaleId = 2;
+        CarSale carSale = listCarSale.get(carSaleId);
+        when(carSaleService.updateCarSale(any(CarSale.class))).thenThrow(NotFoundException.class);
+        mockMvc.perform(put("/carSale")
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .content(objectMapper.writeValueAsString(carSale)))
+                .andExpect(status().isNotFound());
+        verify(carSaleService, times(1)).updateCarSale(any(CarSale.class));
+    }
+
+    @Test
     void deleteCarSale() throws Exception {
         int carSaleId = 1;
+        when(carSaleService.deleteCarSale(carSaleId)).thenReturn(true);
         mockMvc.perform(delete("/carSale/{id}", carSaleId))
                 .andExpect(status().isOk());
+        verify(carSaleService, times(1)).deleteCarSale(carSaleId);
+    }
+
+    @Test
+    void deleteNotExistCarSale() throws Exception {
+        int carSaleId = 1;
+        when(carSaleService.deleteCarSale(carSaleId)).thenThrow(NotFoundException.class);
+        mockMvc.perform(delete("/carSale/{id}", carSaleId))
+                .andExpect(status().isNotFound());
         verify(carSaleService, times(1)).deleteCarSale(carSaleId);
     }
 }

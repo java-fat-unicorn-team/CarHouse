@@ -231,7 +231,7 @@
           <version>${jacoco.maven.plugin}</version>
           <configuration>
             <excludes>
-              <exclude>com/carhouse/**/config/*</exclude>
+              <exclude>com/carhouse/**/com.carhouse.rest.config/*</exclude>
             </excludes>
           </configuration>
           <executions>

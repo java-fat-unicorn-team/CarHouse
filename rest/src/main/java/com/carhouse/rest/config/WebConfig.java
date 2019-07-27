@@ -6,11 +6,11 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
- * The Web config.
+ * The Web com.carhouse.rest.config.
  */
 @Configuration
 @EnableWebMvc
 @PropertySource("classpath:sql-query.properties")
-@ComponentScan({"com.carhouse"})
+@ComponentScan(basePackages = {"com.carhouse"})
 public class WebConfig {
 }

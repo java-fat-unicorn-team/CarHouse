@@ -39,13 +39,15 @@ public interface CarService {
      * Gets car id from car object
      *
      * @param car the car model
+     * @return check or car is update
      */
-    void updateCar(Car car);
+    boolean updateCar(Car car);
 
     /**
      * Delete car by id.
      *
      * @param id the car id
+     * @return check or car is delete
      */
-    void deleteCar(int id);
+    boolean deleteCar(int id);
 }

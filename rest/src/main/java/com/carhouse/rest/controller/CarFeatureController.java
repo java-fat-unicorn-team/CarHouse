@@ -1,4 +1,4 @@
-package com.carhouse.rest.conrtoller;
+package com.carhouse.rest.controller;
 
 import com.carhouse.model.CarFeature;
 import com.carhouse.service.CarFeatureService;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * The Car feature controller.
+ * The Car feature com.carhouse.rest.controller.
  * Provide endpoints to manage car feature model
  *
  * @author Katuranau Maksimilyan
@@ -27,7 +27,7 @@ public class CarFeatureController {
     private CarFeatureService carFeatureService;
 
     /**
-     * Instantiates a new Car feature controller.
+     * Instantiates a new Car feature com.carhouse.rest.controller.
      *
      * @param carFeatureService the car feature service to manage car feature object
      */

@@ -93,13 +93,14 @@ public class CommentServiceImpl implements CommentService {
      * Gets id from comment object
      *
      * @param comment the comment
+     * @return check or car is updated
      */
     @Override
-    public void updateComment(final Comment comment) {
+    public boolean updateComment(final Comment comment) {
         LOGGER.debug("method updateComment with parameter: [{}]", comment);
         getComment(comment.getCommentId());
         try {
-            commentDao.updateComment(comment);
+            return commentDao.updateComment(comment);
         } catch (DataIntegrityViolationException ex) {
             throw new WrongReferenceException("there is wrong references in your comment");
         }
@@ -109,16 +110,14 @@ public class CommentServiceImpl implements CommentService {
      * Delete comment by id.
      *
      * @param id the index
+     * @return check or car is deleted
      */
     @Override
-    public void deleteComment(final int id) {
+    public boolean deleteComment(final int id) {
         LOGGER.debug("method deleteComment with parameter: [{}]", id);
-        try {
-            if (!commentDao.deleteComment(id)) {
-                throw new NotFoundException("comment you are trying to delete does not exist");
-            }
-        } catch (DataIntegrityViolationException ex) {
-            throw new WrongReferenceException("comment you are trying to delete has references");
+        if (!commentDao.deleteComment(id)) {
+            throw new NotFoundException("comment you are trying to delete does not exist");
         }
+        return true;
     }
 }
