@@ -2,6 +2,7 @@ package com.carhouse.rest.controller;
 
 import com.carhouse.model.CarSale;
 import com.carhouse.service.CarSaleService;
+import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * The Car sale com.carhouse.rest.controller.
+ * The Car sale com.carhouse.rest.com.carhouse.rest.controller.
  * Provide endpoints to manage car sale model
  *
  * @author Katuranau Maksimilyan
@@ -25,7 +26,7 @@ public class CarSaleController {
     private CarSaleService carSaleService;
 
     /**
-     * Instantiates a new Car sale com.carhouse.rest.controller.
+     * Instantiates a new Car sale com.carhouse.rest.com.carhouse.rest.controller.
      *
      * @param carSaleService the car sale service to manage car sale object
      */
@@ -53,7 +54,7 @@ public class CarSaleController {
      * @return the car sale with provided id
      */
     @GetMapping("/{carSaleId}")
-    public CarSale getCarSale(@PathVariable final int carSaleId) {
+    public CarSale getCarSale(@PathVariable final int carSaleId) throws NotFoundException {
         LOGGER.debug("method getCarSale wit parameter: [{}]", carSaleId);
         return carSaleService.getCarSale(carSaleId);
     }
@@ -81,7 +82,7 @@ public class CarSaleController {
      * @param carSale the car sale object to update
      */
     @PutMapping
-    public void updateCarSale(@RequestBody final CarSale carSale) {
+    public void updateCarSale(@RequestBody final CarSale carSale) throws NotFoundException {
         LOGGER.debug("method updateCarSale wit parameter: [{}]", carSale);
         carSaleService.updateCarSale(carSale);
     }
@@ -93,7 +94,7 @@ public class CarSaleController {
      * @param carSaleId the car sale id
      */
     @DeleteMapping("/{carSaleId}")
-    public void deleteCarSale(@PathVariable final int carSaleId) {
+    public void deleteCarSale(@PathVariable final int carSaleId) throws NotFoundException {
         LOGGER.debug("method deleteCarSale wit parameter: [{}]", carSaleId);
         carSaleService.deleteCarSale(carSaleId);
     }

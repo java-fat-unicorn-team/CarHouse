@@ -1,14 +1,15 @@
-package controller;
+package com.carhouse.rest.controller;
 
 import com.carhouse.model.CarMake;
 import com.carhouse.model.CarModel;
-import config.RestTestConfig;
-import com.carhouse.rest.controller.CarModelController;
 import com.carhouse.service.CarModelService;
+import com.carhouse.rest.testConfig.RestTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -23,14 +24,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith({SpringExtension.class, MockitoExtension.class})
 @ContextConfiguration(classes = RestTestConfig.class)
 class CarModelControllerTest {
 
-    @Autowired
+    private static final String CAR_MODEL_LIST_GET_URL = "/carSale/car/carModel";
+
+    @Mock
     private CarModelService carModelService;
 
-    @Autowired
+    @InjectMocks
     private CarModelController carModelController;
 
     private List<CarModel> listCarModel;
@@ -48,7 +51,7 @@ class CarModelControllerTest {
     @Test
     void getCarModels() throws Exception {
         when(carModelService.getCarModels()).thenReturn(listCarModel);
-        mockMvc.perform(get("/carSale/car/carModel"))
+        mockMvc.perform(get(CAR_MODEL_LIST_GET_URL))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk());
         verify(carModelService, times(1)).getCarModels();

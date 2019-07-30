@@ -105,7 +105,9 @@ class CarDaoImplTest {
         int size = carDao.getCars().size();
         carDao.deleteCar(4);
         assertEquals(size - 1, carDao.getCars().size());
-        assertThrows(EmptyResultDataAccessException.class, () -> carDao.getCar(4));
+        EmptyResultDataAccessException thrown = assertThrows(EmptyResultDataAccessException.class,
+                () -> carDao.getCar(4));
+        assertTrue(thrown.getMessage().contains("Incorrect result size: expected 1, actual 0"));
     }
 
     @Test

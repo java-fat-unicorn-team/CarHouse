@@ -2,6 +2,7 @@ package com.carhouse.rest.controller;
 
 import com.carhouse.model.Car;
 import com.carhouse.service.CarService;
+import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * The Car rest com.carhouse.rest.controller.
+ * The Car rest com.carhouse.rest.com.carhouse.rest.controller.
  * Provide endpoints to manage car model
  *
  * @author Katuranau Maksimilyan
@@ -25,7 +26,7 @@ public class CarController {
     private CarService carService;
 
     /**
-     * Instantiates a new Car com.carhouse.rest.controller.
+     * Instantiates a new Car com.carhouse.rest.com.carhouse.rest.controller.
      *
      * @param carService the car service to manage car object
      */
@@ -52,7 +53,7 @@ public class CarController {
      * @return the car with selected id
      */
     @GetMapping("/{carId}")
-    public Car getCar(@PathVariable final int carId) {
+    public Car getCar(@PathVariable final int carId) throws NotFoundException {
         LOGGER.debug("method getCar wit parameter: [{}]", carId);
         return carService.getCar(carId);
     }
@@ -79,7 +80,7 @@ public class CarController {
      * @param car the new car to update
      */
     @PutMapping
-    public void updateCar(@RequestBody final Car car) {
+    public void updateCar(@RequestBody final Car car) throws NotFoundException {
         LOGGER.debug("method updateCar wit parameter: [{}]", car);
         carService.updateCar(car);
     }
@@ -91,7 +92,7 @@ public class CarController {
      * @param carId the car id
      */
     @DeleteMapping("/{carId}")
-    public void deleteCar(@PathVariable final int carId) {
+    public void deleteCar(@PathVariable final int carId) throws NotFoundException {
         LOGGER.debug("method deleteCar wit parameter: [{}]", carId);
         carService.deleteCar(carId);
     }

@@ -47,7 +47,9 @@ class CarSaleDaoImplTest {
 
     @Test
     void getNonExistentCarSale() {
-        assertThrows(EmptyResultDataAccessException.class, () -> carSaleDao.getCarSale(9));
+        EmptyResultDataAccessException thrown = assertThrows(EmptyResultDataAccessException.class,
+                () -> carSaleDao.getCarSale(9));
+        assertTrue(thrown.getMessage().contains("Incorrect result size: expected 1, actual 0"));
     }
 
     @Test
@@ -98,7 +100,9 @@ class CarSaleDaoImplTest {
         int size = carSaleDao.getCarSales().size();
         carSaleDao.deleteCarSale(4);
         assertEquals(size - 1, carSaleDao.getCarSales().size());
-        assertThrows(EmptyResultDataAccessException.class, () -> carSaleDao.getCarSale(4));
+        EmptyResultDataAccessException thrown = assertThrows(EmptyResultDataAccessException.class,
+                () -> carSaleDao.getCarSale(4));
+        assertTrue(thrown.getMessage().contains("Incorrect result size: expected 1, actual 0"));
     }
 
     @Test

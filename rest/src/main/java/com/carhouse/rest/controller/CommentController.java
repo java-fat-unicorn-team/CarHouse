@@ -2,6 +2,7 @@ package com.carhouse.rest.controller;
 
 import com.carhouse.model.Comment;
 import com.carhouse.service.CommentService;
+import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * The Transmission com.carhouse.rest.controller.
+ * The Transmission com.carhouse.rest.com.carhouse.rest.controller.
  * Provide endpoints to manage comment model
  *
  * @author Katuranau Maksimilyan
@@ -25,7 +26,7 @@ public class CommentController {
     private CommentService commentService;
 
     /**
-     * Instantiates a new Comment com.carhouse.rest.controller.
+     * Instantiates a new Comment com.carhouse.rest.com.carhouse.rest.controller.
      *
      * @param commentService the comment service to manage comment object
      */
@@ -41,7 +42,7 @@ public class CommentController {
      * @return the list of comments in JSON
      */
     @GetMapping("/{carSaleId}/comment")
-    public List<Comment> getComments(@PathVariable final int carSaleId) {
+    public List<Comment> getComments(@PathVariable final int carSaleId) throws NotFoundException {
         LOGGER.debug("method getComments wit parameter: [{}]", carSaleId);
         return commentService.getCarSaleComments(carSaleId);
     }
@@ -69,7 +70,7 @@ public class CommentController {
      * @param comment the comment object to update
      */
     @PutMapping("/comment")
-    public void updateComment(@RequestBody final Comment comment) {
+    public void updateComment(@RequestBody final Comment comment) throws NotFoundException {
         LOGGER.debug("method updateComment wit parameter: [{}]", comment);
         commentService.updateComment(comment);
     }
@@ -81,7 +82,7 @@ public class CommentController {
      * @param id the id
      */
     @DeleteMapping("/comment/{id}")
-    public void deleteComment(@PathVariable final int id) {
+    public void deleteComment(@PathVariable final int id) throws NotFoundException {
         LOGGER.debug("method deleteComment wit parameter: [{}]", id);
         commentService.deleteComment(id);
     }

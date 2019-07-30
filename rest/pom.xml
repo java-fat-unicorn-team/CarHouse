@@ -91,7 +91,7 @@
                         <param>com.carhouse.*</param>
                     </targetClasses>
                     <targetTests>
-                        <param>controller.*</param>
+                        <param>com.carhouse.rest.controller.*</param>
                     </targetTests>
                     <testPlugin>junit5</testPlugin>
                 </configuration>
