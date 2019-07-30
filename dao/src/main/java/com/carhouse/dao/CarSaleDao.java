@@ -41,7 +41,7 @@ public interface CarSaleDao {
      * Gets car sale id from carSale object
      *
      * @param carSale the car sale
-     * @return check or car sale is updated, 1 means that only one row has been updated otherwise it returns 0
+     * @return check or car sale is updated
      */
     boolean updateCarSale(CarSale carSale);
 
@@ -49,7 +49,7 @@ public interface CarSaleDao {
      * Delete car sale by id.
      *
      * @param carSaleId the car sale id
-     * @return check or car sale is deleted, 1 means that only one row has been deleted otherwise it returns 0
+     * @return check or car sale is deleted
      */
     boolean deleteCarSale(int carSaleId);
 }

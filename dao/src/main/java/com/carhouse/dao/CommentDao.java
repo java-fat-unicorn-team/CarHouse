@@ -42,7 +42,7 @@ public interface CommentDao {
      * Gets id from comment object
      *
      * @param comment the comment
-     * @return check or car is update, 1 means that only one row has been updated otherwise it returns 0
+     * @return check or car is update
      */
     boolean updateComment(Comment comment);
 
@@ -50,7 +50,7 @@ public interface CommentDao {
      * Delete comment by id.
      *
      * @param id the index
-     * @return check or comment is deleted, 1 means that only one row has been deleted otherwise it returns 0
+     * @return check or comment is deleted
      */
     boolean deleteComment(int id);
 }
