@@ -146,7 +146,7 @@ public class CarDaoImpl implements CarDao {
      * To correctly change references the method first remove old references and then add new
      *
      * @param car the car model
-     * @return check or car is update
+     * @return check or car is update, 1 means that only one row has been updated otherwise it returns 0
      */
     @Override
     public boolean updateCar(final Car car) {
@@ -163,7 +163,7 @@ public class CarDaoImpl implements CarDao {
      * Delete car by id.
      *
      * @param id the car id
-     * @return check or car is deleted
+     * @return check or car is deleted, 1 means that only one row has been deleted otherwise it returns 0
      */
     @Override
     public boolean deleteCar(final int id) {

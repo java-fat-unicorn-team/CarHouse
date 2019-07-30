@@ -1,6 +1,7 @@
 package com.carhouse.service;
 
 import com.carhouse.model.CarSale;
+import javassist.NotFoundException;
 
 import java.util.List;
 
@@ -24,8 +25,9 @@ public interface CarSaleService {
      *
      * @param carSaleId the car sale id
      * @return the list of car sale
+     * @throws NotFoundException throws if there is not such car sale
      */
-    CarSale getCarSale(int carSaleId);
+    CarSale getCarSale(int carSaleId) throws NotFoundException;
 
 
     /**
@@ -43,14 +45,16 @@ public interface CarSaleService {
      *
      * @param carSale the car sale
      * @return check or car sale is updated
+     * @throws NotFoundException throws if there is not such car sale to update
      */
-    boolean updateCarSale(CarSale carSale);
+    boolean updateCarSale(CarSale carSale) throws NotFoundException;
 
     /**
      * Delete car sale by id.
      *
      * @param carSaleId the car sale id
      * @return check or car sale is deleted
+     * @throws NotFoundException throws if there is not such car sale to delete
      */
-    boolean deleteCarSale(int carSaleId);
+    boolean deleteCarSale(int carSaleId) throws NotFoundException;
 }

@@ -1,14 +1,15 @@
-package controller;
+package com.carhouse.rest.controller;
 
 import com.carhouse.model.CarFeature;
-import config.RestTestConfig;
-import com.carhouse.rest.controller.CarFeatureController;
 import com.carhouse.service.CarFeatureService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.carhouse.rest.testConfig.RestTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -23,14 +24,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith({SpringExtension.class, MockitoExtension.class})
 @ContextConfiguration(classes = RestTestConfig.class)
 class CarFeatureControllerTest {
 
-    @Autowired
+    private static final String CAR_FEATURE_LIST_GET_URL = "/carSale/car/{carId}/carFeature";
+    private static final String FEATURE_LIST_GET_URL = "/carSale/car/carFeature";
+
+    @Mock
     private CarFeatureService carFeatureService;
 
-    @Autowired
+    @InjectMocks
     private CarFeatureController carFeatureController;
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -51,7 +55,7 @@ class CarFeatureControllerTest {
     void getCarFeatures() throws Exception {
         int carId = 2;
         when(carFeatureService.getCarFeatures(carId)).thenReturn(listCarFeature);
-        mockMvc.perform(get("/carSale/car/{carId}/carFeature", carId))
+        mockMvc.perform(get(CAR_FEATURE_LIST_GET_URL, carId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(content().json(objectMapper.writeValueAsString(listCarFeature)));
@@ -61,7 +65,7 @@ class CarFeatureControllerTest {
     @Test
     void getAllFeatures() throws Exception {
         when(carFeatureService.getAllFeatures()).thenReturn(listCarFeature);
-        mockMvc.perform(get("/carSale/car/carFeature"))
+        mockMvc.perform(get(FEATURE_LIST_GET_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(content().json(objectMapper.writeValueAsString(listCarFeature)));

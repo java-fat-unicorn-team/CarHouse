@@ -73,7 +73,9 @@ class CommentDaoImplTest {
         int size = commentDao.getCarSaleComments(4).size();
         commentDao.deleteComment(3);
         assertEquals(size- 1, commentDao.getCarSaleComments(4).size());
-        assertThrows(EmptyResultDataAccessException.class, () -> commentDao.getComment(3));
+        EmptyResultDataAccessException thrown = assertThrows(EmptyResultDataAccessException.class,
+                () -> commentDao.getComment(3));
+        assertTrue(thrown.getMessage().contains("Incorrect result size: expected 1, actual 0"));
     }
 
 

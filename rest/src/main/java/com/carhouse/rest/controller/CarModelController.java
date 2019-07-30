@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * The Car model com.carhouse.rest.controller.
+ * The Car model com.carhouse.rest.com.carhouse.rest.controller.
  * Provide endpoints to manage car model model
  *
  * @author Katuranau Maksimilyan
@@ -26,7 +26,7 @@ public class CarModelController {
     private CarModelService carModelService;
 
     /**
-     * Instantiates a new Car model com.carhouse.rest.controller.
+     * Instantiates a new Car model com.carhouse.rest.com.carhouse.rest.controller.
      *
      * @param carModelService the car model service to manage car model object
      */

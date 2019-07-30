@@ -1,17 +1,19 @@
-package controller;
+package com.carhouse.rest.controller;
 
 import com.carhouse.model.CarSale;
+import com.carhouse.rest.testConfig.RestTestConfig;
 import com.carhouse.rest.handler.RestExceptionHandler;
-import com.carhouse.service.exception.WrongReferenceException;
-import config.RestTestConfig;
-import com.carhouse.rest.controller.CarSaleController;
 import com.carhouse.service.CarSaleService;
-import com.carhouse.service.exception.NotFoundException;
+import com.carhouse.service.exception.WrongReferenceException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javassist.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -30,23 +32,29 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith({SpringExtension.class, MockitoExtension.class})
 @ContextConfiguration(classes = RestTestConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class CarSaleControllerTest {
 
     public static final String CAR_SALE_LIST_STORAGE_JSON = "car-sale-list-storage.json";
+    private static final String CAR_SALE_LIST_GET_URL = "/carSale";
+    private static final String CAR_SALE_GET_URL = "/carSale/{carSaleId}";
+    private static final String CAR_SALE_ADD_URL = "/carSale";
+    private static final String CAR_SALE_UPDATE_URL = "/carSale";
+    private static final String CAR_SALE_DELETE_URL = "/carSale/{id}";
 
-    @Autowired
+    @Mock
     private CarSaleService carSaleService;
 
-    @Autowired
+    @InjectMocks
     private CarSaleController carSaleController;
 
     @Autowired
     private RestExceptionHandler restExceptionHandler;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
     private List<CarSale> listCarSale;
     private MockMvc mockMvc;
 
@@ -63,7 +71,7 @@ class CarSaleControllerTest {
     @Test
     void getCarSales() throws Exception {
         when(carSaleController.getCarSales()).thenReturn(listCarSale);
-        mockMvc.perform(get("/carSale"))
+        mockMvc.perform(get(CAR_SALE_LIST_GET_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(content().json(objectMapper.writeValueAsString(listCarSale)));
@@ -74,7 +82,7 @@ class CarSaleControllerTest {
     void getCarSale() throws Exception {
         int carSaleId = 1;
         when(carSaleService.getCarSale(carSaleId)).thenReturn(listCarSale.get(carSaleId));
-        mockMvc.perform(get("/carSale/{carSaleId}", carSaleId))
+        mockMvc.perform(get(CAR_SALE_GET_URL, carSaleId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(content().json(objectMapper.writeValueAsString(listCarSale.get(carSaleId))));
@@ -85,7 +93,7 @@ class CarSaleControllerTest {
     void getNotExistCarSale() throws Exception {
         int carSaleId = 21;
         when(carSaleService.getCarSale(carSaleId)).thenThrow(NotFoundException.class);
-        mockMvc.perform(get("/carSale/{carSaleId}", carSaleId))
+        mockMvc.perform(get(CAR_SALE_GET_URL, carSaleId))
                 .andExpect(status().isNotFound());
         verify(carSaleService, times(1)).getCarSale(carSaleId);
     }
@@ -95,7 +103,7 @@ class CarSaleControllerTest {
         int carSaleId = 2;
         CarSale carSale = listCarSale.get(carSaleId);
         when(carSaleService.addCarSale(any(CarSale.class))).thenReturn(carSaleId);
-        mockMvc.perform(post("/carSale")
+        mockMvc.perform(post(CAR_SALE_ADD_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(carSale)))
                 .andExpect(status().isCreated())
@@ -109,7 +117,7 @@ class CarSaleControllerTest {
         int carSaleId = 2;
         CarSale carSale = listCarSale.get(carSaleId);
         when(carSaleService.addCarSale(any(CarSale.class))).thenThrow(WrongReferenceException.class);
-        mockMvc.perform(post("/carSale")
+        mockMvc.perform(post(CAR_SALE_ADD_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(carSale)))
                 .andExpect(status().isFailedDependency());
@@ -121,7 +129,7 @@ class CarSaleControllerTest {
         int carSaleId = 2;
         CarSale carSale = listCarSale.get(carSaleId);
         when(carSaleService.updateCarSale(any(CarSale.class))).thenReturn(true);
-        mockMvc.perform(put("/carSale")
+        mockMvc.perform(put(CAR_SALE_UPDATE_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(carSale)))
                 .andExpect(status().isOk());
@@ -133,7 +141,7 @@ class CarSaleControllerTest {
         int carSaleId = 2;
         CarSale carSale = listCarSale.get(carSaleId);
         when(carSaleService.updateCarSale(any(CarSale.class))).thenThrow(WrongReferenceException.class);
-        mockMvc.perform(put("/carSale")
+        mockMvc.perform(put(CAR_SALE_UPDATE_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(carSale)))
                 .andExpect(status().isFailedDependency());
@@ -145,7 +153,7 @@ class CarSaleControllerTest {
         int carSaleId = 2;
         CarSale carSale = listCarSale.get(carSaleId);
         when(carSaleService.updateCarSale(any(CarSale.class))).thenThrow(NotFoundException.class);
-        mockMvc.perform(put("/carSale")
+        mockMvc.perform(put(CAR_SALE_UPDATE_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(carSale)))
                 .andExpect(status().isNotFound());
@@ -156,7 +164,7 @@ class CarSaleControllerTest {
     void deleteCarSale() throws Exception {
         int carSaleId = 1;
         when(carSaleService.deleteCarSale(carSaleId)).thenReturn(true);
-        mockMvc.perform(delete("/carSale/{id}", carSaleId))
+        mockMvc.perform(delete(CAR_SALE_DELETE_URL, carSaleId))
                 .andExpect(status().isOk());
         verify(carSaleService, times(1)).deleteCarSale(carSaleId);
     }
@@ -165,7 +173,7 @@ class CarSaleControllerTest {
     void deleteNotExistCarSale() throws Exception {
         int carSaleId = 1;
         when(carSaleService.deleteCarSale(carSaleId)).thenThrow(NotFoundException.class);
-        mockMvc.perform(delete("/carSale/{id}", carSaleId))
+        mockMvc.perform(delete(CAR_SALE_DELETE_URL, carSaleId))
                 .andExpect(status().isNotFound());
         verify(carSaleService, times(1)).deleteCarSale(carSaleId);
     }

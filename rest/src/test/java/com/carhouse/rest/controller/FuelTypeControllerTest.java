@@ -1,13 +1,14 @@
-package controller;
+package com.carhouse.rest.controller;
 
 import com.carhouse.model.FuelType;
-import config.RestTestConfig;
-import com.carhouse.rest.controller.FuelTypeController;
 import com.carhouse.service.FuelTypeService;
+import com.carhouse.rest.testConfig.RestTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -22,14 +23,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith({SpringExtension.class, MockitoExtension.class})
 @ContextConfiguration(classes = RestTestConfig.class)
 class FuelTypeControllerTest {
 
-    @Autowired
+    private static final String FUEL_TYPE_LIST_GET_URL = "/carSale/car/fuelType";
+    @Mock
     private FuelTypeService fuelTypeService;
 
-    @Autowired
+    @InjectMocks
     private FuelTypeController fuelTypeController;
 
     private List<FuelType> fuelTypeList;
@@ -48,7 +50,7 @@ class FuelTypeControllerTest {
     @Test
     void getFuelTypes() throws Exception {
         when(fuelTypeService.getFuelTypes()).thenReturn(fuelTypeList);
-        mockMvc.perform(get("/carSale/car/fuelType"))
+        mockMvc.perform(get(FUEL_TYPE_LIST_GET_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
         verify(fuelTypeService, times(1)).getFuelTypes();

@@ -1,9 +1,10 @@
 package com.carhouse.service.impl;
 
+import com.carhouse.dao.CarSaleDao;
 import com.carhouse.dao.CommentDao;
 import com.carhouse.model.Comment;
-import com.carhouse.service.exception.NotFoundException;
 import com.carhouse.service.exception.WrongReferenceException;
+import javassist.NotFoundException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +17,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,6 +25,9 @@ class CommentServiceImplTest {
 
     @Mock
     private CommentDao commentDao;
+
+    @Mock
+    private CarSaleDao carSaleDao;
 
     @InjectMocks
     private CommentServiceImpl commentService;
@@ -41,7 +44,7 @@ class CommentServiceImplTest {
     }
 
     @Test
-    void getCarSaleComments() {
+    void getCarSaleComments() throws NotFoundException {
         int carSaleId = 2;
         when(commentDao.getCarSaleComments(carSaleId)).thenReturn(listComments);
         assertEquals(listComments.size(), commentService.getCarSaleComments(carSaleId).size());
@@ -49,7 +52,7 @@ class CommentServiceImplTest {
     }
 
     @Test
-    void getComment() {
+    void getComment() throws NotFoundException {
         int commentId = 2;
         when(commentDao.getComment(commentId)).thenReturn(listComments.get(commentId));
         assertEquals(listComments.get(commentId).getUserName(), commentService.getComment(commentId).getUserName());
@@ -60,11 +63,12 @@ class CommentServiceImplTest {
     void getNonExistentComment() {
         int commentId = 2;
         when(commentDao.getComment(commentId)).thenThrow(EmptyResultDataAccessException.class);
-        assertThrows(NotFoundException.class, () -> commentService.getComment(commentId));
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> commentService.getComment(commentId));
+        assertTrue(thrown.getMessage().contains("there is not such comment"));
     }
 
     @Test
-    void addComment() {
+    void addComment() throws NotFoundException {
         int carSaleId = 3;
         Comment comment = new Comment(5, "Sasha", "Cool");
         commentService.addComment(carSaleId, comment);
@@ -75,12 +79,14 @@ class CommentServiceImplTest {
     void addCommentWithWrongReference() {
         int carSaleId = 7;
         Comment comment = new Comment(5, "Pasha", "Good");
-        when(commentDao.addComment(carSaleId, comment)).thenThrow(DataIntegrityViolationException.class);
-        assertThrows(WrongReferenceException.class, () -> commentService.addComment(carSaleId, comment));
+        when(carSaleDao.getCarSale(carSaleId)).thenThrow(EmptyResultDataAccessException.class);
+        WrongReferenceException thrown = assertThrows(WrongReferenceException.class,
+                () -> commentService.addComment(carSaleId, comment));
+        assertTrue(thrown.getMessage().contains("there is not car sale with id=" + carSaleId + " to add comment"));
     }
 
     @Test
-    void updateComment() {
+    void updateComment() throws NotFoundException {
         Comment comment = new Comment(5, "Masha", "Very good");
         commentService.updateComment(comment);
         verify(commentDao, times(1)).updateComment(comment);
@@ -90,11 +96,12 @@ class CommentServiceImplTest {
     void updateNotExistComment() {
         Comment comment = new Comment(5, "Masha", "Very good");
         when(commentDao.getComment(comment.getCommentId())).thenThrow(EmptyResultDataAccessException.class);
-        assertThrows(NotFoundException.class, () -> commentService.updateComment(comment));
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> commentService.updateComment(comment));
+        assertTrue(thrown.getMessage().contains("there is not such comment"));
     }
 
     @Test
-    void deleteComment() {
+    void deleteComment() throws NotFoundException {
         int commentId = 2;
         when(commentDao.deleteComment(commentId)).thenReturn(true);
         commentService.deleteComment(commentId);
@@ -105,6 +112,8 @@ class CommentServiceImplTest {
     void deleteNotExistCar() {
         int commentId = 12;
         when(commentDao.deleteComment(commentId)).thenReturn(false);
-        assertThrows(NotFoundException.class, () -> commentService.deleteComment(commentId));
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> commentService.deleteComment(commentId));
+        assertTrue(thrown.getMessage().contains("comment with id = " + commentId
+                + "  you are trying to delete does not exist"));
     }
 }

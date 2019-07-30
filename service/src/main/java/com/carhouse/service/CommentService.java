@@ -1,12 +1,14 @@
 package com.carhouse.service;
 
 import com.carhouse.model.Comment;
+import javassist.NotFoundException;
 
 import java.util.List;
 
 /**
  * The interface of comment service.
  * provides methods to manage Comment models.
+ *
  * @author Katuranau Maksimilyan
  * @see Comment
  */
@@ -16,16 +18,18 @@ public interface CommentService {
      *
      * @param carSaleId the car sale id
      * @return the list of car sale comments
+     * @throws NotFoundException throws if there is not such car sale to get comments
      */
-    List<Comment> getCarSaleComments(int carSaleId);
+    List<Comment> getCarSaleComments(int carSaleId) throws NotFoundException;
 
     /**
      * Gets comment by id.
      *
      * @param id the comment id
      * @return the comment
+     * @throws NotFoundException throws if there is not such comment
      */
-    Comment getComment(int id);
+    Comment getComment(int id) throws NotFoundException;
 
     /**
      * Add comment to car sale advertisement.
@@ -34,8 +38,9 @@ public interface CommentService {
      * @param carSaleId the car sale id
      * @param comment   the comment
      * @return comment id
+     * @throws NotFoundException throws if there is not such car sale to add comment
      */
-    Integer addComment(int carSaleId, Comment comment);
+    Integer addComment(int carSaleId, Comment comment) ;
 
     /**
      * Update comment.
@@ -43,14 +48,16 @@ public interface CommentService {
      *
      * @param comment the comment
      * @return check or car is updated
+     * @throws NotFoundException throws if there is not such comment to update
      */
-    boolean updateComment(Comment comment);
+    boolean updateComment(Comment comment) throws NotFoundException;
 
     /**
      * Delete comment by id.
      *
      * @param id the index
      * @return check or car is deleted
+     * @throws NotFoundException throws if there is not such comment to delete
      */
-    boolean deleteComment(int id);
+    boolean deleteComment(int id) throws NotFoundException;
 }

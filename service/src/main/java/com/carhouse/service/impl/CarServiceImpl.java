@@ -3,7 +3,8 @@ package com.carhouse.service.impl;
 import com.carhouse.dao.CarDao;
 import com.carhouse.model.Car;
 import com.carhouse.service.CarService;
-import com.carhouse.service.exception.*;
+import com.carhouse.service.exception.WrongReferenceException;
+import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +54,10 @@ public class CarServiceImpl implements CarService {
      *
      * @param id the car id
      * @return the car
+     * @throws NotFoundException throws if there is not such car
      */
     @Override
-    public Car getCar(final int id) {
+    public Car getCar(final int id) throws NotFoundException {
         LOGGER.debug("method getCar with parameter: [{}]", id);
         try {
             return carDao.getCar(id);
@@ -86,9 +88,10 @@ public class CarServiceImpl implements CarService {
      *
      * @param car the car model
      * @return check or car is updated
+     * @throws NotFoundException throws if there is not such car to update
      */
     @Override
-    public boolean updateCar(final Car car) {
+    public boolean updateCar(final Car car) throws NotFoundException {
         LOGGER.debug("method updateCar with parameter: [{}]", car);
         getCar(car.getCarId());
         try {
@@ -103,12 +106,13 @@ public class CarServiceImpl implements CarService {
      *
      * @param id the car id
      * @return check or car is deleted
+     * @throws NotFoundException throws if there is not such car to delete
      */
     @Override
-    public boolean deleteCar(final int id) {
+    public boolean deleteCar(final int id) throws NotFoundException {
         LOGGER.debug("method deleteCar with parameter: [{}]", id);
         if (!carDao.deleteCar(id)) {
-            throw new NotFoundException("car you are trying to delete does not exist");
+            throw new NotFoundException("car with id = " + id + " you are trying to delete does not exist");
         }
         return true;
     }

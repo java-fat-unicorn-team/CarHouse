@@ -39,7 +39,7 @@ public interface CarDao {
      * Gets car id from car object
      *
      * @param car the car model
-     * @return check or car is update
+     * @return check or car is update, 1 means that only one row has been updated otherwise it returns 0
      */
     boolean updateCar(Car car);
 
@@ -47,7 +47,7 @@ public interface CarDao {
      * Delete car by id.
      *
      * @param id the car id
-     * @return check or car is deleted
+     * @return check or car is deleted, 1 means that only one row has been deleted otherwise it returns 0
      */
     boolean deleteCar(int id);
 }

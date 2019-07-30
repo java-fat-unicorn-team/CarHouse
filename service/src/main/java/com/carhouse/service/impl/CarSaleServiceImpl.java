@@ -3,7 +3,8 @@ package com.carhouse.service.impl;
 import com.carhouse.dao.CarSaleDao;
 import com.carhouse.model.CarSale;
 import com.carhouse.service.CarSaleService;
-import com.carhouse.service.exception.*;
+import com.carhouse.service.exception.WrongReferenceException;
+import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +54,10 @@ public class CarSaleServiceImpl implements CarSaleService {
      *
      * @param carSaleId the car sale id
      * @return the list of car sale
+     * @throws NotFoundException throws if there is not such car sale
      */
     @Override
-    public CarSale getCarSale(final int carSaleId) {
+    public CarSale getCarSale(final int carSaleId) throws NotFoundException {
         LOGGER.debug("method getCarSale with parameter: [{}]", carSaleId);
         try {
             return carSaleDao.getCarSale(carSaleId);
@@ -86,9 +88,10 @@ public class CarSaleServiceImpl implements CarSaleService {
      *
      * @param carSale the car sale
      * @return check or car sale is updated
+     * @throws NotFoundException throws if there is not such car sale to update
      */
     @Override
-    public boolean updateCarSale(final CarSale carSale) {
+    public boolean updateCarSale(final CarSale carSale) throws NotFoundException {
         LOGGER.debug("method updateCarSale with parameter: [{}]", carSale);
         getCarSale(carSale.getCarSaleId());
         try {
@@ -103,12 +106,13 @@ public class CarSaleServiceImpl implements CarSaleService {
      *
      * @param carSaleId the car sale id
      * @return check or car sale is deleted
+     * @throws NotFoundException throws if there is not such car sale to delete
      */
     @Override
-    public boolean deleteCarSale(final int carSaleId) {
+    public boolean deleteCarSale(final int carSaleId) throws NotFoundException {
         LOGGER.debug("method deleteCarSale with parameter: [{}]", carSaleId);
         if (!carSaleDao.deleteCarSale(carSaleId)) {
-            throw new NotFoundException("car sale you try to delete does not exist");
+            throw new NotFoundException("car sale with id = " + carSaleId + " you try to delete does not exist");
         }
         return true;
     }

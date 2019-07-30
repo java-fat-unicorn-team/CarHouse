@@ -1,11 +1,14 @@
 package com.carhouse.rest.handler;
 
 import com.carhouse.rest.response.ExceptionJSONInfo;
-import com.carhouse.service.exception.NotFoundException;
 import com.carhouse.service.exception.WrongReferenceException;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,7 +41,8 @@ public class RestExceptionHandler {
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
-    public @ResponseBody ExceptionJSONInfo notFoundHandler(final HttpServletRequest request, final Exception ex) {
+    public @ResponseBody
+    ExceptionJSONInfo notFoundHandler(final HttpServletRequest request, final Exception ex) {
         response.setUrl(request.getRequestURL().toString());
         response.setMessage(ex.getMessage());
         return response;
@@ -54,7 +58,8 @@ public class RestExceptionHandler {
      */
     @ResponseStatus(HttpStatus.FAILED_DEPENDENCY)
     @ExceptionHandler(WrongReferenceException.class)
-    public @ResponseBody ExceptionJSONInfo wrongReferenceHandler(final HttpServletRequest request, final Exception ex) {
+    public @ResponseBody
+    ExceptionJSONInfo wrongReferenceHandler(final HttpServletRequest request, final Exception ex) {
         response.setUrl(request.getRequestURL().toString());
         response.setMessage(ex.getMessage());
         return response;

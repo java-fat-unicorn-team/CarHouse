@@ -124,7 +124,7 @@ public class CommentDaoImpl implements CommentDao {
      * Gets id from comment object and rewrite comment with such id in database
      *
      * @param comment the comment
-     * @return check or car is update
+     * @return check or car is update, 1 means that only one row has been updated otherwise it returns 0
      */
     @Override
     public boolean updateComment(final Comment comment) {
@@ -137,7 +137,7 @@ public class CommentDaoImpl implements CommentDao {
      * Delete comment by id.
      *
      * @param carSaleId the index
-     * @return check or comment is deleted
+     * @return check or comment is deleted, 1 means that only one row has been deleted otherwise it returns 0
      */
     @Override
     public boolean deleteComment(final int carSaleId) {

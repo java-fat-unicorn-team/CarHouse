@@ -1,14 +1,15 @@
-package controller;
+package com.carhouse.rest.controller;
 
 import com.carhouse.model.CarMake;
-import config.RestTestConfig;
-import com.carhouse.rest.controller.CarMakeController;
 import com.carhouse.service.CarMakeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.carhouse.rest.testConfig.RestTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -23,14 +24,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith({SpringExtension.class, MockitoExtension.class})
 @ContextConfiguration(classes = RestTestConfig.class)
 class CarMakeControllerTest {
 
-    @Autowired
+    private static final String CAR_MAKE_LIST_GET_URL = "/carSale/car/carModel/carMake";
+
+    @Mock
     private CarMakeService carMakeService;
 
-    @Autowired
+    @InjectMocks
     private CarMakeController carMakeController;
 
     private ObjectMapper objectMapper = new ObjectMapper();
@@ -50,7 +53,7 @@ class CarMakeControllerTest {
     @Test
     void getCarMakes() throws Exception {
         when(carMakeService.getCarMakes()).thenReturn(listCarMake);
-        mockMvc.perform(get("/carSale/car/carModel/carMake"))
+        mockMvc.perform(get(CAR_MAKE_LIST_GET_URL))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(listCarMake)));
