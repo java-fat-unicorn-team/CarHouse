@@ -1,11 +1,11 @@
 package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CarSaleDao;
+import com.carhouse.dao.config.TestConfig;
+import com.carhouse.dao.config.TestSpringJDBCConfig;
 import com.carhouse.model.Car;
 import com.carhouse.model.User;
 import com.carhouse.model.CarSale;
-import com.carhouse.rest.config.TestConfig;
-import com.carhouse.rest.config.TestSpringJDBCConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,8 +74,9 @@ class CarSaleDaoImplTest {
     void updateCarSale() {
         CarSale newCarSale = new CarSale(4, new BigDecimal(13200), new Date(), new User(1),
                 new Car(5));
-        carSaleDao.updateCarSale(newCarSale);
+        boolean isUpdated = carSaleDao.updateCarSale(newCarSale);
         CarSale obtainedCarSale = carSaleDao.getCarSale(4);
+        assertTrue(isUpdated);
         assertEquals(newCarSale.getPrice(), obtainedCarSale.getPrice());
         assertEquals(newCarSale.getUser().getUserId(), obtainedCarSale.getUser().getUserId());
         assertEquals(newCarSale.getCar().getCarId(), obtainedCarSale.getCar().getCarId());
@@ -90,7 +91,8 @@ class CarSaleDaoImplTest {
     @Test
     void deleteCarSale() {
         int size = carSaleDao.getCarSales().size();
-        carSaleDao.deleteCarSale(3);
+        boolean isDeleted = carSaleDao.deleteCarSale(3);
+        assertTrue(isDeleted);
         assertEquals(size - 1, carSaleDao.getCarSales().size());
         assertThrows(EmptyResultDataAccessException.class, () -> carSaleDao.getCarSale(3));
     }

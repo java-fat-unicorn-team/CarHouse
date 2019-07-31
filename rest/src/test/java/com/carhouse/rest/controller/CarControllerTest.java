@@ -52,7 +52,7 @@ class CarControllerTest {
     private RestExceptionHandler restExceptionHandler;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private ObjectMapper objectMapper = new ObjectMapper();
     private List<Car> carList;
     private MockMvc mockMvc;
 

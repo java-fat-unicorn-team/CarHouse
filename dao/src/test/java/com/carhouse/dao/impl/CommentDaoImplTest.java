@@ -1,9 +1,9 @@
 package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CommentDao;
+import com.carhouse.dao.config.TestConfig;
+import com.carhouse.dao.config.TestSpringJDBCConfig;
 import com.carhouse.model.Comment;
-import com.carhouse.rest.config.TestConfig;
-import com.carhouse.rest.config.TestSpringJDBCConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +62,9 @@ class CommentDaoImplTest {
     @Test
     void updateComment() {
         Comment newComment = new Comment(2, "David", "Very Good");
-        commentDao.updateComment(newComment);
+        boolean isUpdated = commentDao.updateComment(newComment);
         Comment obtainedComment = commentDao.getComment(2);
+        assertTrue(isUpdated);
         assertEquals(newComment.getComment(), obtainedComment.getComment());
         assertEquals(newComment.getUserName(), obtainedComment.getUserName());
     }
@@ -71,7 +72,8 @@ class CommentDaoImplTest {
     @Test
     void deleteComment() {
         int size = commentDao.getCarSaleComments(4).size();
-        commentDao.deleteComment(3);
+        boolean isDeleted = commentDao.deleteComment(3);
+        assertTrue(isDeleted);
         assertEquals(size- 1, commentDao.getCarSaleComments(4).size());
         EmptyResultDataAccessException thrown = assertThrows(EmptyResultDataAccessException.class,
                 () -> commentDao.getComment(3));

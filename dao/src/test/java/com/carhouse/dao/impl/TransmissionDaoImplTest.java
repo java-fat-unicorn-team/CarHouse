@@ -1,8 +1,8 @@
 package com.carhouse.dao.impl;
 
 import com.carhouse.dao.TransmissionDao;
-import com.carhouse.rest.config.TestConfig;
-import com.carhouse.rest.config.TestSpringJDBCConfig;
+import com.carhouse.dao.config.TestConfig;
+import com.carhouse.dao.config.TestSpringJDBCConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

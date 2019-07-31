@@ -1,4 +1,4 @@
-package com.carhouse.rest.config;
+package com.carhouse.dao.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

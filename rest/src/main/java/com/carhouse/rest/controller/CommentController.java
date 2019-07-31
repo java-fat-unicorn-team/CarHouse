@@ -40,6 +40,7 @@ public class CommentController {
      *
      * @param carSaleId the car sale id
      * @return the list of comments in JSON
+     * @throws NotFoundException throws if there is not such car sale to get comments
      */
     @GetMapping("/{carSaleId}/comment")
     public List<Comment> getComments(@PathVariable final int carSaleId) throws NotFoundException {
@@ -68,6 +69,7 @@ public class CommentController {
      * Replace comment with id provided in obtained object on this obtained object
      *
      * @param comment the comment object to update
+     * @throws NotFoundException throws if there is not such comment to update
      */
     @PutMapping("/comment")
     public void updateComment(@RequestBody final Comment comment) throws NotFoundException {
@@ -80,6 +82,7 @@ public class CommentController {
      * Get comment's id to delete as path variable
      *
      * @param id the id
+     * @throws NotFoundException throws if there is not such comment to delete
      */
     @DeleteMapping("/comment/{id}")
     public void deleteComment(@PathVariable final int id) throws NotFoundException {
