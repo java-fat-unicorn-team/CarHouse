@@ -2,7 +2,7 @@ package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CarMakeDao;
 import com.carhouse.dao.config.TestConfig;
-import com.carhouse.dao.config.TestSpringJDBCConfig;
+import database.test.config.TestSpringJDBCConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,7 +2,7 @@ package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CarDao;
 import com.carhouse.dao.config.TestConfig;
-import com.carhouse.dao.config.TestSpringJDBCConfig;
+import database.test.config.TestSpringJDBCConfig;
 import com.carhouse.model.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

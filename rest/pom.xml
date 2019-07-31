@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>CarSharing</artifactId>
-        <groupId>com.spring</groupId>
+        <groupId>com.carhouse</groupId>
+        <artifactId>CarHouse</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -47,6 +47,10 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
         </dependency>
@@ -75,7 +79,7 @@
             <artifactId>jsonassert</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.spring</groupId>
+            <groupId>com.carhouse</groupId>
             <artifactId>service</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
@@ -89,7 +93,6 @@
                 <configuration>
                     <targetClasses>
                         <param>com.carhouse.rest.controller.*</param>
-                        <param>com.carhouse.rest.config.*</param>
                     </targetClasses>
                     <targetTests>
                         <param>com.carhouse.rest.controller.*</param>

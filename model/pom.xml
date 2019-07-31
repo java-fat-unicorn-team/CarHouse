@@ -8,8 +8,8 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>com.spring</groupId>
-        <artifactId>CarSharing</artifactId>
+        <groupId>com.carhouse</groupId>
+        <artifactId>CarHouse</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 

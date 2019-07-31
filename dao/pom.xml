@@ -8,8 +8,8 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>com.spring</groupId>
-        <artifactId>CarSharing</artifactId>
+        <groupId>com.carhouse</groupId>
+        <artifactId>CarHouse</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -55,8 +55,13 @@
             <artifactId>pitest-junit5-plugin</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.spring</groupId>
+            <groupId>com.carhouse</groupId>
             <artifactId>model</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.carhouse</groupId>
+            <artifactId>test-db</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
