@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -39,7 +40,8 @@ class FuelTypeServiceImplTest {
     @Test
     void getFuelTypes() {
         when(fuelTypeDao.getFuelTypes()).thenReturn(listFuelTypes);
-        fuelTypeService.getFuelTypes();
+        List<FuelType> obtainedFuelTypeList = fuelTypeService.getFuelTypes();
+        assertEquals(listFuelTypes.size(), obtainedFuelTypeList.size());
         verify(fuelTypeDao, times(1)).getFuelTypes();
     }
 }

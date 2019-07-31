@@ -78,11 +78,13 @@ class CommentControllerTest {
     void addComment() throws Exception {
         int carSaleId = 1;
         Comment comment = listComment.get(1);
-        when(commentService.addComment(anyInt(), any(Comment.class))).thenReturn(comment.getCommentId());
+        int commentId = comment.getCommentId();
+        when(commentService.addComment(anyInt(), any(Comment.class))).thenReturn(commentId);
         mockMvc.perform(post(CAR_SALE_COMMENT_ADD_URL, carSaleId)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(comment)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+        .andExpect(content().json(objectMapper.writeValueAsString(commentId)));
         verify(commentService, times(1)).addComment(anyInt(), any(Comment.class));
     }
 

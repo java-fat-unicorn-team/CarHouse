@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.ArrayList;
@@ -52,6 +51,13 @@ class CommentServiceImplTest {
     }
 
     @Test
+    void getCommentsOfNotExistentCarSale() {
+        int carSaleId = 2;
+        when(commentDao.getCarSaleComments(carSaleId)).thenThrow(EmptyResultDataAccessException.class);
+        assertThrows(NotFoundException.class, () -> commentService.getCarSaleComments(carSaleId));
+    }
+
+    @Test
     void getComment() throws NotFoundException {
         int commentId = 2;
         when(commentDao.getComment(commentId)).thenReturn(listComments.get(commentId));
@@ -68,10 +74,12 @@ class CommentServiceImplTest {
     }
 
     @Test
-    void addComment() throws NotFoundException {
+    void addComment() {
         int carSaleId = 3;
+        Integer newCommentId = 5;
         Comment comment = new Comment(5, "Sasha", "Cool");
-        commentService.addComment(carSaleId, comment);
+        when(commentDao.addComment(carSaleId, comment)).thenReturn(newCommentId);
+        assertEquals(newCommentId, commentService.addComment(carSaleId, comment));
         verify(commentDao, times(1)).addComment(carSaleId, comment);
     }
 
@@ -88,7 +96,9 @@ class CommentServiceImplTest {
     @Test
     void updateComment() throws NotFoundException {
         Comment comment = new Comment(5, "Masha", "Very good");
-        commentService.updateComment(comment);
+        when(commentDao.updateComment(comment)).thenReturn(true);
+        boolean isUpdated = commentService.updateComment(comment);
+        assertTrue(isUpdated);
         verify(commentDao, times(1)).updateComment(comment);
     }
 
@@ -104,7 +114,8 @@ class CommentServiceImplTest {
     void deleteComment() throws NotFoundException {
         int commentId = 2;
         when(commentDao.deleteComment(commentId)).thenReturn(true);
-        commentService.deleteComment(commentId);
+        boolean isDeleted = commentService.deleteComment(commentId);
+        assertTrue(isDeleted);
         verify(commentDao, times(1)).deleteComment(commentId);
     }
 

@@ -52,6 +52,7 @@ public class CarSaleController {
      *
      * @param carSaleId the car sale id
      * @return the car sale with provided id
+     * @throws NotFoundException throws if there is not such car sale
      */
     @GetMapping("/{carSaleId}")
     public CarSale getCarSale(@PathVariable final int carSaleId) throws NotFoundException {
@@ -80,6 +81,7 @@ public class CarSaleController {
      * Replace car sale with id provided in new car sale on this new object
      *
      * @param carSale the car sale object to update
+     * @throws NotFoundException throws if there is not such car sale to update
      */
     @PutMapping
     public void updateCarSale(@RequestBody final CarSale carSale) throws NotFoundException {
@@ -92,6 +94,7 @@ public class CarSaleController {
      * Get car sale's id to delete as path variable
      *
      * @param carSaleId the car sale id
+     * @throws NotFoundException throws if there is not such car sale to delete
      */
     @DeleteMapping("/{carSaleId}")
     public void deleteCarSale(@PathVariable final int carSaleId) throws NotFoundException {

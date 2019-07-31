@@ -88,10 +88,12 @@
                 <artifactId>pitest-maven</artifactId>
                 <configuration>
                     <targetClasses>
-                        <param>com.carhouse.*</param>
+                        <param>com.carhouse.rest.controller.*</param>
+                        <param>com.carhouse.rest.config.*</param>
                     </targetClasses>
                     <targetTests>
                         <param>com.carhouse.rest.controller.*</param>
+                        <param>com.carhouse.rest.config.*</param>
                     </targetTests>
                     <testPlugin>junit5</testPlugin>
                 </configuration>

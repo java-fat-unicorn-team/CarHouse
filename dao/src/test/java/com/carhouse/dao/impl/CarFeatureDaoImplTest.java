@@ -1,14 +1,17 @@
 package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CarFeatureDao;
-import com.carhouse.rest.config.TestConfig;
-import com.carhouse.rest.config.TestSpringJDBCConfig;
+import com.carhouse.dao.config.TestConfig;
+import com.carhouse.dao.config.TestSpringJDBCConfig;
+import com.carhouse.model.CarFeature;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -36,6 +39,8 @@ class CarFeatureDaoImplTest {
 
     @Test
     void getAllFeatures() {
-        assertEquals(4, carFeatureDao.getAllFeatures().size());
+        List<CarFeature> carFeatureList = carFeatureDao.getAllFeatures();
+        assertEquals(4, carFeatureList.size());
+        assertEquals("air conditioning", carFeatureList.get(1).getCarFeature());
     }
 }

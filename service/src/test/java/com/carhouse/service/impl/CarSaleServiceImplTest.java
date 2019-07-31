@@ -64,8 +64,10 @@ class CarSaleServiceImplTest {
 
     @Test
     void addCarSale() {
+        Integer newCarSaleId = 5;
         CarSale carSale = new CarSale(7);
-        carSaleService.addCarSale(carSale);
+        when(carSaleDao.addCarSale(carSale)).thenReturn(newCarSaleId);
+        assertEquals(newCarSaleId, carSaleService.addCarSale(carSale));
         verify(carSaleDao, times(1)).addCarSale(carSale);
     }
 
@@ -81,7 +83,9 @@ class CarSaleServiceImplTest {
     @Test
     void updateCarSale() throws NotFoundException {
         CarSale carSale = new CarSale(5);
-        carSaleService.updateCarSale(carSale);
+        when(carSaleDao.updateCarSale(carSale)).thenReturn(true);
+        boolean isUpdated = carSaleService.updateCarSale(carSale);
+        assertTrue(isUpdated);
         verify(carSaleDao, times(1)).updateCarSale(carSale);
     }
 
@@ -106,7 +110,8 @@ class CarSaleServiceImplTest {
     void deleteCarSale() throws NotFoundException {
         int carSaleId = 3;
         when(carSaleDao.deleteCarSale(carSaleId)).thenReturn(true);
-        carSaleService.deleteCarSale(carSaleId);
+        boolean isDeleted = carSaleService.deleteCarSale(carSaleId);
+        assertTrue(isDeleted);
         verify(carSaleDao, times(1)).deleteCarSale(carSaleId);
     }
 

@@ -10,7 +10,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {WebConfig.class})
+@ContextConfiguration(classes = {WebConfig.class, SpringJDBCConfig.class, DispatcherServletInitializer.class})
 public class SpringConfigTest {
 
     @Autowired
