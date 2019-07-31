@@ -2,7 +2,7 @@ package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CarSaleDao;
 import com.carhouse.dao.config.TestConfig;
-import com.carhouse.dao.config.TestSpringJDBCConfig;
+import database.test.config.TestSpringJDBCConfig;
 import com.carhouse.model.Car;
 import com.carhouse.model.User;
 import com.carhouse.model.CarSale;

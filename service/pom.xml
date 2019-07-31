@@ -8,8 +8,8 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>com.spring</groupId>
-        <artifactId>CarSharing</artifactId>
+        <groupId>com.carhouse</groupId>
+        <artifactId>CarHouse</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -47,13 +47,13 @@
             <artifactId>pitest-junit5-plugin</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.spring</groupId>
-            <artifactId>dao</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.carhouse</groupId>
+            <artifactId>dao</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
