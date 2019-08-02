@@ -124,7 +124,7 @@ public class CarSaleDaoImpl implements CarSaleDao {
      * Gets car sale id from carSale object and rewrite the carSale in database
      *
      * @param carSale the car sale
-     * @return check or car sale is updated, 1 means that only one row has been updated otherwise it returns 0
+     * @return true if car sale was updated and false if there is not such car sale in database
      */
     @Override
     public boolean updateCarSale(final CarSale carSale) {
@@ -137,7 +137,7 @@ public class CarSaleDaoImpl implements CarSaleDao {
      * Delete car sale by id.
      *
      * @param carSaleId the car sale id
-     * @return check or car sale is deleted, 1 means that only one row has been deleted otherwise it returns 0
+     * @return true if car sale was deleted and false if there is not such car sale in database
      */
     @Override
     public boolean deleteCarSale(final int carSaleId) {

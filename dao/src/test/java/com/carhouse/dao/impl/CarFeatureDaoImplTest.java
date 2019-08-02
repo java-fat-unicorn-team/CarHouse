@@ -1,8 +1,8 @@
 package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CarFeatureDao;
-import com.carhouse.dao.config.TestConfig;
-import database.test.config.TestSpringJDBCConfig;
+import com.carhouse.dao.config.TestConfiguration;
+import com.carhouse.dao.config.TestSpringJDBCConfig;
 import com.carhouse.model.CarFeature;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {TestConfig.class, TestSpringJDBCConfig.class})
+@ContextConfiguration(classes = {TestConfiguration.class, TestSpringJDBCConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class CarFeatureDaoImplTest {
 

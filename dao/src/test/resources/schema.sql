@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS `car`;
 DROP TABLE IF EXISTS `car_model`;
 DROP TABLE IF EXISTS `car_make`;
 DROP TABLE IF EXISTS `transmission`;
+
 DROP TABLE IF EXISTS `fuel_type`;
 
 CREATE TABLE `user_table`
@@ -18,36 +19,28 @@ CREATE TABLE `user_table`
     `password`     varchar(45) NOT NULL,
     PRIMARY KEY (`user_id`),
     UNIQUE KEY `loggin_UNIQUE` (`login`)
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  DEFAULT CHARSET = utf8;
+);
 
 CREATE TABLE `fuel_type`
 (
     `fuel_type_id` int(11)     NOT NULL AUTO_INCREMENT,
     `fuel_type`    varchar(45) NOT NULL,
     PRIMARY KEY (`fuel_type_id`)
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  DEFAULT CHARSET = utf8;
+);
 
 CREATE TABLE `transmission`
 (
     `transmission_id` int(11)     NOT NULL AUTO_INCREMENT,
     `transmission`    varchar(45) NOT NULL,
     PRIMARY KEY (`transmission_id`)
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  DEFAULT CHARSET = utf8;
+);
 
 CREATE TABLE `car_make`
 (
     `car_make_id` int(11)     NOT NULL AUTO_INCREMENT,
     `car_make`    varchar(45) NOT NULL,
     PRIMARY KEY (`car_make_id`)
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  DEFAULT CHARSET = utf8;
+);
 
 CREATE TABLE `car_model`
 (
@@ -57,9 +50,7 @@ CREATE TABLE `car_model`
     PRIMARY KEY (`car_model_id`),
     CONSTRAINT `fk_car_make` FOREIGN KEY (`car_make_id`) REFERENCES `car_make` (`car_make_id`)
         ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  DEFAULT CHARSET = utf8;
+);
 
 CREATE TABLE `car`
 (
@@ -76,18 +67,14 @@ CREATE TABLE `car`
         ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT `fk_transmission` FOREIGN KEY (`transmission_id`) REFERENCES `transmission` (`transmission_id`)
         ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  DEFAULT CHARSET = utf8;
+);
 
 CREATE TABLE `car_feature`
 (
     `car_feature_id` int(11)     NOT NULL AUTO_INCREMENT,
     `car_feature`    varchar(45) NOT NULL,
     PRIMARY KEY (`car_feature_id`)
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  DEFAULT CHARSET = utf8;
+);
 
 CREATE TABLE `car_has_car_feature`
 (
@@ -98,9 +85,7 @@ CREATE TABLE `car_has_car_feature`
         ON DELETE CASCADE ON UPDATE NO ACTION,
     CONSTRAINT `fk_car_has_car_feature_car_feature1` FOREIGN KEY (`car_feature_id`)
         REFERENCES `car_feature` (`car_feature_id`) ON DELETE CASCADE ON UPDATE NO ACTION
-)
-    ENGINE = InnoDB
-    DEFAULT CHARSET = utf8;
+);
 
 CREATE TABLE `car_sale`
 (
@@ -110,12 +95,10 @@ CREATE TABLE `car_sale`
     `user_id`     int(11)     NOT NULL,
     `car_id`      int(11)     NOT NULL,
     PRIMARY KEY (`car_sale_id`),
-    CONSTRAINT `fk_car_id` FOREIGN KEY (`car_id`) REFERENCES `car` (`car_id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+    CONSTRAINT `fk_car_id` FOREIGN KEY (`car_id`) REFERENCES `car` (`car_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user_table` (`user_id`)
         ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  DEFAULT CHARSET = utf8;
+);
 
 CREATE TABLE `comment`
 (
@@ -126,6 +109,4 @@ CREATE TABLE `comment`
     PRIMARY KEY (`comment_id`),
     CONSTRAINT `fk_car_sale_id` FOREIGN KEY (`car_sale_id`) REFERENCES `car_sale` (`car_sale_id`)
         ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE = InnoDB
-  AUTO_INCREMENT = 1
-  DEFAULT CHARSET = utf8;
+);

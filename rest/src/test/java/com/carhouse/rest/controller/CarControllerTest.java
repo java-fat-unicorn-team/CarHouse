@@ -73,7 +73,7 @@ class CarControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(content().json(objectMapper.writeValueAsString(carList)));
-        verify(carService, times(1)).getCars();
+        verify(carService).getCars();
     }
 
     @Test
@@ -85,7 +85,7 @@ class CarControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(content().json(objectMapper.writeValueAsString(car)));
-        verify(carService, times(1)).getCar(carId);
+        verify(carService).getCar(carId);
     }
 
     @Test
@@ -94,7 +94,7 @@ class CarControllerTest {
         when(carService.getCar(carId)).thenThrow(NotFoundException.class);
         mockMvc.perform(get(CAR_GET_URL, carId))
                 .andExpect(status().isNotFound());
-        verify(carService, times(1)).getCar(carId);
+        verify(carService).getCar(carId);
     }
 
     @Test
@@ -107,7 +107,7 @@ class CarControllerTest {
                 .content(objectMapper.writeValueAsString(car)))
                 .andExpect(status().isCreated())
                 .andExpect(content().json(objectMapper.writeValueAsString(carId)));
-        verify(carService, times(1)).addCar(any(Car.class));
+        verify(carService).addCar(any(Car.class));
     }
 
     @Test
@@ -119,60 +119,67 @@ class CarControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(car)))
                 .andExpect(status().isFailedDependency());
-        verify(carService, times(1)).addCar(any(Car.class));
+        verify(carService).addCar(any(Car.class));
     }
 
     @Test
     void updateCar() throws Exception {
         int carId = 1;
         Car car = carList.get(carId);
-        when(carService.updateCar(any(Car.class))).thenReturn(true);
         mockMvc.perform(put(CAR_UPDATE_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(car)))
                 .andExpect(status().isOk());
-        verify(carService, times(1)).updateCar(any(Car.class));
+        verify(carService).updateCar(any(Car.class));
     }
 
     @Test
     void updateCarWithWrongReference() throws Exception {
         int carId = 1;
         Car car = carList.get(carId);
-        when(carService.updateCar(any(Car.class))).thenThrow(WrongReferenceException.class);
+        doThrow(WrongReferenceException.class).when(carService).updateCar(any(Car.class));
         mockMvc.perform(put(CAR_UPDATE_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(car)))
                 .andExpect(status().isFailedDependency());
-        verify(carService, times(1)).updateCar(any(Car.class));
+        verify(carService).updateCar(any(Car.class));
     }
 
     @Test
     void updateNotExistCar() throws Exception {
         int carId = 1;
         Car car = carList.get(carId);
-        when(carService.updateCar(any(Car.class))).thenThrow(NotFoundException.class);
+        doThrow(NotFoundException.class).when(carService).updateCar(any(Car.class));
         mockMvc.perform(put(CAR_UPDATE_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(car)))
                 .andExpect(status().isNotFound());
-        verify(carService, times(1)).updateCar(any(Car.class));
+        verify(carService).updateCar(any(Car.class));
     }
 
     @Test
     void deleteCar() throws Exception {
         int carId = 2;
-        when(carService.deleteCar(carId)).thenReturn(true);
         mockMvc.perform(delete(CAR_DELETE_URL, carId))
                 .andExpect(status().isOk());
-        verify(carService, times(1)).deleteCar(carId);
+        verify(carService).deleteCar(carId);
+    }
+
+    @Test
+    void deleteCarWhichHasReferences() throws Exception {
+        int carId = 1;
+        doThrow(WrongReferenceException.class).when(carService).deleteCar(carId);
+        mockMvc.perform(delete(CAR_DELETE_URL, carId))
+                .andExpect(status().isFailedDependency());
+        verify(carService).deleteCar(carId);
     }
 
     @Test
     void deleteNotExistCar() throws Exception {
         int carId = 2;
-        when(carService.deleteCar(carId)).thenThrow(NotFoundException.class);
+        doThrow(NotFoundException.class).when(carService).deleteCar(carId);
         mockMvc.perform(delete(CAR_DELETE_URL, carId))
                 .andExpect(status().isNotFound());
-        verify(carService, times(1)).deleteCar(carId);
+        verify(carService).deleteCar(carId);
     }
 }

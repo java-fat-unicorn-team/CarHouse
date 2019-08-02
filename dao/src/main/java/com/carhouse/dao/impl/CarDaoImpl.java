@@ -146,24 +146,27 @@ public class CarDaoImpl implements CarDao {
      * To correctly change references the method first remove old references and then add new
      *
      * @param car the car model
-     * @return check or car is update, 1 means that only one row has been updated otherwise it returns 0
+     * @return true if car was updated and false if there is not such car in database
      */
     @Override
     public boolean updateCar(final Car car) {
         LOGGER.debug("method updateCar with parameter: [{}]", car);
         KeyHolder keyHolder = new GeneratedKeyHolder();
+        if (namedParameterJdbcTemplate.update(UPDATE_CAR_SQL, parameterSource.getCarParameters(car), keyHolder) != 1) {
+            return false;
+        }
         carHasCarFeatureDao.deleteAllCarFeatures(car.getCarId());
-        car.getCarFeatureList().forEach(carFeature -> {
-            carHasCarFeatureDao.addCarFeature(car.getCarId(), carFeature.getCarFeatureId());
-        });
-        return namedParameterJdbcTemplate.update(UPDATE_CAR_SQL, parameterSource.getCarParameters(car), keyHolder) == 1;
+        car.getCarFeatureList().forEach(carFeature ->
+            carHasCarFeatureDao.addCarFeature(car.getCarId(), carFeature.getCarFeatureId())
+        );
+        return true;
     }
 
     /**
      * Delete car by id.
      *
      * @param id the car id
-     * @return check or car is deleted, 1 means that only one row has been deleted otherwise it returns 0
+     * @return true if car was deleted and false if there is not such car in database
      */
     @Override
     public boolean deleteCar(final int id) {

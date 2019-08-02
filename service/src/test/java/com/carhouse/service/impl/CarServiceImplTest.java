@@ -58,7 +58,7 @@ class CarServiceImplTest {
         int carId = 10;
         when(carDao.getCar(carId)).thenThrow(EmptyResultDataAccessException.class);
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> carService.getCar(carId));
-        assertTrue(thrown.getMessage().contains("there is not such car"));
+        assertTrue(thrown.getMessage().contains("there is not car with id = " + carId));
     }
 
     @Test
@@ -82,15 +82,14 @@ class CarServiceImplTest {
     void updateCar() throws NotFoundException {
         Car car = new Car(5);
         when(carDao.updateCar(car)).thenReturn(true);
-        boolean isUpdated = carService.updateCar(car);
-        assertTrue(isUpdated);
+        carService.updateCar(car);
         verify(carDao, times(1)).updateCar(car);
     }
 
     @Test
     void updateCarWithWrongReference() {
         Car car = new Car(5);
-        when(carDao.updateCar(car)).thenThrow(DataIntegrityViolationException.class);
+        doThrow(DataIntegrityViolationException.class).when(carDao).updateCar(car);
         WrongReferenceException thrown = assertThrows(WrongReferenceException.class, () -> carService.updateCar(car));
         assertTrue(thrown.getMessage().contains("there is wrong references in your car"));
     }
@@ -98,17 +97,25 @@ class CarServiceImplTest {
     @Test
     void updateNotExistCar() {
         Car car = new Car(5);
-        when(carDao.getCar(car.getCarId())).thenThrow(EmptyResultDataAccessException.class);
+        when(carDao.updateCar(car)).thenReturn(false);
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> carService.updateCar(car));
-        assertTrue(thrown.getMessage().contains("there is not such car"));
+        assertTrue(thrown.getMessage().contains("there is not car with id = " + car.getCarId()));
     }
 
     @Test
     void deleteCar() throws NotFoundException {
         int carId = 2;
         when(carDao.deleteCar(carId)).thenReturn(true);
-        boolean isDeleted = carService.deleteCar(carId);
-        assertTrue(isDeleted);
+        carService.deleteCar(carId);
+        verify(carDao, times(1)).deleteCar(carId);
+    }
+
+    @Test
+    void deleteCarWhichHaveReferences() {
+        int carId = 5;
+        when(carDao.deleteCar(carId)).thenThrow(DataIntegrityViolationException.class);
+        WrongReferenceException thrown = assertThrows(WrongReferenceException.class, () -> carService.deleteCar(carId));
+        assertTrue(thrown.getMessage().contains("car with id = " + carId + " has references"));
         verify(carDao, times(1)).deleteCar(carId);
     }
 
@@ -117,6 +124,6 @@ class CarServiceImplTest {
         int carId = 12;
         when(carDao.deleteCar(carId)).thenReturn(false);
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> carService.deleteCar(carId));
-        assertTrue(thrown.getMessage().contains("car with id = " + carId + " you are trying to delete does not exist"));
+        assertTrue(thrown.getMessage().contains("there is not car with id = " + carId + " to delete"));
     }
 }

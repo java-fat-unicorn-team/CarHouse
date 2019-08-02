@@ -9,6 +9,7 @@ import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,7 @@ public class CommentServiceImpl implements CommentService {
      * Instantiates a new Comment service.
      *
      * @param commentDao the class is provided CRUD operations for fuel type model.
+     * @param carSaleDao is used to check is there car sale to get comments
      */
     @Autowired
     public CommentServiceImpl(final CommentDao commentDao, final CarSaleDao carSaleDao) {
@@ -54,7 +56,7 @@ public class CommentServiceImpl implements CommentService {
             carSaleDao.getCarSale(carSaleId);
             return commentDao.getCarSaleComments(carSaleId);
         } catch (EmptyResultDataAccessException ex) {
-            throw new NotFoundException("there is not such car sale");
+            throw new NotFoundException("there is not car sale with id = " + carSaleId);
         }
     }
 
@@ -71,7 +73,7 @@ public class CommentServiceImpl implements CommentService {
         try {
             return commentDao.getComment(id);
         } catch (EmptyResultDataAccessException ex) {
-            throw new NotFoundException("there is not such comment");
+            throw new NotFoundException("there is not comment with id = " + id);
         }
     }
 
@@ -88,9 +90,8 @@ public class CommentServiceImpl implements CommentService {
     public Integer addComment(final int carSaleId, final Comment comment) {
         LOGGER.debug("method addComment with parameters: [{}, {}]", carSaleId, comment);
         try {
-            carSaleDao.getCarSale(carSaleId);
             return commentDao.addComment(carSaleId, comment);
-        } catch (EmptyResultDataAccessException ex) {
+        } catch (DataIntegrityViolationException ex) {
             throw new WrongReferenceException("there is not car sale with id=" + carSaleId + " to add comment");
         }
     }
@@ -100,29 +101,27 @@ public class CommentServiceImpl implements CommentService {
      * Gets id from comment object
      *
      * @param comment the comment
-     * @return check or car is updated
      * @throws NotFoundException throws if there is not such comment to update
      */
     @Override
-    public boolean updateComment(final Comment comment) throws NotFoundException {
+    public void updateComment(final Comment comment) throws NotFoundException {
         LOGGER.debug("method updateComment with parameter: [{}]", comment);
-        getComment(comment.getCommentId());
-        return commentDao.updateComment(comment);
+        if (!commentDao.updateComment(comment)) {
+            throw new NotFoundException("there is not comment with id=" + comment.getCommentId());
+        }
     }
 
     /**
      * Delete comment by id.
      *
      * @param id the index
-     * @return check or car is deleted
      * @throws NotFoundException throws if there is not such comment to delete
      */
     @Override
-    public boolean deleteComment(final int id) throws NotFoundException {
+    public void deleteComment(final int id) throws NotFoundException {
         LOGGER.debug("method deleteComment with parameter: [{}]", id);
         if (!commentDao.deleteComment(id)) {
-            throw new NotFoundException("comment with id = " + id + "  you are trying to delete does not exist");
+            throw new NotFoundException("there is not comment with id = " + id + " to delete");
         }
-        return true;
     }
 }

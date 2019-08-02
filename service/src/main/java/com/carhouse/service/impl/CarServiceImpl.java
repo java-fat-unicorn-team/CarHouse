@@ -62,7 +62,7 @@ public class CarServiceImpl implements CarService {
         try {
             return carDao.getCar(id);
         } catch (EmptyResultDataAccessException ex) {
-            throw new NotFoundException("there is not such car");
+            throw new NotFoundException("there is not car with id = " + id);
         }
     }
 
@@ -87,15 +87,15 @@ public class CarServiceImpl implements CarService {
      * Gets car id from car object
      *
      * @param car the car model
-     * @return check or car is updated
      * @throws NotFoundException throws if there is not such car to update
      */
     @Override
-    public boolean updateCar(final Car car) throws NotFoundException {
+    public void updateCar(final Car car) throws NotFoundException {
         LOGGER.debug("method updateCar with parameter: [{}]", car);
-        getCar(car.getCarId());
         try {
-            return carDao.updateCar(car);
+            if (!carDao.updateCar(car)) {
+                throw new NotFoundException("there is not car with id = " + car.getCarId());
+            }
         } catch (DataIntegrityViolationException ex) {
             throw new WrongReferenceException("there is wrong references in your car");
         }
@@ -105,15 +105,17 @@ public class CarServiceImpl implements CarService {
      * Delete car by id.
      *
      * @param id the car id
-     * @return check or car is deleted
      * @throws NotFoundException throws if there is not such car to delete
      */
     @Override
-    public boolean deleteCar(final int id) throws NotFoundException {
+    public void deleteCar(final int id) throws NotFoundException {
         LOGGER.debug("method deleteCar with parameter: [{}]", id);
-        if (!carDao.deleteCar(id)) {
-            throw new NotFoundException("car with id = " + id + " you are trying to delete does not exist");
+        try {
+            if (!carDao.deleteCar(id)) {
+                throw new NotFoundException("there is not car with id = " + id + " to delete");
+            }
+        } catch (DataIntegrityViolationException ex) {
+            throw new WrongReferenceException("car with id = " + id + " has references");
         }
-        return true;
     }
 }

@@ -39,7 +39,7 @@ public interface CarDao {
      * Gets car id from car object
      *
      * @param car the car model
-     * @return check or car is update
+     * @return check or car is updated
      */
     boolean updateCar(Car car);
 

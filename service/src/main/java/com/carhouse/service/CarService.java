@@ -42,17 +42,15 @@ public interface CarService {
      * Gets car id from car object
      *
      * @param car the car model
-     * @return check or car is update
      * @throws NotFoundException throws if there is not such car to update
      */
-    boolean updateCar(Car car) throws NotFoundException;
+    void updateCar(Car car) throws NotFoundException;
 
     /**
      * Delete car by id.
      *
      * @param id the car id
-     * @return check or car is delete
      * @throws NotFoundException throws if there is not such car to delete
      */
-    boolean deleteCar(int id) throws NotFoundException;
+    void deleteCar(int id) throws NotFoundException;
 }
