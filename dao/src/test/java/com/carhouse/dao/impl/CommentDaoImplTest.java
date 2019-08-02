@@ -1,8 +1,8 @@
 package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CommentDao;
-import com.carhouse.dao.config.TestConfig;
-import database.test.config.TestSpringJDBCConfig;
+import com.carhouse.dao.config.TestConfiguration;
+import com.carhouse.dao.config.TestSpringJDBCConfig;
 import com.carhouse.model.Comment;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +16,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {TestConfig.class, TestSpringJDBCConfig.class})
+@ContextConfiguration(classes = {TestConfiguration.class, TestSpringJDBCConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class CommentDaoImplTest {
 
@@ -54,7 +54,7 @@ class CommentDaoImplTest {
     }
 
     @Test
-    void addCommentWithWrongReference() {
+    void addCommentToNotExistCarSale() {
         assertThrows(DataIntegrityViolationException.class, () -> commentDao.addComment(9,
                 new Comment(2, "Vasya", "Nice car")));
     }
@@ -62,24 +62,24 @@ class CommentDaoImplTest {
     @Test
     void updateComment() {
         Comment newComment = new Comment(2, "David", "Very Good");
-        boolean isUpdated = commentDao.updateComment(newComment);
+        assertTrue(commentDao.updateComment(newComment));
         Comment obtainedComment = commentDao.getComment(2);
-        assertTrue(isUpdated);
         assertEquals(newComment.getComment(), obtainedComment.getComment());
         assertEquals(newComment.getUserName(), obtainedComment.getUserName());
     }
 
     @Test
+    void updateNonExistentComment() {
+        assertFalse(commentDao.updateComment( new Comment(12, "David", "Very Good")));
+    }
+
+    @Test
     void deleteComment() {
-        int size = commentDao.getCarSaleComments(4).size();
-        boolean isDeleted = commentDao.deleteComment(3);
-        assertTrue(isDeleted);
-        assertEquals(size- 1, commentDao.getCarSaleComments(4).size());
+        assertTrue(commentDao.deleteComment(3));
         EmptyResultDataAccessException thrown = assertThrows(EmptyResultDataAccessException.class,
                 () -> commentDao.getComment(3));
         assertTrue(thrown.getMessage().contains("Incorrect result size: expected 1, actual 0"));
     }
-
 
     @Test
     void deleteNotExistComment() {

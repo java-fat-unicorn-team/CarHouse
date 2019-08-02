@@ -1,14 +1,15 @@
 package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CarDao;
-import com.carhouse.dao.config.TestConfig;
-import database.test.config.TestSpringJDBCConfig;
+import com.carhouse.dao.config.TestConfiguration;
+import com.carhouse.dao.config.TestSpringJDBCConfig;
 import com.carhouse.model.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -20,7 +21,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {TestConfig.class, TestSpringJDBCConfig.class})
+@ContextConfiguration(classes = {TestConfiguration.class, TestSpringJDBCConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class CarDaoImplTest {
 
@@ -30,6 +31,9 @@ class CarDaoImplTest {
     CarDaoImplTest(CarDao carDao) {
         this.carDao = carDao;
     }
+
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Test
     void getCars() {
@@ -86,14 +90,12 @@ class CarDaoImplTest {
             add(new CarFeature(2, ""));
             add(new CarFeature(1, ""));
         }});
-        boolean isUpdated = carDao.updateCar(newCar);
+        assertTrue(carDao.updateCar(newCar));
         Car obtainedCar = carDao.getCar(2);
-        assertTrue(isUpdated);
         assertEquals(newCar.getMileage(), obtainedCar.getMileage());
         assertEquals(newCar.getTransmission().getTransmissionId(), obtainedCar.getTransmission().getTransmissionId());
         assertEquals(newCar.getCarModel().getCarModelId(), obtainedCar.getCarModel().getCarModelId());
         assertEquals(newCar.getCarFeatureList().size(), obtainedCar.getCarFeatureList().size());
-
     }
 
     @Test
@@ -105,14 +107,23 @@ class CarDaoImplTest {
     }
 
     @Test
+    void updateNotExistCar() {
+        assertFalse(carDao.updateCar(new Car(20,
+                Date.valueOf("2017-04-01"), 233455, new FuelType(2), new Transmission(2),
+                new CarModel(1, new CarMake(2)), new ArrayList<>())));
+    }
+
+    @Test
     void deleteCar() {
-        int size = carDao.getCars().size();
-        boolean isDeleted = carDao.deleteCar(4);
-        assertTrue(isDeleted);
-        assertEquals(size - 1, carDao.getCars().size());
+        assertTrue(carDao.deleteCar(5));
         EmptyResultDataAccessException thrown = assertThrows(EmptyResultDataAccessException.class,
-                () -> carDao.getCar(4));
+                () -> carDao.getCar(5));
         assertTrue(thrown.getMessage().contains("Incorrect result size: expected 1, actual 0"));
+    }
+
+    @Test
+    void deleteCarWithWrongReferences() {
+        assertThrows(DataIntegrityViolationException.class, () -> carDao.deleteCar(2));
     }
 
     @Test

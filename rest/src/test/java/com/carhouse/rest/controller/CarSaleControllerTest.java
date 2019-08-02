@@ -128,7 +128,6 @@ class CarSaleControllerTest {
     void updateCarSale() throws Exception {
         int carSaleId = 2;
         CarSale carSale = listCarSale.get(carSaleId);
-        when(carSaleService.updateCarSale(any(CarSale.class))).thenReturn(true);
         mockMvc.perform(put(CAR_SALE_UPDATE_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(carSale)))
@@ -140,7 +139,7 @@ class CarSaleControllerTest {
     void updateCarSaleWithWrongReference() throws Exception {
         int carSaleId = 2;
         CarSale carSale = listCarSale.get(carSaleId);
-        when(carSaleService.updateCarSale(any(CarSale.class))).thenThrow(WrongReferenceException.class);
+        doThrow(WrongReferenceException.class).when(carSaleService).updateCarSale(any(CarSale.class));
         mockMvc.perform(put(CAR_SALE_UPDATE_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(carSale)))
@@ -152,7 +151,7 @@ class CarSaleControllerTest {
     void updateNotExistCarSale() throws Exception {
         int carSaleId = 2;
         CarSale carSale = listCarSale.get(carSaleId);
-        when(carSaleService.updateCarSale(any(CarSale.class))).thenThrow(NotFoundException.class);
+        doThrow(NotFoundException.class).when(carSaleService).updateCarSale(any(CarSale.class));
         mockMvc.perform(put(CAR_SALE_UPDATE_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(carSale)))
@@ -163,7 +162,6 @@ class CarSaleControllerTest {
     @Test
     void deleteCarSale() throws Exception {
         int carSaleId = 1;
-        when(carSaleService.deleteCarSale(carSaleId)).thenReturn(true);
         mockMvc.perform(delete(CAR_SALE_DELETE_URL, carSaleId))
                 .andExpect(status().isOk());
         verify(carSaleService, times(1)).deleteCarSale(carSaleId);
@@ -172,7 +170,7 @@ class CarSaleControllerTest {
     @Test
     void deleteNotExistCarSale() throws Exception {
         int carSaleId = 1;
-        when(carSaleService.deleteCarSale(carSaleId)).thenThrow(NotFoundException.class);
+        doThrow(NotFoundException.class).when(carSaleService).deleteCarSale(carSaleId);
         mockMvc.perform(delete(CAR_SALE_DELETE_URL, carSaleId))
                 .andExpect(status().isNotFound());
         verify(carSaleService, times(1)).deleteCarSale(carSaleId);

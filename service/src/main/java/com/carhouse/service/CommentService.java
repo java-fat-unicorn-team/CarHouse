@@ -40,24 +40,22 @@ public interface CommentService {
      * @return comment id
      * @throws NotFoundException throws if there is not such car sale to add comment
      */
-    Integer addComment(int carSaleId, Comment comment) ;
+    Integer addComment(int carSaleId, Comment comment);
 
     /**
      * Update comment.
      * Gets id from comment object
      *
      * @param comment the comment
-     * @return check or car is updated
      * @throws NotFoundException throws if there is not such comment to update
      */
-    boolean updateComment(Comment comment) throws NotFoundException;
+    void updateComment(Comment comment) throws NotFoundException;
 
     /**
      * Delete comment by id.
      *
      * @param id the index
-     * @return check or car is deleted
      * @throws NotFoundException throws if there is not such comment to delete
      */
-    boolean deleteComment(int id) throws NotFoundException;
+    void deleteComment(int id) throws NotFoundException;
 }

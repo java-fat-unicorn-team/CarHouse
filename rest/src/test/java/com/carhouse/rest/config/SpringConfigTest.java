@@ -1,7 +1,7 @@
 package com.carhouse.rest.config;
 
 import com.carhouse.rest.controller.CarController;
-import database.test.config.TestSpringJDBCConfig;
+import com.carhouse.rest.testConfig.TestJDBCConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +9,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = {WebConfig.class, TestSpringJDBCConfig.class})
+@ContextConfiguration(classes = {WebConfig.class, SpringJDBCConfig.class, TestJDBCConfig.class})
 public class SpringConfigTest {
 
     @Autowired
@@ -19,6 +21,6 @@ public class SpringConfigTest {
 
     @Test
     public void getCars() {
-        carController.getCars();
+        assertEquals(5, carController.getCars().size());
     }
 }

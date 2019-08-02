@@ -1,8 +1,8 @@
 package com.carhouse.dao.impl;
 
 import com.carhouse.dao.TransmissionDao;
-import com.carhouse.dao.config.TestConfig;
-import database.test.config.TestSpringJDBCConfig;
+import com.carhouse.dao.config.TestConfiguration;
+import com.carhouse.dao.config.TestSpringJDBCConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {TestConfig.class, TestSpringJDBCConfig.class})
+@ContextConfiguration(classes = {TestConfiguration.class, TestSpringJDBCConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class TransmissionDaoImplTest {
 

@@ -103,7 +103,6 @@ class CommentControllerTest {
     @Test
     void updateComment() throws Exception {
         Comment comment = listComment.get(1);
-        when(commentService.updateComment(any(Comment.class))).thenReturn(true);
         mockMvc.perform(put(CAR_SALE_COMMENT_UPDATE_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(comment)))
@@ -114,7 +113,7 @@ class CommentControllerTest {
     @Test
     void updateNotExistComment() throws Exception {
         Comment comment = listComment.get(1);
-        when(commentService.updateComment(any(Comment.class))).thenThrow(NotFoundException.class);
+        doThrow(NotFoundException.class).when(commentService).updateComment(any(Comment.class));
         mockMvc.perform(put(CAR_SALE_COMMENT_UPDATE_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(comment)))
@@ -125,16 +124,15 @@ class CommentControllerTest {
     @Test
     void deleteComment() throws Exception {
         int commentId = 1;
-        when(commentService.deleteComment(commentId)).thenReturn(true);
         mockMvc.perform(delete(CAR_SALE_COMMENT_DELETE_URL, commentId))
                 .andExpect(status().isOk());
         verify(commentService, times(1)).deleteComment(commentId);
     }
 
     @Test
-    void deleteNotExistCar() throws Exception {
+    void deleteNotExistComment() throws Exception {
         int commentId = 1;
-        when(commentService.deleteComment(commentId)).thenThrow(NotFoundException.class);
+        doThrow(NotFoundException.class).when(commentService).deleteComment(commentId);
         mockMvc.perform(delete(CAR_SALE_COMMENT_DELETE_URL, commentId))
                 .andExpect(status().isNotFound());
         verify(commentService, times(1)).deleteComment(commentId);

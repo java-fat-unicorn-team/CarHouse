@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.ArrayList;
@@ -54,7 +55,9 @@ class CommentServiceImplTest {
     void getCommentsOfNotExistentCarSale() {
         int carSaleId = 2;
         when(commentDao.getCarSaleComments(carSaleId)).thenThrow(EmptyResultDataAccessException.class);
-        assertThrows(NotFoundException.class, () -> commentService.getCarSaleComments(carSaleId));
+        NotFoundException thrown = assertThrows(NotFoundException.class,
+                () -> commentService.getCarSaleComments(carSaleId));
+        assertTrue(thrown.getMessage().contains("there is not car sale with id = " + carSaleId));
     }
 
     @Test
@@ -70,7 +73,7 @@ class CommentServiceImplTest {
         int commentId = 2;
         when(commentDao.getComment(commentId)).thenThrow(EmptyResultDataAccessException.class);
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> commentService.getComment(commentId));
-        assertTrue(thrown.getMessage().contains("there is not such comment"));
+        assertTrue(thrown.getMessage().contains("there is not comment with id = " + commentId));
     }
 
     @Test
@@ -84,10 +87,10 @@ class CommentServiceImplTest {
     }
 
     @Test
-    void addCommentWithWrongReference() {
+    void addCommentToNotExistCarSale() {
         int carSaleId = 7;
         Comment comment = new Comment(5, "Pasha", "Good");
-        when(carSaleDao.getCarSale(carSaleId)).thenThrow(EmptyResultDataAccessException.class);
+        when(commentDao.addComment(carSaleId, comment)).thenThrow(DataIntegrityViolationException.class);
         WrongReferenceException thrown = assertThrows(WrongReferenceException.class,
                 () -> commentService.addComment(carSaleId, comment));
         assertTrue(thrown.getMessage().contains("there is not car sale with id=" + carSaleId + " to add comment"));
@@ -97,25 +100,23 @@ class CommentServiceImplTest {
     void updateComment() throws NotFoundException {
         Comment comment = new Comment(5, "Masha", "Very good");
         when(commentDao.updateComment(comment)).thenReturn(true);
-        boolean isUpdated = commentService.updateComment(comment);
-        assertTrue(isUpdated);
+        commentService.updateComment(comment);
         verify(commentDao, times(1)).updateComment(comment);
     }
 
     @Test
     void updateNotExistComment() {
         Comment comment = new Comment(5, "Masha", "Very good");
-        when(commentDao.getComment(comment.getCommentId())).thenThrow(EmptyResultDataAccessException.class);
+        when(commentDao.updateComment(comment)).thenReturn(false);
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> commentService.updateComment(comment));
-        assertTrue(thrown.getMessage().contains("there is not such comment"));
+        assertTrue(thrown.getMessage().contains("there is not comment with id=" + comment.getCommentId()));
     }
 
     @Test
     void deleteComment() throws NotFoundException {
         int commentId = 2;
         when(commentDao.deleteComment(commentId)).thenReturn(true);
-        boolean isDeleted = commentService.deleteComment(commentId);
-        assertTrue(isDeleted);
+        commentService.deleteComment(commentId);
         verify(commentDao, times(1)).deleteComment(commentId);
     }
 
@@ -124,7 +125,6 @@ class CommentServiceImplTest {
         int commentId = 12;
         when(commentDao.deleteComment(commentId)).thenReturn(false);
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> commentService.deleteComment(commentId));
-        assertTrue(thrown.getMessage().contains("comment with id = " + commentId
-                + "  you are trying to delete does not exist"));
+        assertTrue(thrown.getMessage().contains("there is not comment with id = " + commentId + " to delete"));
     }
 }

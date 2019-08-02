@@ -42,7 +42,7 @@ public interface CommentDao {
      * Gets id from comment object
      *
      * @param comment the comment
-     * @return check or car is update
+     * @return check or comment is updated
      */
     boolean updateComment(Comment comment);
 

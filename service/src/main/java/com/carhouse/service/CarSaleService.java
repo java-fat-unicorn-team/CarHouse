@@ -44,17 +44,15 @@ public interface CarSaleService {
      * Gets car sale id from carSale object
      *
      * @param carSale the car sale
-     * @return check or car sale is updated
      * @throws NotFoundException throws if there is not such car sale to update
      */
-    boolean updateCarSale(CarSale carSale) throws NotFoundException;
+    void updateCarSale(CarSale carSale) throws NotFoundException;
 
     /**
      * Delete car sale by id.
      *
      * @param carSaleId the car sale id
-     * @return check or car sale is deleted
      * @throws NotFoundException throws if there is not such car sale to delete
      */
-    boolean deleteCarSale(int carSaleId) throws NotFoundException;
+    void deleteCarSale(int carSaleId) throws NotFoundException;
 }

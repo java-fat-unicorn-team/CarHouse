@@ -62,7 +62,7 @@ public class CarSaleServiceImpl implements CarSaleService {
         try {
             return carSaleDao.getCarSale(carSaleId);
         } catch (EmptyResultDataAccessException ex) {
-            throw new NotFoundException("there is not such car sale");
+            throw new NotFoundException("there is not car sale with id = " + carSaleId);
         }
     }
 
@@ -87,15 +87,15 @@ public class CarSaleServiceImpl implements CarSaleService {
      * Gets car sale id from carSale object
      *
      * @param carSale the car sale
-     * @return check or car sale is updated
      * @throws NotFoundException throws if there is not such car sale to update
      */
     @Override
-    public boolean updateCarSale(final CarSale carSale) throws NotFoundException {
+    public void updateCarSale(final CarSale carSale) throws NotFoundException {
         LOGGER.debug("method updateCarSale with parameter: [{}]", carSale);
-        getCarSale(carSale.getCarSaleId());
         try {
-            return carSaleDao.updateCarSale(carSale);
+            if (!carSaleDao.updateCarSale(carSale)) {
+                throw new NotFoundException("there is not car sale with id = " + carSale.getCarSaleId());
+            }
         } catch (DataIntegrityViolationException ex) {
             throw new WrongReferenceException("there is wrong references in your car sale");
         }
@@ -105,15 +105,13 @@ public class CarSaleServiceImpl implements CarSaleService {
      * Delete car sale by id.
      *
      * @param carSaleId the car sale id
-     * @return check or car sale is deleted
      * @throws NotFoundException throws if there is not such car sale to delete
      */
     @Override
-    public boolean deleteCarSale(final int carSaleId) throws NotFoundException {
+    public void deleteCarSale(final int carSaleId) throws NotFoundException {
         LOGGER.debug("method deleteCarSale with parameter: [{}]", carSaleId);
         if (!carSaleDao.deleteCarSale(carSaleId)) {
-            throw new NotFoundException("car sale with id = " + carSaleId + " you try to delete does not exist");
+            throw new NotFoundException("there is not car sale with id = " + carSaleId + " to delete");
         }
-        return true;
     }
 }

@@ -1,8 +1,8 @@
 package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CarSaleDao;
-import com.carhouse.dao.config.TestConfig;
-import database.test.config.TestSpringJDBCConfig;
+import com.carhouse.dao.config.TestConfiguration;
+import com.carhouse.dao.config.TestSpringJDBCConfig;
 import com.carhouse.model.Car;
 import com.carhouse.model.User;
 import com.carhouse.model.CarSale;
@@ -21,7 +21,7 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {TestConfig.class, TestSpringJDBCConfig.class})
+@ContextConfiguration(classes = {TestConfiguration.class, TestSpringJDBCConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class CarSaleDaoImplTest {
 
@@ -74,9 +74,8 @@ class CarSaleDaoImplTest {
     void updateCarSale() {
         CarSale newCarSale = new CarSale(4, new BigDecimal(13200), new Date(), new User(1),
                 new Car(5));
-        boolean isUpdated = carSaleDao.updateCarSale(newCarSale);
+        assertTrue(carSaleDao.updateCarSale(newCarSale));
         CarSale obtainedCarSale = carSaleDao.getCarSale(4);
-        assertTrue(isUpdated);
         assertEquals(newCarSale.getPrice(), obtainedCarSale.getPrice());
         assertEquals(newCarSale.getUser().getUserId(), obtainedCarSale.getUser().getUserId());
         assertEquals(newCarSale.getCar().getCarId(), obtainedCarSale.getCar().getCarId());
@@ -89,22 +88,22 @@ class CarSaleDaoImplTest {
     }
 
     @Test
+    void updateNotExistCarSaleCarSale() {
+        assertFalse(carSaleDao.updateCarSale(new CarSale(14, new BigDecimal(13200), new Date(),
+                new User(1), new Car(5))));
+    }
+
+    @Test
     void deleteCarSale() {
         int size = carSaleDao.getCarSales().size();
-        boolean isDeleted = carSaleDao.deleteCarSale(3);
-        assertTrue(isDeleted);
+        assertTrue(carSaleDao.deleteCarSale(3));
         assertEquals(size - 1, carSaleDao.getCarSales().size());
         assertThrows(EmptyResultDataAccessException.class, () -> carSaleDao.getCarSale(3));
     }
 
     @Test
-    void deleteCarSaleWhichHaveReferences() {
-        int size = carSaleDao.getCarSales().size();
-        carSaleDao.deleteCarSale(4);
-        assertEquals(size - 1, carSaleDao.getCarSales().size());
-        EmptyResultDataAccessException thrown = assertThrows(EmptyResultDataAccessException.class,
-                () -> carSaleDao.getCarSale(4));
-        assertTrue(thrown.getMessage().contains("Incorrect result size: expected 1, actual 0"));
+    void deleteCarSaleWhichHaveReferencesShouldPass() {
+        assertTrue(carSaleDao.deleteCarSale(4));
     }
 
     @Test

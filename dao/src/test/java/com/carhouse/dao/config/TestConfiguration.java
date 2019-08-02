@@ -10,6 +10,6 @@ import org.springframework.context.annotation.PropertySource;
 @ComponentScan("com.carhouse.dao")
 @PropertySource("classpath:sql-query.properties")
 @Configuration
-public class TestConfig {
+public class TestConfiguration {
 
 }
