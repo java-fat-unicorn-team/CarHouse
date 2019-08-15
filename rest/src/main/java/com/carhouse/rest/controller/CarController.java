@@ -2,6 +2,9 @@ package com.carhouse.rest.controller;
 
 import com.carhouse.model.Car;
 import com.carhouse.service.CarService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,6 +43,7 @@ public class CarController {
      *
      * @return the list of cars
      */
+    @ApiOperation("get list of cars")
     @GetMapping
     public List<Car> getCars() {
         LOGGER.debug("method getCars");
@@ -53,6 +57,9 @@ public class CarController {
      * @return the car with selected id
      * @throws NotFoundException throws if there is not such car
      */
+    @ApiOperation("get car by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found")})
     @GetMapping("/{carId}")
     public Car getCar(@PathVariable final int carId) throws NotFoundException {
         LOGGER.debug("method getCar wit parameter: [{}]", carId);
@@ -66,6 +73,10 @@ public class CarController {
      * @param car the new car object to add
      * @return the id of added car
      */
+    @ApiOperation("add car, the year should be in this format \"yyyy-MM-dd\" or integer")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success|OK, returns id of created car"),
+            @ApiResponse(code = 424, message = "Wrong References")})
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public Integer addCar(@RequestBody final Car car) {
@@ -81,6 +92,11 @@ public class CarController {
      * @param car the new car to update
      * @throws NotFoundException throws if there is not such car to update
      */
+    @ApiOperation("update car sale, gets car sale id to update from object provided as request body\n"
+            + "the date can be in integer or in this format \"yyyy-MM-dd\"")
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 424, message = "Wrong References")})
     @PutMapping
     public void updateCar(@RequestBody final Car car) throws NotFoundException {
         LOGGER.debug("method updateCar wit parameter: [{}]", car);
@@ -94,6 +110,10 @@ public class CarController {
      * @param carId the car id
      * @throws NotFoundException throws if there is not such car to delete
      */
+    @ApiOperation("delete car by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 424, message = "Car Has References")})
     @DeleteMapping("/{carId}")
     public void deleteCar(@PathVariable final int carId) throws NotFoundException {
         LOGGER.debug("method deleteCar wit parameter: [{}]", carId);
