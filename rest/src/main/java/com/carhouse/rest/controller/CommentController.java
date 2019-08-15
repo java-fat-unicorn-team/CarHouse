@@ -2,6 +2,9 @@ package com.carhouse.rest.controller;
 
 import com.carhouse.model.Comment;
 import com.carhouse.service.CommentService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,6 +45,9 @@ public class CommentController {
      * @return the list of comments in JSON
      * @throws NotFoundException throws if there is not such car sale to get comments
      */
+    @ApiOperation("get comments of car sale with provided id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found")})
     @GetMapping("/{carSaleId}/comment")
     public List<Comment> getComments(@PathVariable final int carSaleId) throws NotFoundException {
         LOGGER.debug("method getComments wit parameter: [{}]", carSaleId);
@@ -57,6 +63,9 @@ public class CommentController {
      * @param comment   the comment object to add
      * @return the id of added comment
      */
+    @ApiOperation("add comment to car sale with id provided as path variable 'carSaleId'")
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found")})
     @PostMapping("/{carSaleId}/comment")
     @ResponseStatus(value = HttpStatus.CREATED)
     public Integer addComment(@PathVariable final int carSaleId, @RequestBody final Comment comment) {
@@ -71,6 +80,10 @@ public class CommentController {
      * @param comment the comment object to update
      * @throws NotFoundException throws if there is not such comment to update
      */
+    @ApiOperation("update comment, gets comment id to update from object provided as request body")
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 424, message = "Wrong References")})
     @PutMapping("/comment")
     public void updateComment(@RequestBody final Comment comment) throws NotFoundException {
         LOGGER.debug("method updateComment wit parameter: [{}]", comment);
@@ -84,6 +97,9 @@ public class CommentController {
      * @param id the id
      * @throws NotFoundException throws if there is not such comment to delete
      */
+    @ApiOperation("delete comment by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found")})
     @DeleteMapping("/comment/{id}")
     public void deleteComment(@PathVariable final int id) throws NotFoundException {
         LOGGER.debug("method deleteComment wit parameter: [{}]", id);

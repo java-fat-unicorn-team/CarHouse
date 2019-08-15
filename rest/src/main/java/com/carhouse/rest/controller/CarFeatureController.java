@@ -2,6 +2,9 @@ package com.carhouse.rest.controller;
 
 import com.carhouse.model.CarFeature;
 import com.carhouse.service.CarFeatureService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +45,9 @@ public class CarFeatureController {
      * @param carId the car id
      * @return the car features
      */
+    @ApiOperation("get feature list of car with provided id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found")})
     @GetMapping("/{carId}/carFeature")
     public List<CarFeature> getCarFeatures(@PathVariable final int carId) {
         return carFeatureService.getCarFeatures(carId);
@@ -52,6 +58,7 @@ public class CarFeatureController {
      *
      * @return the list of features
      */
+    @ApiOperation("get all possible features")
     @GetMapping("/carFeature")
     public List<CarFeature> getAllFeatures() {
         LOGGER.debug("method getAllFeatures");

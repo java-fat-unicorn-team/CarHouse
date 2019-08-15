@@ -2,6 +2,9 @@ package com.carhouse.rest.controller;
 
 import com.carhouse.model.CarSale;
 import com.carhouse.service.CarSaleService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -54,6 +57,9 @@ public class CarSaleController {
      * @return the car sale with provided id
      * @throws NotFoundException throws if there is not such car sale
      */
+    @ApiOperation("get car sale by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found")})
     @GetMapping("/{carSaleId}")
     public CarSale getCarSale(@PathVariable final int carSaleId) throws NotFoundException {
         LOGGER.debug("method getCarSale wit parameter: [{}]", carSaleId);
@@ -68,6 +74,10 @@ public class CarSaleController {
      * @param carSale the car sale object to add
      * @return the id generated for this object
      */
+    @ApiOperation("add car sale, the date should be in this format \"yyyy-MM-dd HH:mm:ss\" or in integer")
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 424, message = "Wrong References")})
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public Integer addCarSale(@RequestBody final CarSale carSale) {
@@ -83,6 +93,11 @@ public class CarSaleController {
      * @param carSale the car sale object to update
      * @throws NotFoundException throws if there is not such car sale to update
      */
+    @ApiOperation("update car sale, gets car sale id to update from object provided as request body\n"
+            + "the date can be in integer or in this format \"yyyy-MM-dd HH:mm:ss\"")
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 424, message = "Wrong References")})
     @PutMapping
     public void updateCarSale(@RequestBody final CarSale carSale) throws NotFoundException {
         LOGGER.debug("method updateCarSale wit parameter: [{}]", carSale);
@@ -96,6 +111,10 @@ public class CarSaleController {
      * @param carSaleId the car sale id
      * @throws NotFoundException throws if there is not such car sale to delete
      */
+    @ApiOperation("delete car sale by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 424, message = "Car Has References")})
     @DeleteMapping("/{carSaleId}")
     public void deleteCarSale(@PathVariable final int carSaleId) throws NotFoundException {
         LOGGER.debug("method deleteCarSale wit parameter: [{}]", carSaleId);
