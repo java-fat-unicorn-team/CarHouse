@@ -7,8 +7,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
@@ -20,38 +18,27 @@ import javax.sql.DataSource;
  * Create class to work with database
  */
 @Configuration
-@PropertySource("classpath:jdbc-connection.properties")
+@PropertySource("classpath:test_jdbc-connection.properties")
 public class TestSpringJDBCConfig {
-    /**
-     * script which initialize database
-     */
-    @Value("${db.initialize.script}")
-    private String DB_INITIALIZE_SCRIPT;
-    /**
-     * script which add data to database
-     */
-    @Value("${db.add.data.script}")
-    private String DB_ADD_DATA_SCRIPT;
-    /**
-     * The Driver class name.
-     */
+
+    @Value("${db.script.initialize}")
+    private String DB_SCRIPT_INITIALIZE;
+
+    @Value("${db.script.add.data}")
+    private String DB_SCRIPT_ADD_DATA;
+
     @Value("${db.driver.class.name}")
     private String DB_DRIVER_CLASS_NAME;
-    /**
-     * The Url to connect database.
-     */
+
     @Value("${db.url}")
     private String DB_URL;
-    /**
-     * The database's user name.
-     */
-    @Value("${db.user.name.p}")
+
+    @Value("${db.user}")
     private String DB_USER_NAME;
-    /**
-     * The user password.
-     */
+
     @Value("${db.password}")
     private String DB_PASSWORD;
+
     /**
      * Configuration data source (MySQL database).
      *
@@ -81,8 +68,8 @@ public class TestSpringJDBCConfig {
     @Bean
     public ResourceDatabasePopulator resourceDatabasePopulator() {
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
-        databasePopulator.addScript(new ClassPathResource(DB_INITIALIZE_SCRIPT));
-        databasePopulator.addScript(new ClassPathResource(DB_ADD_DATA_SCRIPT));
+        databasePopulator.addScript(new ClassPathResource(DB_SCRIPT_INITIALIZE));
+        databasePopulator.addScript(new ClassPathResource(DB_SCRIPT_ADD_DATA));
         return databasePopulator;
     }
 

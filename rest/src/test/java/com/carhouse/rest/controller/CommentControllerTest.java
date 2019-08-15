@@ -83,7 +83,7 @@ class CommentControllerTest {
         mockMvc.perform(post(CAR_SALE_COMMENT_ADD_URL, carSaleId)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(comment)))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
         .andExpect(content().json(objectMapper.writeValueAsString(commentId)));
         verify(commentService, times(1)).addComment(anyInt(), any(Comment.class));
     }

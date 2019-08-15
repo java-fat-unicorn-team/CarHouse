@@ -17,19 +17,16 @@ import java.util.List;
  * The class provides methods to manage CarMake model.
  * The class stores date in database
  * It is realisation of CarMakeDao interface
- * @see CarMakeDao
+ *
  * @author Katuranau Maksimilyan
+ * @see CarMakeDao
  */
 @Repository
 public class CarMakeDaoImpl implements CarMakeDao {
-    /**
-     * SQL query to get car make.
-     */
+
     @Value("${car.make.get}")
     private String GET_CAR_MAKE_SQL;
-    /**
-     * SQL query to get list of car makes.
-     */
+
     @Value("${car.makes.list.get}")
     private String GET_LIST_CARS_MAKES_SQL;
 

@@ -106,7 +106,7 @@ class CarSaleControllerTest {
         mockMvc.perform(post(CAR_SALE_ADD_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(carSale)))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(content().json(objectMapper.writeValueAsString(carSaleId)));
         verify(carSaleService, times(1)).addCarSale(any(CarSale.class));

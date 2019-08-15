@@ -20,19 +20,13 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class CarHasCarFeatureDaoImpl implements CarHasCarFeatureDao {
-    /**
-     * SQL query to add reference between car and car feature.
-     */
+
     @Value("${car.feature.add.to.car}")
     private String ADD_CAR_FEATURE_TO_CAR_SQL;
-    /**
-     * SQL query to delete reference between car and car feature.
-     */
+
     @Value("${car.feature.delete.from.car}")
     private String DELETE_CAR_FEATURE_FROM_CAR_SQL;
-    /**
-     * SQL query to delete reference between car and car feature.
-     */
+
     @Value("${car.feature.list.delete.from.car}")
     private String DELETE_CAR_FEATURE_LIST_FROM_CAR_SQL;
 
@@ -89,6 +83,7 @@ public class CarHasCarFeatureDaoImpl implements CarHasCarFeatureDao {
 
     /**
      * method to set parameters to SqlParameterSource object.
+     *
      * @param carId        car id
      * @param carFeatureId car feature id
      * @return SqlParameterSource object which contains parameters for SQL query

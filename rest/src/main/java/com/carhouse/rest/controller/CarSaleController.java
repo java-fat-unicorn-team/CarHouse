@@ -9,13 +9,12 @@ import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
- * The Car sale com.carhouse.rest.com.carhouse.rest.controller.
+ * The Car sale controller.
  * Provide endpoints to manage car sale model
  *
  * @author Katuranau Maksimilyan
@@ -29,7 +28,7 @@ public class CarSaleController {
     private CarSaleService carSaleService;
 
     /**
-     * Instantiates a new Car sale com.carhouse.rest.com.carhouse.rest.controller.
+     * Instantiates a new Car sale controller.
      *
      * @param carSaleService the car sale service to manage car sale object
      */
@@ -79,7 +78,6 @@ public class CarSaleController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 424, message = "Wrong References")})
     @PostMapping
-    @ResponseStatus(value = HttpStatus.CREATED)
     public Integer addCarSale(@RequestBody final CarSale carSale) {
         LOGGER.debug("method addCarSale wit parameter: [{}]", carSale);
         return carSaleService.addCarSale(carSale);

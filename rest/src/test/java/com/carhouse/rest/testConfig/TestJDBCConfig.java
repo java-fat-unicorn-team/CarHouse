@@ -11,18 +11,14 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import javax.sql.DataSource;
 
 @Configuration
-@PropertySource("classpath:jdbc-connection.properties")
+@PropertySource("classpath:test_jdbc-connection.properties")
 public class TestJDBCConfig {
-    /**
-     * script which initialize database
-     */
-    @Value("${db.initialize.script}")
-    private String DB_INITIALIZE_SCRIPT;
-    /**
-     * script which add data to database
-     */
-    @Value("${db.add.data.script}")
-    private String DB_ADD_DATA_SCRIPT;
+
+    @Value("${db.script.initialize}")
+    private String DB_SCRIPT_INITIALIZE;
+
+    @Value("${db.script.add.data}")
+    private String DB_SCRIPT_ADD_DATA;
 
     @Bean
     public DataSourceInitializer dataSourceInitializer(DataSource dataSource,
@@ -38,8 +34,8 @@ public class TestJDBCConfig {
     @Bean
     public ResourceDatabasePopulator resourceDatabasePopulator() {
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
-        databasePopulator.addScript(new ClassPathResource(DB_INITIALIZE_SCRIPT));
-        databasePopulator.addScript(new ClassPathResource(DB_ADD_DATA_SCRIPT));
+        databasePopulator.addScript(new ClassPathResource(DB_SCRIPT_INITIALIZE));
+        databasePopulator.addScript(new ClassPathResource(DB_SCRIPT_ADD_DATA));
         return databasePopulator;
     }
 }

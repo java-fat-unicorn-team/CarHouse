@@ -1,6 +1,7 @@
 package com.carhouse.service;
 
 import com.carhouse.model.CarFeature;
+import javassist.NotFoundException;
 
 import java.util.List;
 
@@ -16,8 +17,9 @@ public interface CarFeatureService {
      *
      * @param carId the car id
      * @return the list of car features
+     * @throws NotFoundException throws if there is not such car to get features
      */
-    List<CarFeature> getCarFeatures(int carId);
+    List<CarFeature> getCarFeatures(int carId) throws NotFoundException;
 
 
     /**

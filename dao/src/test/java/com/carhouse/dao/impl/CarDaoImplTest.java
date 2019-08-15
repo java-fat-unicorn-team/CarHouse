@@ -56,6 +56,11 @@ class CarDaoImplTest {
     }
 
     @Test
+    void testGetNonExistentCar() {
+        assertThrows(EmptyResultDataAccessException.class, () -> carDao.getCar(30));
+    }
+
+    @Test
     void addCar() {
         int size = carDao.getCars().size();
         Car newCar = new Car(2, Date.valueOf("2016-03-02"),

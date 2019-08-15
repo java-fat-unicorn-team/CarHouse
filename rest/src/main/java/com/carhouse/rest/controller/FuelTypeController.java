@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * The Fuel type com.carhouse.rest.com.carhouse.rest.controller.
+ * The Fuel type controller.
  * Provide endpoints to manage fuel type model
  *
  * @author Katuranau Maksimilyan
@@ -24,7 +24,7 @@ public class FuelTypeController {
     private FuelTypeService fuelTypeService;
 
     /**
-     * Instantiates a new Fuel type com.carhouse.rest.com.carhouse.rest.controller.
+     * Instantiates a new Fuel controller.
      *
      * @param fuelTypeService the fuel type service to manage fuel type object
      */

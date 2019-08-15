@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * The Web com.carhouse.rest.com.carhouse.rest.config.
+ * The Web config.
  */
 @Configuration
 @EnableWebMvc

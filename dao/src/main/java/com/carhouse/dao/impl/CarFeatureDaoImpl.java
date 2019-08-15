@@ -23,14 +23,10 @@ import java.util.List;
  */
 @Repository
 public class CarFeatureDaoImpl implements CarFeatureDao {
-    /**
-     * SQL query to get list of car features.
-     */
+
     @Value("${car.features.list.get}")
     private String GET_LIST_CAR_FEATURES_SQL;
-    /**
-     * SQL query to get list of all features.
-     */
+
     @Value("${features.list.get}")
     private String GET_LIST_FEATURES_SQL;
 
