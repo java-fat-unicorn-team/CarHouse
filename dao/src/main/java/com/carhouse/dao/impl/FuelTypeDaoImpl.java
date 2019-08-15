@@ -22,9 +22,7 @@ import java.util.List;
  */
 @Repository
 public class FuelTypeDaoImpl implements FuelTypeDao {
-    /**
-     * SQL query to get list of fuel types.
-     */
+
     @Value("${fuel.types.list.get}")
     private String GET_LIST_FUEL_TYPES_SQL;
 

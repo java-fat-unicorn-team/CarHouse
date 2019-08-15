@@ -1,8 +1,8 @@
 package com.carhouse.dao.impl;
 
 import com.carhouse.dao.TransmissionDao;
-import com.carhouse.model.Transmission;
 import com.carhouse.dao.mappers.TransmissionMapper;
+import com.carhouse.model.Transmission;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,19 +17,16 @@ import java.util.List;
  * The class provides methods to manage Transmission model.
  * The class stores date in database
  * It is realisation of TransmissionDao interface
- * @see TransmissionDao
+ *
  * @author Katuranau Maksimilyan
+ * @see TransmissionDao
  */
 @Repository
 public class TransmissionDaoImpl implements TransmissionDao {
-    /**
-     * SQL query to get transmission.
-     */
+
     @Value("${transmission.get}")
     private String GET_TRANSMISSION_SQL;
-    /**
-     * SQL query to get list of  transmissions.
-     */
+
     @Value("${transmissions.list.get}")
     private String GET_LIST_TRANSMISSIONS_SQL;
 

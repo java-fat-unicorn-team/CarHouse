@@ -28,29 +28,19 @@ import java.util.List;
  */
 @Repository
 public class CarSaleDaoImpl implements CarSaleDao {
-    /**
-     * SQL query to get car sale.
-     */
+
     @Value("${car.sale.get}")
     private String GET_CAR_SALE_SQL;
-    /**
-     * SQL query to get list of car sales.
-     */
+
     @Value("${car.sales.list.get}")
     private String GET_LIST_CAR_SALES_SQL;
-    /**
-     * SQL query to add car sale.
-     */
+
     @Value("${car.sale.add}")
     private String ADD_CAR_SALE_SQL;
-    /**
-     * SQL query to update car sale.
-     */
+
     @Value("${car.sale.update}")
     private String UPDATE_CAR_SALE_SQL;
-    /**
-     * SQL query to delete car sale.
-     */
+
     @Value("${car.sale.delete}")
     private String DELETE_CAR_SALE_SQL;
 

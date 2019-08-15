@@ -62,7 +62,7 @@ class CarControllerTest {
                 .setControllerAdvice(restExceptionHandler)
                 .build();
         File file = new ClassPathResource(CARS_LIST_STORAGE_JSON).getFile();
-        carList = objectMapper.readValue(file, new TypeReference<List<Car>>() {
+        carList = objectMapper.readValue(file, new TypeReference<>() {
         });
     }
 
@@ -105,7 +105,7 @@ class CarControllerTest {
         mockMvc.perform(post(CAR_ADD_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(car)))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(carId)));
         verify(carService).addCar(any(Car.class));
     }

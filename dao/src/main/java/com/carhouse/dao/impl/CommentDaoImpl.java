@@ -26,29 +26,19 @@ import java.util.List;
  */
 @Repository
 public class CommentDaoImpl implements CommentDao {
-    /**
-     * SQL query to get comment.
-     */
+
     @Value("${comment.get}")
     private String GET_COMMENT_SQL;
-    /**
-     * SQL query to get list of car sale comments.
-     */
+
     @Value("${car.sale.comments.list.get}")
     private String GET_LIST_CAR_SALE_COMMENTS_SQL;
-    /**
-     * SQL query to add comment.
-     */
+
     @Value("${comment.add}")
     private String ADD_COMMENT_SQL;
-    /**
-     * SQL query to update comment.
-     */
+
     @Value("${comment.update}")
     private String UPDATE_COMMENT_SQL;
-    /**
-     * SQL query to delete comment.
-     */
+
     @Value("${comment.delete}")
     private String DELETE_COMMENT_SQL;
 

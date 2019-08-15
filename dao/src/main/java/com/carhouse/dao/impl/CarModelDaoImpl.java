@@ -1,8 +1,8 @@
 package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CarModelDao;
-import com.carhouse.model.CarModel;
 import com.carhouse.dao.mappers.CarModelMapper;
+import com.carhouse.model.CarModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,19 +17,16 @@ import java.util.List;
  * The class provides methods to manage CarModel model.
  * The class stores date in database
  * It is realisation of CarModelDao interface
- * @see CarModelDao
+ *
  * @author Katuranau Maksimilyan
+ * @see CarModelDao
  */
 @Repository
 public class CarModelDaoImpl implements CarModelDao {
-    /**
-     * SQL query to get car model.
-     */
+
     @Value("${car.model.get}")
     private String GET_CAR_MODEL_SQL;
-    /**
-     * SQL query to get list of car models.
-     */
+
     @Value("${car.models.list.get}")
     private String GET_LIST_CAR_MODELS_SQL;
 

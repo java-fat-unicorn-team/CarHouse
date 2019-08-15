@@ -9,13 +9,12 @@ import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
- * The Transmission com.carhouse.rest.com.carhouse.rest.controller.
+ * The Transmission controller.
  * Provide endpoints to manage comment model
  *
  * @author Katuranau Maksimilyan
@@ -29,7 +28,7 @@ public class CommentController {
     private CommentService commentService;
 
     /**
-     * Instantiates a new Comment com.carhouse.rest.com.carhouse.rest.controller.
+     * Instantiates a new Comment controller.
      *
      * @param commentService the comment service to manage comment object
      */
@@ -67,7 +66,6 @@ public class CommentController {
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Not Found")})
     @PostMapping("/{carSaleId}/comment")
-    @ResponseStatus(value = HttpStatus.CREATED)
     public Integer addComment(@PathVariable final int carSaleId, @RequestBody final Comment comment) {
         LOGGER.debug("method addComment wit parameters: [{}, {}]", carSaleId, comment);
         return commentService.addComment(carSaleId, comment);

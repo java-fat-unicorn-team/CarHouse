@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * The Transmission com.carhouse.rest.com.carhouse.rest.controller.
+ * The Transmission controller.
  * Provide endpoints to manage transmission model
  *
  * @author Katuranau Maksimilyan
@@ -26,7 +26,7 @@ public class TransmissionController {
     private TransmissionService transmissionService;
 
     /**
-     * Instantiates a new Transmission com.carhouse.rest.com.carhouse.rest.controller.
+     * Instantiates a new Transmission controller.
      *
      * @param transmissionService the transmission service to manage transmission object
      */

@@ -29,29 +29,19 @@ import java.util.List;
  */
 @Repository
 public class CarDaoImpl implements CarDao {
-    /**
-     * SQL query to get car.
-     */
+
     @Value("${car.get}")
     private String GET_CAR_SQL;
-    /**
-     * SQL query to get list of cars.
-     */
+
     @Value("${cars.list.get}")
     private String GET_LIST_CARS_SQL;
-    /**
-     * SQL query to add car.
-     */
+
     @Value("${car.add}")
     private String ADD_CAR_SQL;
-    /**
-     * SQL query to update car.
-     */
+
     @Value("${car.update}")
     private String UPDATE_CAR_SQL;
-    /**
-     * SQL query to get car.
-     */
+
     @Value("${car.delete}")
     private String DELETE_CAR_SQL;
 
@@ -157,7 +147,7 @@ public class CarDaoImpl implements CarDao {
         }
         carHasCarFeatureDao.deleteAllCarFeatures(car.getCarId());
         car.getCarFeatureList().forEach(carFeature ->
-            carHasCarFeatureDao.addCarFeature(car.getCarId(), carFeature.getCarFeatureId())
+                carHasCarFeatureDao.addCarFeature(car.getCarId(), carFeature.getCarFeatureId())
         );
         return true;
     }
