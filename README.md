@@ -18,7 +18,10 @@ Project is created with:
 	
 ## Deploy
 To run this project, install and run it locally using maven:
-
 ```
 mvn clean install
+```
+# run integration test
+```
+mvn clean verify -Pintegration_test -Djdbc.properties=test-jdbc-connection
 ```

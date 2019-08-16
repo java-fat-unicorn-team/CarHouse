@@ -18,7 +18,7 @@ import javax.sql.DataSource;
  * Create class to work with database
  */
 @Configuration
-@PropertySource("classpath:test_jdbc-connection.properties")
+@PropertySource("classpath:test-jdbc-connection.properties")
 public class TestSpringJDBCConfig {
 
     @Value("${db.script.initialize}")
