@@ -18,7 +18,26 @@
     <module>rest</module>
   </modules>
 
+  <profiles>
+    <profile>
+      <id>dev</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+    <profile>
+      <id>integration_test</id>
+      <properties>
+        <spring.profiles.active>integrationTest</spring.profiles.active>
+        <skip.integration.tests>false</skip.integration.tests>
+      </properties>
+    </profile>
+  </profiles>
+
   <properties>
+    <spring.profiles.include>integrationTest</spring.profiles.include>
+    <skip.integration.tests>true</skip.integration.tests>
+
     <java.version>11</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -50,6 +69,7 @@
     <maven.install.plugin>2.5.2</maven.install.plugin>
     <maven.site.plugin>3.7.1</maven.site.plugin>
     <maven.project.info.reports.plugin>3.0.0</maven.project.info.reports.plugin>
+    <tomcat7.maven.plugin>2.2</tomcat7.maven.plugin>
   </properties>
 
   <dependencyManagement>
@@ -88,7 +108,7 @@
         <groupId>com.h2database</groupId>
         <artifactId>h2</artifactId>
         <version>${h2.version}</version>
-        <scope>test</scope>
+<!--        <scope>test</scope>-->
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
@@ -119,6 +139,7 @@
         <groupId>javax.servlet</groupId>
         <artifactId>javax.servlet-api</artifactId>
         <version>${javax.servlet.api.version}</version>
+        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>mysql</groupId>
@@ -173,53 +194,6 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>${maven.clean.plugin}</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>${maven.resources.plugin}</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>${maven.compiler.plugin}</version>
-          <configuration>
-            <source>11</source>
-            <target>11</target>
-          </configuration>
-        </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>${maven.surefire.plugin}</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-failsafe-plugin</artifactId>
-          <version>${maven.failsafe.plugin}</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>${maven.jar.plugin}</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-war-plugin</artifactId>
-          <version>${maven.war.plugin}</version>
-          <configuration>
-            <failOnMissingWebXml>false</failOnMissingWebXml>
-          </configuration>
-        </plugin>
-        <plugin>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>${maven.install.plugin}</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>${maven.site.plugin}</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>${maven.project.info.reports.plugin}</version>
-        </plugin>
-        <plugin>
           <groupId>org.pitest</groupId>
           <artifactId>pitest-maven</artifactId>
           <version>${pitest.maven}</version>
@@ -261,9 +235,101 @@
             </execution>
           </executions>
         </plugin>
+        <plugin>
+          <groupId>org.apache.tomcat.maven</groupId>
+          <artifactId>tomcat7-maven-plugin</artifactId>
+          <version>${tomcat7.maven.plugin}</version>
+          <configuration>
+            <url>http://localhost:8080/manager/text</url>
+            <server>TomcatServer</server>
+            <path>/</path>
+          </configuration>
+          <executions>
+            <execution>
+              <id>start-tomcat</id>
+              <phase>pre-integration-test</phase>
+              <goals>
+                <goal>run</goal>
+              </goals>
+              <configuration>
+                <fork>true</fork>
+                <skip>${skip.integration.tests}</skip>
+              </configuration>
+            </execution>
+            <execution>
+              <id>stop-tomcat</id>
+              <phase>post-integration-test</phase>
+              <goals>
+                <goal>shutdown</goal>
+              </goals>
+              <configuration>
+                <skip>${skip.integration.tests}</skip>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>${maven.clean.plugin}</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${maven.resources.plugin}</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.plugin}</version>
+        <configuration>
+          <source>11</source>
+          <target>11</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven.surefire.plugin}</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${maven.failsafe.plugin}</version>
+        <configuration>
+          <skipTests>${skip.integration.tests}</skipTests>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven.jar.plugin}</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>${maven.war.plugin}</version>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>${maven.install.plugin}</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>${maven.site.plugin}</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${maven.project.info.reports.plugin}</version>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
@@ -299,6 +365,13 @@
           </execution>
         </executions>
       </plugin>
-    </plugins>
+     </plugins>
+
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
   </build>
 </project>

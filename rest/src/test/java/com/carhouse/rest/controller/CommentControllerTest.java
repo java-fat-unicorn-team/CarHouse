@@ -1,8 +1,8 @@
 package com.carhouse.rest.controller;
 
 import com.carhouse.model.Comment;
-import com.carhouse.rest.testConfig.RestTestConfig;
 import com.carhouse.rest.handler.RestExceptionHandler;
+import com.carhouse.rest.testConfig.RestTestConfig;
 import com.carhouse.service.CommentService;
 import com.carhouse.service.exception.WrongReferenceException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -75,6 +75,16 @@ class CommentControllerTest {
     }
 
     @Test
+    void getCommentsOfNotExistentCarSale() throws Exception {
+        int carSaleId = 22;
+        when(commentService.getCarSaleComments(carSaleId)).thenThrow(NotFoundException.class);
+        mockMvc.perform(get(CAR_SALE_COMMENT_LIST_GET_URL, carSaleId))
+                .andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+        verify(commentService, times(1)).getCarSaleComments(carSaleId);
+    }
+
+    @Test
     void addComment() throws Exception {
         int carSaleId = 1;
         Comment comment = listComment.get(1);
@@ -84,7 +94,7 @@ class CommentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
                 .content(objectMapper.writeValueAsString(comment)))
                 .andExpect(status().isOk())
-        .andExpect(content().json(objectMapper.writeValueAsString(commentId)));
+                .andExpect(content().json(objectMapper.writeValueAsString(commentId)));
         verify(commentService, times(1)).addComment(anyInt(), any(Comment.class));
     }
 
