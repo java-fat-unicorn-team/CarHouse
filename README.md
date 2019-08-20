@@ -23,5 +23,5 @@ mvn clean install
 ```
 # run integration test
 ```
-mvn clean verify -Pintegration_test -Djdbc.properties=test-jdbc-connection
+mvn clean verify -Pintegration_test
 ```

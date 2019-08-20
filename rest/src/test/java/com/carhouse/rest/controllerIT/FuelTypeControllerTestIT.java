@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class FuelTypeControllerTestIT {
 
-    private static final String HOST = "http://localhost:8080";
+    private static final String HOST = "http://localhost:8086";
     private static final String FUEL_TYPE_LIST_GET_URL = "/carSale/car/fuelType";
 
     RestTemplate restTemplate = new RestTemplate();

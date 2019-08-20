@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class TransmissionControllerTestIT {
 
-    private static final String HOST = "http://localhost:8080";
+    private static final String HOST = "http://localhost:8086";
     private static final String TRANSMISSION_LIST_GET_URL = "/carSale/car/transmission";
 
     RestTemplate restTemplate = new RestTemplate();

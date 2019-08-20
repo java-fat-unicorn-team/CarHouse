@@ -4,6 +4,7 @@ import com.carhouse.model.Comment;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -12,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CommentControllerTestIT {
 
-    private static final String HOST = "http://localhost:8080";
+    private static final String HOST = "http://localhost:8086";
     private static final String CAR_SALE_COMMENT_LIST_GET_URL = "/carSale/3/comment";
     private static final String NOT_EXIST_CAR_SALE_COMMENT_LIST_GET_URL = "/carSale/150/comment";
     private static final String CAR_SALE_COMMENT_ADD_URL = "/carSale/3/comment";
@@ -32,8 +33,15 @@ class CommentControllerTestIT {
 
     @Test
     void getCommentsOfNotExistentCarSale() {
-        assertThrows(HttpClientErrorException.NotFound.class, () -> restTemplate.getForEntity(HOST
-                + NOT_EXIST_CAR_SALE_COMMENT_LIST_GET_URL, String.class));
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate.getForEntity(HOST
+                    + NOT_EXIST_CAR_SALE_COMMENT_LIST_GET_URL, String.class);
+        } catch (HttpClientErrorException ex) {
+            assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+            assertTrue(ex.getResponseBodyAsString().contains("there is not car sale with id = 150"));
+        }
+        assertNull(response);
     }
 
     @Test
@@ -45,15 +53,22 @@ class CommentControllerTestIT {
         assertEquals(200, response.getStatusCodeValue());
         Integer id = Integer.valueOf(response.getBody());
         assertTrue(id > 0);
-        restTemplate.delete(HOST + CAR_SALE_COMMENT_DELETE_URL + id);
     }
 
     @Test
     void addCommentWithWrongReference() {
         Comment comment = new Comment(12, "vova", "good");
         HttpEntity<Comment> request = new HttpEntity<>(comment);
-        assertThrows(HttpClientErrorException.class, () -> restTemplate.postForEntity(HOST
-                + TO_NOT_EXIST_CAR_SALE_COMMENT_ADD_URL, request, String.class));
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate.postForEntity(HOST
+                    + TO_NOT_EXIST_CAR_SALE_COMMENT_ADD_URL, request, String.class);
+        } catch (HttpClientErrorException ex) {
+            assertEquals(HttpStatus.FAILED_DEPENDENCY, ex.getStatusCode());
+            assertTrue(ex.getResponseBodyAsString().contains("there is not car sale with id=" + 93
+                    + " to add comment"));
+        }
+        assertNull(response);
     }
 
     @Test
@@ -69,8 +84,15 @@ class CommentControllerTestIT {
     void updateNotExistComment() {
         Comment comment = new Comment(73, "vova", "good");
         HttpEntity<Comment> request = new HttpEntity<>(comment);
-        assertThrows(HttpClientErrorException.class, () -> restTemplate.exchange(HOST + CAR_SALE_COMMENT_UPDATE_URL,
-                HttpMethod.PUT, request, String.class));
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate.exchange(HOST
+                    + CAR_SALE_COMMENT_UPDATE_URL, HttpMethod.PUT, request, String.class);
+        } catch (HttpClientErrorException ex) {
+            assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+            assertTrue(ex.getResponseBodyAsString().contains("there is not comment with id=" + 73));
+        }
+        assertNull(response);
     }
 
     @Test
@@ -83,7 +105,14 @@ class CommentControllerTestIT {
 
     @Test
     void deleteNotExistComment() {
-        assertThrows(HttpClientErrorException.class, () ->
-                restTemplate.delete(HOST + CAR_SALE_COMMENT_DELETE_URL + 123));
+        ResponseEntity response  = null;
+        try {
+            response = restTemplate.exchange(HOST + CAR_SALE_COMMENT_DELETE_URL + 123,
+                    HttpMethod.DELETE, null, String.class);
+        } catch (HttpClientErrorException ex) {
+            assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+            assertTrue(ex.getResponseBodyAsString().contains("there is not comment with id = " + 123 + " to delete"));
+        }
+        assertNull(response);
     }
 }
