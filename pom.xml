@@ -103,7 +103,6 @@
         <groupId>com.h2database</groupId>
         <artifactId>h2</artifactId>
         <version>${h2.version}</version>
-<!--        <scope>test</scope>-->
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
@@ -192,24 +191,24 @@
           <groupId>org.pitest</groupId>
           <artifactId>pitest-maven</artifactId>
           <version>${pitest.maven}</version>
-<!--          <executions>-->
-<!--            <execution>-->
-<!--              <id>pit-report</id>-->
-<!--              <phase>test</phase>-->
-<!--              <goals>-->
-<!--                <goal>mutationCoverage</goal>-->
-<!--              </goals>-->
-<!--            </execution>-->
-<!--          </executions>-->
-<!--          <configuration>-->
-<!--            <targetClasses>-->
-<!--              <param>com.carhouse.*</param>-->
-<!--            </targetClasses>-->
-<!--            <targetTests>-->
-<!--              <param>com.carhouse.*</param>-->
-<!--            </targetTests>-->
-<!--            <testPlugin>junit5</testPlugin>-->
-<!--          </configuration>-->
+          <executions>
+            <execution>
+              <id>pit-report</id>
+              <phase>test</phase>
+              <goals>
+                <goal>mutationCoverage</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <targetClasses>
+              <param>com.carhouse.*</param>
+            </targetClasses>
+            <targetTests>
+              <param>com.carhouse.*</param>
+            </targetTests>
+            <testPlugin>junit5</testPlugin>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.jacoco</groupId>
