@@ -26,15 +26,11 @@ class CarFeatureControllerTestIT {
 
     @Test
     void getCarFeaturesOfNotExistCar() {
-        ResponseEntity<String> response = null;
-        try {
-            response = restTemplate.getForEntity(HOST
-                    + FEATURE_LIST_OF_NOT_EXIST_CAR_GET_URL, String.class);
-        } catch (HttpClientErrorException ex) {
-            assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
-            assertTrue(ex.getResponseBodyAsString().contains("there is not car with id = " + 32));
-        }
-        assertNull(response);
+        HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
+                () -> restTemplate.getForEntity(HOST
+                    + FEATURE_LIST_OF_NOT_EXIST_CAR_GET_URL, String.class));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+        assertTrue(exception.getResponseBodyAsString().contains("there is not car with id = " + 32));
     }
 
     @Test
