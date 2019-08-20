@@ -1,10 +1,7 @@
 package com.carhouse.rest.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -21,7 +18,10 @@ import javax.sql.DataSource;
  * @author Katuranau Maksimilyan
  */
 @Configuration
-@PropertySource("classpath:${jdbc.properties:jdbc-connection}.properties")
+@PropertySources({
+        @PropertySource("classpath:application.properties"),
+        @PropertySource("classpath:${jdbc.properties.file}.properties"),
+})
 public class SpringJDBCConfig {
 
     @Value("${db.driver.class.name}")
@@ -73,7 +73,7 @@ public class SpringJDBCConfig {
      * Initialize database.
      * Used only for tests
      *
-     * @param dataSource is utility class to access a datasource
+     * @param dataSource        is utility class to access a datasource
      * @param databasePopulator is class which sets initialization scripts for database
      * @return DataSourceInitializer
      */

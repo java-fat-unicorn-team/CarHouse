@@ -20,14 +20,9 @@
 
   <profiles>
     <profile>
-      <id>dev</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-    </profile>
-    <profile>
       <id>integration_test</id>
       <properties>
+        <jdbc.properties.file>test-jdbc-connection</jdbc.properties.file>
         <spring.profiles.active>integrationTest</spring.profiles.active>
         <skip.integration.tests>false</skip.integration.tests>
       </properties>
@@ -35,9 +30,8 @@
   </profiles>
 
   <properties>
-    <spring.profiles.include>integrationTest</spring.profiles.include>
+    <jdbc.properties.file>jdbc-connection</jdbc.properties.file>
     <skip.integration.tests>true</skip.integration.tests>
-
     <java.version>11</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -71,6 +65,7 @@
     <maven.project.info.reports.plugin>3.0.0</maven.project.info.reports.plugin>
     <tomcat7.maven.plugin>2.2</tomcat7.maven.plugin>
   </properties>
+
 
   <dependencyManagement>
     <dependencies>
@@ -197,24 +192,24 @@
           <groupId>org.pitest</groupId>
           <artifactId>pitest-maven</artifactId>
           <version>${pitest.maven}</version>
-          <executions>
-            <execution>
-              <id>pit-report</id>
-              <phase>test</phase>
-              <goals>
-                <goal>mutationCoverage</goal>
-              </goals>
-            </execution>
-          </executions>
-          <configuration>
-            <targetClasses>
-              <param>com.carhouse.*</param>
-            </targetClasses>
-            <targetTests>
-              <param>com.carhouse.*</param>
-            </targetTests>
-            <testPlugin>junit5</testPlugin>
-          </configuration>
+<!--          <executions>-->
+<!--            <execution>-->
+<!--              <id>pit-report</id>-->
+<!--              <phase>test</phase>-->
+<!--              <goals>-->
+<!--                <goal>mutationCoverage</goal>-->
+<!--              </goals>-->
+<!--            </execution>-->
+<!--          </executions>-->
+<!--          <configuration>-->
+<!--            <targetClasses>-->
+<!--              <param>com.carhouse.*</param>-->
+<!--            </targetClasses>-->
+<!--            <targetTests>-->
+<!--              <param>com.carhouse.*</param>-->
+<!--            </targetTests>-->
+<!--            <testPlugin>junit5</testPlugin>-->
+<!--          </configuration>-->
         </plugin>
         <plugin>
           <groupId>org.jacoco</groupId>
@@ -240,7 +235,6 @@
           <artifactId>tomcat7-maven-plugin</artifactId>
           <version>${tomcat7.maven.plugin}</version>
           <configuration>
-            <url>http://localhost:8080/manager/text</url>
             <server>TomcatServer</server>
             <path>/</path>
           </configuration>
@@ -252,6 +246,7 @@
                 <goal>run</goal>
               </goals>
               <configuration>
+                <port>8086</port>
                 <fork>true</fork>
                 <skip>${skip.integration.tests}</skip>
               </configuration>

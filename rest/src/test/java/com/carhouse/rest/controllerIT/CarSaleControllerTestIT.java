@@ -2,51 +2,21 @@ package com.carhouse.rest.controllerIT;
 
 import com.carhouse.model.Car;
 import com.carhouse.model.CarSale;
-import com.carhouse.rest.controller.CarSaleController;
-import com.carhouse.rest.handler.RestExceptionHandler;
-import com.carhouse.rest.testConfig.RestTestConfig;
-import com.carhouse.service.CarSaleService;
-import com.carhouse.service.exception.WrongReferenceException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import javassist.NotFoundException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith({SpringExtension.class, MockitoExtension.class})
-@ContextConfiguration(classes = RestTestConfig.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class CarSaleControllerTestIT {
 
-    private static final String HOST = "http://localhost:8080";
+    private static final String HOST = "http://localhost:8086";
     private static final String CAR_SALE_LIST_GET_URL = "/carSale";
     private static final String CAR_SALE_GET_URL = "/carSale/";
     private static final String CAR_SALE_ADD_URL = "/carSale";
@@ -56,14 +26,14 @@ class CarSaleControllerTestIT {
     RestTemplate restTemplate = new RestTemplate();
 
     @Test
-    void getCarSales()  {
+    void getCarSales() {
         ResponseEntity<String> response = restTemplate.getForEntity(HOST + CAR_SALE_LIST_GET_URL, String.class);
         assertEquals(200, response.getStatusCodeValue());
         assertNotNull(response.getBody());
     }
 
     @Test
-    void getCarSale()  {
+    void getCarSale() {
         ResponseEntity<CarSale> response = restTemplate.getForEntity(HOST + CAR_SALE_GET_URL + 3, CarSale.class);
         assertEquals(200, response.getStatusCodeValue());
         assertNotNull(response.getBody());
@@ -71,8 +41,14 @@ class CarSaleControllerTestIT {
 
     @Test
     void getNotExistCarSale() {
-        assertThrows(HttpClientErrorException.NotFound.class, () -> restTemplate.getForEntity(HOST
-                + CAR_SALE_GET_URL + 150, Car.class));
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate.getForEntity(HOST + CAR_SALE_GET_URL + 150, String.class);
+        } catch (HttpClientErrorException ex) {
+            assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+            assertTrue(ex.getResponseBodyAsString().contains("there is not car sale with id = " + 150));
+        }
+        assertNull(response);
     }
 
     @Test
@@ -86,7 +62,6 @@ class CarSaleControllerTestIT {
         assertEquals(200, response.getStatusCodeValue());
         Integer id = Integer.valueOf(response.getBody());
         assertTrue(id > 0);
-        restTemplate.delete(HOST + CAR_SALE_DELETE_URL + id);
     }
 
     @Test
@@ -94,8 +69,15 @@ class CarSaleControllerTestIT {
         CarSale carSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + 3, CarSale.class);
         carSale.setCar(new Car(200));
         HttpEntity<CarSale> request = new HttpEntity<>(carSale);
-        assertThrows(HttpClientErrorException.class, () -> restTemplate.postForEntity(HOST
-                + CAR_SALE_ADD_URL, request, String.class));
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate.postForEntity(HOST
+                    + CAR_SALE_ADD_URL, request, String.class);
+        } catch (HttpClientErrorException ex) {
+            assertEquals(HttpStatus.FAILED_DEPENDENCY, ex.getStatusCode());
+            assertTrue(ex.getResponseBodyAsString().contains("there is wrong references in your car sale"));
+        }
+        assertNull(response);
     }
 
     @Test
@@ -120,8 +102,15 @@ class CarSaleControllerTestIT {
         CarSale carSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + 3, CarSale.class);
         carSale.setCar(new Car(200));
         HttpEntity<CarSale> request = new HttpEntity<>(carSale);
-        assertThrows(HttpClientErrorException.class, () -> restTemplate.exchange(HOST + CAR_SALE_UPDATE_URL,
-                HttpMethod.PUT, request, CarSale.class));
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate.exchange(HOST + CAR_SALE_UPDATE_URL,
+                    HttpMethod.PUT, request, String.class);
+        } catch (HttpClientErrorException ex) {
+            assertEquals(HttpStatus.FAILED_DEPENDENCY, ex.getStatusCode());
+            assertTrue(ex.getResponseBodyAsString().contains("there is wrong references in your car sale"));
+        }
+        assertNull(response);
     }
 
     @Test
@@ -129,21 +118,37 @@ class CarSaleControllerTestIT {
         CarSale carSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + 3, CarSale.class);
         carSale.setCarSaleId(37);
         HttpEntity<CarSale> request = new HttpEntity<>(carSale);
-        assertThrows(HttpClientErrorException.class, () -> restTemplate.exchange(HOST + CAR_SALE_UPDATE_URL,
-                HttpMethod.PUT, request, CarSale.class));
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate.exchange(HOST + CAR_SALE_UPDATE_URL,
+                    HttpMethod.PUT, request, String.class);
+        } catch (HttpClientErrorException ex) {
+            assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+            assertTrue(ex.getResponseBodyAsString().contains("there is not car sale with id = " + 37));
+        }
+        assertNull(response);
     }
 
     @Test
     void deleteCarSale() {
         int carSaleId = 4;
-        restTemplate.delete(HOST + CAR_SALE_DELETE_URL + carSaleId);
+        ResponseEntity response = restTemplate.exchange(HOST + CAR_SALE_DELETE_URL + carSaleId,
+                HttpMethod.DELETE, null, String.class);
+        assertEquals(200, response.getStatusCodeValue());
         assertThrows(HttpClientErrorException.NotFound.class, () -> restTemplate.getForEntity(HOST
                 + CAR_SALE_DELETE_URL + carSaleId, CarSale.class));
     }
 
     @Test
     void deleteNotExistCarSale() {
-        assertThrows(HttpClientErrorException.NotFound.class, () -> restTemplate.delete(HOST
-                + CAR_SALE_DELETE_URL + 40));
+        ResponseEntity response = null;
+        try {
+            response = restTemplate.exchange(HOST + CAR_SALE_DELETE_URL + 40,
+                    HttpMethod.DELETE, null, String.class);
+        } catch (HttpClientErrorException ex) {
+            assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+            assertTrue(ex.getResponseBodyAsString().contains("there is not car sale with id = " + 40 + " to delete"));
+        }
+        assertNull(response);
     }
 }

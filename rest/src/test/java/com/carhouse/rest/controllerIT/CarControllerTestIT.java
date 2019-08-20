@@ -4,17 +4,19 @@ import com.carhouse.model.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.sql.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CarControllerTestIT {
 
-    private static final String HOST = "http://localhost:8080";
+    private static final String HOST = "http://localhost:8086";
     private static final String CAR_LIST_GET_URL = "/carSale/car";
     private static final String CAR_GET_URL = "/carSale/car/";
     private static final String CAR_ADD_URL = "/carSale/car";
@@ -38,8 +40,15 @@ class CarControllerTestIT {
 
     @Test
     void getNotExistCarSale() {
-        assertThrows(HttpClientErrorException.NotFound.class, () -> restTemplate.getForEntity(HOST
-                + CAR_GET_URL + 150, Car.class));
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate.getForEntity(HOST
+                + CAR_GET_URL + 150, String.class);
+        } catch (HttpClientErrorException ex) {
+            assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+            assertTrue(ex.getResponseBodyAsString().contains("there is not car with id = " + 150));
+        }
+        assertNull(response);
     }
 
     @Test
@@ -54,7 +63,6 @@ class CarControllerTestIT {
         assertEquals(200, response.getStatusCodeValue());
         Integer id = Integer.valueOf(response.getBody());
         assertTrue(id > 0);
-        restTemplate.delete(HOST + CAR_DELETE_URL + id);
     }
 
     @Test
@@ -65,8 +73,15 @@ class CarControllerTestIT {
         car.setFuelType(new FuelType(15));
         car.setTransmission(new Transmission(32));
         HttpEntity<Car> request = new HttpEntity<>(car);
-        assertThrows(HttpClientErrorException.class, () -> restTemplate.postForEntity(HOST
-                + CAR_ADD_URL, request, String.class));
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate.postForEntity(HOST
+                + CAR_ADD_URL, request, String.class);
+        } catch (HttpClientErrorException ex) {
+            assertEquals(HttpStatus.FAILED_DEPENDENCY, ex.getStatusCode());
+            assertTrue(ex.getResponseBodyAsString().contains("there is wrong references in your car"));
+        }
+        assertNull(response);
     }
 
     @Test
@@ -89,8 +104,15 @@ class CarControllerTestIT {
         car.setFuelType(new FuelType(15));
         car.setTransmission(new Transmission(32));
         HttpEntity<Car> request = new HttpEntity<>(car);
-        assertThrows(HttpClientErrorException.class, () -> restTemplate.exchange(HOST + CAR_UPDATE_URL,
-                HttpMethod.PUT, request, Car.class));
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate.exchange(HOST + CAR_UPDATE_URL,
+                HttpMethod.PUT, request, String.class);
+        } catch (HttpClientErrorException ex) {
+            assertEquals(HttpStatus.FAILED_DEPENDENCY, ex.getStatusCode());
+            assertTrue(ex.getResponseBodyAsString().contains("there is wrong references in your car"));
+        }
+        assertNull(response);
     }
 
     @Test
@@ -99,27 +121,58 @@ class CarControllerTestIT {
         Car car = restTemplate.getForObject(HOST + CAR_GET_URL + carId, Car.class);
         car.setCarId(120);
         HttpEntity<Car> request = new HttpEntity<>(car);
-        assertThrows(HttpClientErrorException.class, () -> restTemplate.exchange(HOST + CAR_UPDATE_URL,
-                HttpMethod.PUT, request, Car.class));
+        ResponseEntity<String> response = null;
+        try {
+            response = restTemplate.exchange(HOST + CAR_UPDATE_URL,
+                HttpMethod.PUT, request, String.class);
+        } catch (HttpClientErrorException ex) {
+            assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+            assertTrue(ex.getResponseBodyAsString().contains("there is not car with id = " + 120));
+        }
+        assertNull(response);
     }
 
     @Test
     void deleteCar() {
-        int carId = 5;
-        restTemplate.delete(HOST + CAR_DELETE_URL + carId);
+        Car car = new Car(2);
+        car.setYear(Date.valueOf("2017-04-05"));
+        car.setCarModel(new CarModel(2, new CarMake(2)));
+        car.setFuelType(new FuelType(1));
+        car.setTransmission(new Transmission(2));
+        HttpEntity<Car> request = new HttpEntity<>(car);
+        ResponseEntity<String> addCarResponse = restTemplate.postForEntity(HOST + CAR_ADD_URL, request, String.class);
+        Integer carId = Integer.valueOf(addCarResponse.getBody());
+        ResponseEntity response = restTemplate.exchange(HOST + CAR_DELETE_URL + carId,
+                HttpMethod.DELETE, null, String.class);
+        assertEquals(200, response.getStatusCodeValue());
         assertThrows(HttpClientErrorException.NotFound.class, () -> restTemplate.getForEntity(HOST
                 + CAR_GET_URL + carId, Car.class));
-
     }
 
     @Test
     void deleteCarWhichHasReferences() {
-        assertThrows(HttpClientErrorException.class, () -> restTemplate.delete(HOST + CAR_DELETE_URL + 1));
+        ResponseEntity response = null;
+        try {
+            response = restTemplate.exchange(HOST + CAR_DELETE_URL + 1,
+                    HttpMethod.DELETE, null, String.class);
+        } catch (HttpClientErrorException ex) {
+            assertEquals(HttpStatus.FAILED_DEPENDENCY, ex.getStatusCode());
+            assertTrue(ex.getResponseBodyAsString().contains("car with id = " + 1 + " has references"));
+        }
+        assertNull(response);
+        assertNotNull(restTemplate.getForEntity(HOST + CAR_GET_URL + 1, Car.class));
     }
 
     @Test
     void deleteNotExistCar() {
-        assertThrows(HttpClientErrorException.NotFound.class, () -> restTemplate.delete(HOST
-                + CAR_DELETE_URL + 40));
+        ResponseEntity response = null;
+        try {
+            response = restTemplate.exchange(HOST + CAR_DELETE_URL + 40,
+                    HttpMethod.DELETE, null, String.class);
+        } catch (HttpClientErrorException ex) {
+            assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
+            assertTrue(ex.getResponseBodyAsString().contains("there is not car with id = " + 40 + " to delete"));
+        }
+        assertNull(response);
     }
 }

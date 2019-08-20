@@ -64,7 +64,7 @@ public class CommentController {
      */
     @ApiOperation("add comment to car sale with id provided as path variable 'carSaleId'")
     @ApiResponses(value = {
-            @ApiResponse(code = 404, message = "Not Found")})
+            @ApiResponse(code = 424, message = "Wrong References")})
     @PostMapping("/{carSaleId}/comment")
     public Integer addComment(@PathVariable final int carSaleId, @RequestBody final Comment comment) {
         LOGGER.debug("method addComment wit parameters: [{}, {}]", carSaleId, comment);
