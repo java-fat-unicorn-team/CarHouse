@@ -2,10 +2,12 @@ package com.carhouse.rest.controller;
 
 import com.carhouse.model.CarMake;
 import com.carhouse.service.CarMakeService;
+import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,5 +46,18 @@ public class CarMakeController {
     public List<CarMake> getCarMakes() {
         LOGGER.debug("method getCarMakes");
         return carMakeService.getCarMakes();
+    }
+
+    /**
+     * Send car make with selected id.
+     *
+     * @param carMakeId id to get car make
+     * @return car make
+     * @throws NotFoundException if there is not car make with selected id
+     */
+    @GetMapping("/{carMakeId}")
+    public CarMake getCarMake(@PathVariable final Integer carMakeId) throws NotFoundException {
+        LOGGER.debug("method getCarMake wit parameter: [{}]", carMakeId);
+        return carMakeService.getCarMake(carMakeId);
     }
 }

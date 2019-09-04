@@ -27,7 +27,7 @@ class CarModelDaoImplTest {
 
     @Test
     void getCarModels() {
-        assertEquals(3, carModelDao.getCarModels().size());
+        assertEquals(2, carModelDao.getCarModels(2).size());
     }
 
     @Test

@@ -1,9 +1,13 @@
 package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CarSaleDao;
+import com.carhouse.dao.builders.CarSaleSqlBuilder;
+import com.carhouse.dao.builders.models.Condition;
+import com.carhouse.dao.mappers.CarSaleDtoMapper;
 import com.carhouse.dao.mappers.CarSaleMapper;
 import com.carhouse.dao.mappers.ParameterSource;
 import com.carhouse.model.CarSale;
+import com.carhouse.model.dto.CarSaleDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -47,7 +52,9 @@ public class CarSaleDaoImpl implements CarSaleDao {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private final CarSaleMapper carSaleMapper;
+    private final CarSaleDtoMapper carSaleDtoMapper;
 
+    private final CarSaleSqlBuilder carSaleSqlBuilder;
     private final ParameterSource parameterSource;
 
     private static final Logger LOGGER = LogManager.getLogger(CarSaleDaoImpl.class);
@@ -57,13 +64,18 @@ public class CarSaleDaoImpl implements CarSaleDao {
      *
      * @param namedParameterJdbcTemplate for connection with database
      * @param carSaleMapper              mapper to get CarSale object
+     * @param carSaleDtoMapper           mapper to get CarSaleDto object
+     * @param carSaleSqlBuilder          the car sale sql builder
      * @param parameterSource            class is used to get parameters for sql query
      */
     @Autowired
     public CarSaleDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
-                          final CarSaleMapper carSaleMapper, final ParameterSource parameterSource) {
+                          final CarSaleMapper carSaleMapper, final CarSaleDtoMapper carSaleDtoMapper,
+                          final CarSaleSqlBuilder carSaleSqlBuilder, final ParameterSource parameterSource) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.carSaleMapper = carSaleMapper;
+        this.carSaleDtoMapper = carSaleDtoMapper;
+        this.carSaleSqlBuilder = carSaleSqlBuilder;
         this.parameterSource = parameterSource;
     }
 
@@ -76,6 +88,22 @@ public class CarSaleDaoImpl implements CarSaleDao {
     public List<CarSale> getCarSales() {
         LOGGER.debug("method getCarSales");
         return namedParameterJdbcTemplate.query(GET_LIST_CAR_SALES_SQL, carSaleMapper);
+    }
+
+    /**
+     * Gets car sales dto.
+     * Create conditions based on the request params using CarSaleSqlBuilder object
+     *
+     * @param conditionParams the request params
+     * @return the car sales dto
+     */
+    @Override
+    public List<CarSaleDto> getCarSalesDto(final Map<String, String> conditionParams) {
+        LOGGER.debug("method getCarSalesDto");
+        List<Condition> conditionList = carSaleSqlBuilder
+                .buildConditionList(conditionParams);
+        return namedParameterJdbcTemplate
+                .query(carSaleSqlBuilder.buildSqlQuery(conditionList), carSaleDtoMapper);
     }
 
     /**

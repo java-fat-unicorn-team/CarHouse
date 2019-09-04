@@ -6,16 +6,18 @@ import java.util.List;
 
 /**
  * The interface provides methods to manage CarModel model.
+ *
  * @author Katuranau Maksimilyan
  * @see CarModel
  */
 public interface CarModelDao {
     /**
-     * Gets car models.
+     * Gets car models of selected car make.
      *
+     * @param carMakeId the car make id to get car models
      * @return the list of car models
      */
-    List<CarModel> getCarModels();
+    List<CarModel> getCarModels(Integer carMakeId);
 
     /**
      * Gets car model by id.

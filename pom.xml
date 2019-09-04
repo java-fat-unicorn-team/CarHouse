@@ -54,6 +54,8 @@
     <maven.clean.plugin>3.1.0</maven.clean.plugin>
     <log4j2.version>2.11.1</log4j2.version>
     <slf4j.nop.version>1.7.26</slf4j.nop.version>
+    <commons.lang3.version>3.9</commons.lang3.version>
+    <commons.validator.version>1.6</commons.validator.version>
     <maven.resources.plugin>3.1.0</maven.resources.plugin>
     <maven.compiler.plugin>3.8.1</maven.compiler.plugin>
     <maven.failsafe.plugin>2.22.2</maven.failsafe.plugin>
@@ -180,6 +182,16 @@
         <groupId>io.springfox</groupId>
         <artifactId>springfox-swagger-ui</artifactId>
         <version>${springfox.swagger.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${commons.lang3.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-validator</groupId>
+        <artifactId>commons-validator</artifactId>
+        <version>${commons.validator.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

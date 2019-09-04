@@ -2,6 +2,7 @@ package com.carhouse.service.impl;
 
 import com.carhouse.dao.CarMakeDao;
 import com.carhouse.model.CarMake;
+import javassist.NotFoundException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,8 +14,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,7 +45,7 @@ class CarMakeServiceImplTest {
     }
 
     @Test
-    void getCarMake() {
+    void getCarMake() throws NotFoundException {
         int carMakeId = 2;
         when(carMakeDao.getCarMake(carMakeId)).thenReturn(listCarMake.get(carMakeId));
         assertEquals(listCarMake.get(carMakeId).getCarMake(), carMakeService.getCarMake(carMakeId).getCarMake());
@@ -53,9 +53,10 @@ class CarMakeServiceImplTest {
     }
 
     @Test
-    void gerNonExistentCarMake() {
+    void getNonExistentCarMake() {
         int carMakeId = 10;
         when(carMakeDao.getCarMake(carMakeId)).thenThrow(EmptyResultDataAccessException.class);
-        assertThrows(EmptyResultDataAccessException.class, () -> carMakeService.getCarMake(carMakeId));
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> carMakeService.getCarMake(carMakeId));
+        assertTrue(thrown.getMessage().contains("there is not car make with id = " + carMakeId));
     }
 }
