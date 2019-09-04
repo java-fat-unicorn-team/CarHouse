@@ -2,6 +2,7 @@ package com.carhouse.service.impl;
 
 import com.carhouse.dao.CarSaleDao;
 import com.carhouse.model.CarSale;
+import com.carhouse.model.dto.CarSaleDto;
 import com.carhouse.service.exception.WrongReferenceException;
 import javassist.NotFoundException;
 import org.junit.jupiter.api.BeforeAll;
@@ -14,7 +15,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -29,6 +32,7 @@ class CarSaleServiceImplTest {
     private CarSaleServiceImpl carSaleService;
 
     private static List<CarSale> listCarSale;
+    private static List<CarSaleDto> listCarSaleDto;
 
     @BeforeAll
     static void addCarSales() {
@@ -37,6 +41,10 @@ class CarSaleServiceImplTest {
             add(new CarSale(2));
             add(new CarSale(3));
         }};
+        listCarSaleDto = new ArrayList<>() {{
+            add(new CarSaleDto().setCarSaleId(0));
+            add(new CarSaleDto().setCarSaleId(1));
+        }};
     }
 
     @Test
@@ -44,6 +52,20 @@ class CarSaleServiceImplTest {
         when(carSaleDao.getCarSales()).thenReturn(listCarSale);
         assertEquals(listCarSale.size(), carSaleService.getCarSales().size());
         verify(carSaleDao, times(1)).getCarSales();
+    }
+
+    @Test
+    void getCarSalesDto() {
+        Map<String, String> conditionParams = new HashMap<>();
+        conditionParams.put("carMakeId", "1");
+        conditionParams.put("yearFrom", "2017-01-01");
+        conditionParams.put("yearTo", "abcd");
+        Map<String, String> validConditionParams = new HashMap<>();
+        validConditionParams.put("carMakeId", "1");
+        validConditionParams.put("yearFrom", "2017-01-01");
+        when(carSaleDao.getCarSalesDto(validConditionParams)).thenReturn(listCarSaleDto);
+        assertEquals(listCarSaleDto.size(), carSaleService.getCarSalesDto(conditionParams).size());
+        verify(carSaleDao, times(1)).getCarSalesDto(validConditionParams);
     }
 
     @Test

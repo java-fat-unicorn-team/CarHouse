@@ -6,6 +6,7 @@ import com.carhouse.dao.config.TestSpringJDBCConfig;
 import com.carhouse.model.Car;
 import com.carhouse.model.User;
 import com.carhouse.model.CarSale;
+import com.carhouse.dao.builders.models.Condition;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,6 +36,38 @@ class CarSaleDaoImplTest {
     @Test
     void getCarSales() {
         assertEquals(4, carSaleDao.getCarSales().size());
+    }
+
+    @Test
+    void getCarSalesDto() {
+        assertEquals(4, carSaleDao.getCarSalesDto(new HashMap<>()).size());
+    }
+
+    @Test
+    void getCarSalesDtoWithSelectedCarMake() {
+        Map<String, String> requestParams = new HashMap<>();
+        requestParams.put("carMakeId", "2");
+        assertEquals(2, carSaleDao.getCarSalesDto(requestParams).size());
+    }
+
+    @Test
+    void getCarSalesDtoWithSelectedCarMakeAndCarModel() {
+        Map<String, String> requestParams = new HashMap<>();
+        requestParams.put("carMakeId", "2");
+        requestParams.put("carModelId", "3");
+        assertEquals(1, carSaleDao.getCarSalesDto(requestParams).size());
+    }
+
+    @Test
+    void getCarSalesDtoWithAllFilters() {
+        Map<String, String> requestParams = new HashMap<>();
+        requestParams.put("carMakeId", "1");
+        requestParams.put("carModelId", "1");
+        requestParams.put("yearFrom", "2014-01-01");
+        requestParams.put("yearTo", "2018-01-01");
+        requestParams.put("priceFrom", "30000");
+        requestParams.put("priceTo", "40000");
+        assertEquals(1, carSaleDao.getCarSalesDto(requestParams).size());
     }
 
     @Test

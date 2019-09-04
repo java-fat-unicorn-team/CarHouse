@@ -49,14 +49,17 @@ public class CarModelDaoImpl implements CarModelDao {
     }
 
     /**
-     * Gets car models.
+     * Gets car models of selected car make.
      *
+     * @param carMakeId the car make id to get car models
      * @return the list of car models
      */
     @Override
-    public List<CarModel> getCarModels() {
-        LOGGER.debug("method getCarModels");
-        return namedParameterJdbcTemplate.query(GET_LIST_CAR_MODELS_SQL, carModelMapper);
+    public List<CarModel> getCarModels(final Integer carMakeId) {
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("carMakeId", carMakeId);
+        LOGGER.debug("method getCarModels with parameter: [{}]", carMakeId);
+        return namedParameterJdbcTemplate.query(GET_LIST_CAR_MODELS_SQL, parameters, carModelMapper);
     }
 
     /**

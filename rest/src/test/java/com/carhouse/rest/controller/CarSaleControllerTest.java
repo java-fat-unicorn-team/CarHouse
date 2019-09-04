@@ -1,6 +1,7 @@
 package com.carhouse.rest.controller;
 
 import com.carhouse.model.CarSale;
+import com.carhouse.model.dto.CarSaleDto;
 import com.carhouse.rest.testConfig.RestTestConfig;
 import com.carhouse.rest.handler.RestExceptionHandler;
 import com.carhouse.service.CarSaleService;
@@ -25,7 +26,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -39,6 +43,7 @@ class CarSaleControllerTest {
 
     public static final String CAR_SALE_LIST_STORAGE_JSON = "car-sale-list-storage.json";
     private static final String CAR_SALE_LIST_GET_URL = "/carSale";
+    private static final String CAR_SALE_DTO_LIST_GET_URL = "/carSale/dto";
     private static final String CAR_SALE_GET_URL = "/carSale/{carSaleId}";
     private static final String CAR_SALE_ADD_URL = "/carSale";
     private static final String CAR_SALE_UPDATE_URL = "/carSale";
@@ -76,6 +81,21 @@ class CarSaleControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(content().json(objectMapper.writeValueAsString(listCarSale)));
         verify(carSaleService, times(1)).getCarSales();
+    }
+
+    @Test
+    void getCarSalesDto() throws Exception {
+        List<CarSaleDto> listCarSaleDto = new ArrayList<>() {{
+           add(new CarSaleDto().setCarSaleId(1));
+           add(new CarSaleDto().setCarSaleId(2));
+        }};
+        Map<String, String> requestParams = new HashMap<>();
+        when(carSaleService.getCarSalesDto(requestParams)).thenReturn(listCarSaleDto);
+        mockMvc.perform(get(CAR_SALE_DTO_LIST_GET_URL))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().json(objectMapper.writeValueAsString(listCarSaleDto)));
+        verify(carSaleService, times(1)).getCarSalesDto(requestParams);
     }
 
     @Test

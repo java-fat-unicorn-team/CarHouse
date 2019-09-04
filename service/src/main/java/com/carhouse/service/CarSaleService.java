@@ -1,9 +1,11 @@
 package com.carhouse.service;
 
 import com.carhouse.model.CarSale;
+import com.carhouse.model.dto.CarSaleDto;
 import javassist.NotFoundException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The interface of carSale service.
@@ -19,6 +21,14 @@ public interface CarSaleService {
      * @return the list of car sales
      */
     List<CarSale> getCarSales();
+
+    /**
+     * Gets car sales dto.
+     *
+     * @param conditionParams the conditions params
+     * @return the car sales dto
+     */
+    List<CarSaleDto> getCarSalesDto(Map<String, String> conditionParams);
 
     /**
      * Gets car sale by id.

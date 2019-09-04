@@ -3,9 +3,11 @@ package com.carhouse.service.impl;
 import com.carhouse.dao.CarMakeDao;
 import com.carhouse.model.CarMake;
 import com.carhouse.service.CarMakeService;
+import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,10 +52,15 @@ public class CarMakeServiceImpl implements CarMakeService {
      *
      * @param id the car make id
      * @return the car make
+     * @throws NotFoundException if there is not car make with selected id
      */
     @Override
-    public CarMake getCarMake(final int id) {
+    public CarMake getCarMake(final int id) throws NotFoundException {
         LOGGER.debug("method getCarMake with parameter: [{}]", id);
-        return carMakeDao.getCarMake(id);
+        try {
+            return carMakeDao.getCarMake(id);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new NotFoundException("there is not car make with id = " + id);
+        }
     }
 }

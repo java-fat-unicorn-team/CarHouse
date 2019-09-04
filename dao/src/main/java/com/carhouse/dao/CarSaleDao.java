@@ -1,8 +1,10 @@
 package com.carhouse.dao;
 
 import com.carhouse.model.CarSale;
+import com.carhouse.model.dto.CarSaleDto;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The interface provides methods to manage CarSale model.
@@ -17,6 +19,14 @@ public interface CarSaleDao {
      * @return the list of car sales
      */
     List<CarSale> getCarSales();
+
+    /**
+     * Gets car sales dto.
+     *
+     * @param conditionParams the request params
+     * @return the car sales dto
+     */
+    List<CarSaleDto> getCarSalesDto(Map<String, String> conditionParams);
 
     /**
      * Gets car sale by id.

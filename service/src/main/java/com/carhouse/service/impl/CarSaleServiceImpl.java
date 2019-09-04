@@ -2,9 +2,12 @@ package com.carhouse.service.impl;
 
 import com.carhouse.dao.CarSaleDao;
 import com.carhouse.model.CarSale;
+import com.carhouse.model.dto.CarSaleDto;
 import com.carhouse.service.CarSaleService;
 import com.carhouse.service.exception.WrongReferenceException;
 import javassist.NotFoundException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.validator.GenericValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +15,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The class provides method to manage CarSale models on service layer.
@@ -47,6 +52,26 @@ public class CarSaleServiceImpl implements CarSaleService {
     public List<CarSale> getCarSales() {
         LOGGER.debug("method getCarSales");
         return carSaleDao.getCarSales();
+    }
+
+    /**
+     * Gets car sales dto.
+     * Validate request params and send to dao only valid params
+     *
+     * @param conditionParams the conditions params
+     * @return the car sales dto
+     */
+    @Override
+    public List<CarSaleDto> getCarSalesDto(final Map<String, String> conditionParams) {
+        LOGGER.debug("method getCarSalesDto");
+        Map<String, String> validParams = new HashMap<>();
+        for (Map.Entry<String, String> param : conditionParams.entrySet()) {
+            if (StringUtils.isNumeric(param.getValue())
+                    || GenericValidator.isDate(param.getValue(), "yyyy-MM-dd", true)) {
+                validParams.put(param.getKey(), param.getValue());
+            }
+        }
+        return carSaleDao.getCarSalesDto(validParams);
     }
 
     /**
