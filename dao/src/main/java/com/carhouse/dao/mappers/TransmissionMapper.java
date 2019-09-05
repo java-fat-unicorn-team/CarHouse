@@ -20,11 +20,11 @@ public class TransmissionMapper implements RowMapper<Transmission> {
     /**
      * The constant TRANSMISSION_ID.
      */
-    public static final String TRANSMISSION_ID = "transmission_id";
+    private static final String TRANSMISSION_ID = "transmission_id";
     /**
      * The constant TRANSMISSION.
      */
-    public static final String TRANSMISSION = "transmission";
+    private static final String TRANSMISSION = "transmission";
     /**
      * Logger.
      */

@@ -1,8 +1,7 @@
 package com.carhouse.dao.impl;
 
 import com.carhouse.dao.CarSaleDao;
-import com.carhouse.dao.builders.CarSaleSqlBuilder;
-import com.carhouse.dao.builders.models.Condition;
+import com.carhouse.dao.conditions.DefaultConditions;
 import com.carhouse.dao.mappers.CarSaleDtoMapper;
 import com.carhouse.dao.mappers.CarSaleMapper;
 import com.carhouse.dao.mappers.ParameterSource;
@@ -54,7 +53,6 @@ public class CarSaleDaoImpl implements CarSaleDao {
     private final CarSaleMapper carSaleMapper;
     private final CarSaleDtoMapper carSaleDtoMapper;
 
-    private final CarSaleSqlBuilder carSaleSqlBuilder;
     private final ParameterSource parameterSource;
 
     private static final Logger LOGGER = LogManager.getLogger(CarSaleDaoImpl.class);
@@ -65,45 +63,35 @@ public class CarSaleDaoImpl implements CarSaleDao {
      * @param namedParameterJdbcTemplate for connection with database
      * @param carSaleMapper              mapper to get CarSale object
      * @param carSaleDtoMapper           mapper to get CarSaleDto object
-     * @param carSaleSqlBuilder          the car sale sql builder
      * @param parameterSource            class is used to get parameters for sql query
      */
     @Autowired
     public CarSaleDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                           final CarSaleMapper carSaleMapper, final CarSaleDtoMapper carSaleDtoMapper,
-                          final CarSaleSqlBuilder carSaleSqlBuilder, final ParameterSource parameterSource) {
+                          final ParameterSource parameterSource) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.carSaleMapper = carSaleMapper;
         this.carSaleDtoMapper = carSaleDtoMapper;
-        this.carSaleSqlBuilder = carSaleSqlBuilder;
         this.parameterSource = parameterSource;
     }
 
     /**
      * Gets car sales.
-     *
-     * @return the car sales
-     */
-    @Override
-    public List<CarSale> getCarSales() {
-        LOGGER.debug("method getCarSales");
-        return namedParameterJdbcTemplate.query(GET_LIST_CAR_SALES_SQL, carSaleMapper);
-    }
-
-    /**
-     * Gets car sales dto.
-     * Create conditions based on the request params using CarSaleSqlBuilder object
+     * Set conditions value from map to sql query or use default value if parameter doesn't exist
+     * Return list of dto object without redundant information
      *
      * @param conditionParams the request params
-     * @return the car sales dto
+     * @return the list of car sales
      */
     @Override
-    public List<CarSaleDto> getCarSalesDto(final Map<String, String> conditionParams) {
+    public List<CarSaleDto> getListCarSales(final Map<String, String> conditionParams) {
         LOGGER.debug("method getCarSalesDto");
-        List<Condition> conditionList = carSaleSqlBuilder
-                .buildConditionList(conditionParams);
-        return namedParameterJdbcTemplate
-                .query(carSaleSqlBuilder.buildSqlQuery(conditionList), carSaleDtoMapper);
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        for (DefaultConditions condition: DefaultConditions.values()) {
+            parameters.addValue(condition.getKey(), conditionParams.getOrDefault(condition.getKey(),
+                            condition.getDefaultValue()));
+        }
+        return namedParameterJdbcTemplate.query(GET_LIST_CAR_SALES_SQL, parameters, carSaleDtoMapper);
     }
 
     /**

@@ -44,17 +44,6 @@ public class CarSaleServiceImpl implements CarSaleService {
     }
 
     /**
-     * Gets car sales.
-     *
-     * @return the list of car sales
-     */
-    @Override
-    public List<CarSale> getCarSales() {
-        LOGGER.debug("method getCarSales");
-        return carSaleDao.getCarSales();
-    }
-
-    /**
      * Gets car sales dto.
      * Validate request params and send to dao only valid params
      *
@@ -62,7 +51,7 @@ public class CarSaleServiceImpl implements CarSaleService {
      * @return the car sales dto
      */
     @Override
-    public List<CarSaleDto> getCarSalesDto(final Map<String, String> conditionParams) {
+    public List<CarSaleDto> getListCarSales(final Map<String, String> conditionParams) {
         LOGGER.debug("method getCarSalesDto");
         Map<String, String> validParams = new HashMap<>();
         for (Map.Entry<String, String> param : conditionParams.entrySet()) {
@@ -71,7 +60,7 @@ public class CarSaleServiceImpl implements CarSaleService {
                 validParams.put(param.getKey(), param.getValue());
             }
         }
-        return carSaleDao.getCarSalesDto(validParams);
+        return carSaleDao.getListCarSales(validParams);
     }
 
     /**

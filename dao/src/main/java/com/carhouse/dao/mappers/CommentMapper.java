@@ -20,15 +20,15 @@ public class CommentMapper implements RowMapper<Comment> {
     /**
      * The constant COMMENT_ID.
      */
-    public static final String COMMENT_ID = "comment_id";
+    private static final String COMMENT_ID = "comment_id";
     /**
      * The constant USER_NAME.
      */
-    public static final String USER_NAME = "user_name";
+    private static final String USER_NAME = "user_name";
     /**
      * The constant COMMENT.
      */
-    public static final String COMMENT = "comment";
+    private static final String COMMENT = "comment";
     /**
      * Logger.
      */

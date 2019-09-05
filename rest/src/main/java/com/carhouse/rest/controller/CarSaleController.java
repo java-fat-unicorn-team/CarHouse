@@ -40,26 +40,15 @@ public class CarSaleController {
     }
 
     /**
-     * Send all car sales.
-     *
-     * @return the list of car sales in JSON
-     */
-    @GetMapping
-    public List<CarSale> getCarSales() {
-        LOGGER.debug("method getCarSales");
-        return carSaleService.getCarSales();
-    }
-
-    /**
      * Send all car sales without redundant information to show list of them.
      *
      * @param requestParams the request params
      * @return the list of car sales in JSON
      */
-    @GetMapping("/dto")
-    public List<CarSaleDto> getCarSalesDto(@RequestParam(required = false) final Map<String, String> requestParams) {
+    @GetMapping
+    public List<CarSaleDto> getCarSales(@RequestParam(required = false) final Map<String, String> requestParams) {
         LOGGER.debug("method getCarSalesDto");
-        return carSaleService.getCarSalesDto(requestParams);
+        return carSaleService.getListCarSales(requestParams);
     }
 
     /**

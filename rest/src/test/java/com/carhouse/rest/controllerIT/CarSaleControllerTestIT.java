@@ -18,7 +18,6 @@ class CarSaleControllerTestIT {
 
     private static final String HOST = "http://localhost:8086";
     private static final String CAR_SALE_LIST_GET_URL = "/carSale";
-    private static final String CAR_SALE_DTO_LIST_GET_URL = "/carSale/dto";
     private static final String CAR_SALE_GET_URL = "/carSale/";
     private static final String CAR_SALE_ADD_URL = "/carSale";
     private static final String CAR_SALE_UPDATE_URL = "/carSale";
@@ -27,15 +26,8 @@ class CarSaleControllerTestIT {
     RestTemplate restTemplate = new RestTemplate();
 
     @Test
-    void getCarSales() {
+    void getListCarSales() {
         ResponseEntity<String> response = restTemplate.getForEntity(HOST + CAR_SALE_LIST_GET_URL, String.class);
-        assertEquals(200, response.getStatusCodeValue());
-        assertNotNull(response.getBody());
-    }
-
-    @Test
-    void getCarSalesDto() {
-        ResponseEntity<String> response = restTemplate.getForEntity(HOST + CAR_SALE_DTO_LIST_GET_URL, String.class);
         assertEquals(200, response.getStatusCodeValue());
         assertNotNull(response.getBody());
     }

@@ -20,11 +20,11 @@ public class CarModelMapper implements RowMapper<CarModel> {
     /**
      * The constant CAR_MODEL_ID.
      */
-    public static final String CAR_MODEL_ID = "car_model_id";
+    private static final String CAR_MODEL_ID = "car_model_id";
     /**
      * The constant CAR_MODEL.
      */
-    public static final String CAR_MODEL = "car_model";
+    private static final String CAR_MODEL = "car_model";
     /**
      * mapper to get CarMake object.
      */

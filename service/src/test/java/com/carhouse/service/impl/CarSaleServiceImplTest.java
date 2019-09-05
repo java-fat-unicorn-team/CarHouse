@@ -48,13 +48,6 @@ class CarSaleServiceImplTest {
     }
 
     @Test
-    void getCarSales() {
-        when(carSaleDao.getCarSales()).thenReturn(listCarSale);
-        assertEquals(listCarSale.size(), carSaleService.getCarSales().size());
-        verify(carSaleDao, times(1)).getCarSales();
-    }
-
-    @Test
     void getCarSalesDto() {
         Map<String, String> conditionParams = new HashMap<>();
         conditionParams.put("carMakeId", "1");
@@ -63,9 +56,9 @@ class CarSaleServiceImplTest {
         Map<String, String> validConditionParams = new HashMap<>();
         validConditionParams.put("carMakeId", "1");
         validConditionParams.put("yearFrom", "2017-01-01");
-        when(carSaleDao.getCarSalesDto(validConditionParams)).thenReturn(listCarSaleDto);
-        assertEquals(listCarSaleDto.size(), carSaleService.getCarSalesDto(conditionParams).size());
-        verify(carSaleDao, times(1)).getCarSalesDto(validConditionParams);
+        when(carSaleDao.getListCarSales(validConditionParams)).thenReturn(listCarSaleDto);
+        assertEquals(listCarSaleDto.size(), carSaleService.getListCarSales(conditionParams).size());
+        verify(carSaleDao, times(1)).getListCarSales(validConditionParams);
     }
 
     @Test
