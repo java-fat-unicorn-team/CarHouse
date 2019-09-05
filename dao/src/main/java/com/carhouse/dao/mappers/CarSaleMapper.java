@@ -20,15 +20,15 @@ public class CarSaleMapper implements RowMapper<CarSale> {
     /**
      * The constant CAR_SALE.
      */
-    public static final String CAR_SALE_ID = "car_sale_id";
+    private static final String CAR_SALE_ID = "car_sale_id";
     /**
      * The constant PRICE.
      */
-    public static final String PRICE = "price";
+    private static final String PRICE = "price";
     /**
      * The constant DATE.
      */
-    public static final String DATE = "date";
+    private static final String DATE = "date";
     /**
      * mapper to get User object.
      */

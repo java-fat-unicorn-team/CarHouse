@@ -21,15 +21,15 @@ public class CarMapper implements RowMapper<Car> {
     /**
      * The constant CAR_ID.
      */
-    public static final String CAR_ID = "car_id";
+    private static final String CAR_ID = "car_id";
     /**
      * The constant YEAR.
      */
-    public static final String YEAR = "year";
+    private static final String YEAR = "year";
     /**
      * The constant MILEAGE.
      */
-    public static final String MILEAGE = "mileage";
+    private static final String MILEAGE = "mileage";
     /**
      * mapper to get FuelType object.
      */

@@ -23,8 +23,8 @@ public class CarSaleDtoMapper implements RowMapper<CarSaleDto> {
     private static final String DATE = "date";
     private static final String YEAR = "year";
     private static final String MILEAGE = "mileage";
-    private final String FUEL_TYPE = "fuel_type";
-    private final String TRANSMISSION = "transmission";
+    private static final String FUEL_TYPE = "fuel_type";
+    private static final String TRANSMISSION = "transmission";
     private static final String CAR_MAKE = "car_make";
     private static final String CAR_MODEL = "car_model";
 

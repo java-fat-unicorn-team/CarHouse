@@ -43,7 +43,7 @@ class CarSaleControllerTest {
 
     public static final String CAR_SALE_LIST_STORAGE_JSON = "car-sale-list-storage.json";
     private static final String CAR_SALE_LIST_GET_URL = "/carSale";
-    private static final String CAR_SALE_DTO_LIST_GET_URL = "/carSale/dto";
+    private static final String CAR_SALE_DTO_LIST_GET_URL = "/carSale";
     private static final String CAR_SALE_GET_URL = "/carSale/{carSaleId}";
     private static final String CAR_SALE_ADD_URL = "/carSale";
     private static final String CAR_SALE_UPDATE_URL = "/carSale";
@@ -74,28 +74,17 @@ class CarSaleControllerTest {
     }
 
     @Test
-    void getCarSales() throws Exception {
-        when(carSaleController.getCarSales()).thenReturn(listCarSale);
-        mockMvc.perform(get(CAR_SALE_LIST_GET_URL))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(content().json(objectMapper.writeValueAsString(listCarSale)));
-        verify(carSaleService, times(1)).getCarSales();
-    }
-
-    @Test
     void getCarSalesDto() throws Exception {
         List<CarSaleDto> listCarSaleDto = new ArrayList<>() {{
            add(new CarSaleDto().setCarSaleId(1));
            add(new CarSaleDto().setCarSaleId(2));
         }};
-        Map<String, String> requestParams = new HashMap<>();
-        when(carSaleService.getCarSalesDto(requestParams)).thenReturn(listCarSaleDto);
+        when(carSaleService.getListCarSales(anyMap())).thenReturn(listCarSaleDto);
         mockMvc.perform(get(CAR_SALE_DTO_LIST_GET_URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(content().json(objectMapper.writeValueAsString(listCarSaleDto)));
-        verify(carSaleService, times(1)).getCarSalesDto(requestParams);
+        verify(carSaleService, times(1)).getListCarSales(anyMap());
     }
 
     @Test

@@ -13,20 +13,14 @@ import java.util.Map;
  * @see CarSale
  */
 public interface CarSaleDao {
-    /**
-     * Gets car sales.
-     *
-     * @return the list of car sales
-     */
-    List<CarSale> getCarSales();
 
     /**
-     * Gets car sales dto.
+     * Gets car sales.
      *
      * @param conditionParams the request params
      * @return the car sales dto
      */
-    List<CarSaleDto> getCarSalesDto(Map<String, String> conditionParams);
+    List<CarSaleDto> getListCarSales(Map<String, String> conditionParams);
 
     /**
      * Gets car sale by id.

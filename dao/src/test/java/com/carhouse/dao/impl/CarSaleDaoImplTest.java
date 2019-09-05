@@ -6,7 +6,6 @@ import com.carhouse.dao.config.TestSpringJDBCConfig;
 import com.carhouse.model.Car;
 import com.carhouse.model.User;
 import com.carhouse.model.CarSale;
-import com.carhouse.dao.builders.models.Condition;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,32 +33,27 @@ class CarSaleDaoImplTest {
     }
 
     @Test
-    void getCarSales() {
-        assertEquals(4, carSaleDao.getCarSales().size());
+    void getListCarSales() {
+        assertEquals(4, carSaleDao.getListCarSales(new HashMap<>()).size());
     }
 
     @Test
-    void getCarSalesDto() {
-        assertEquals(4, carSaleDao.getCarSalesDto(new HashMap<>()).size());
-    }
-
-    @Test
-    void getCarSalesDtoWithSelectedCarMake() {
+    void getListCarSalesWithSelectedCarMake() {
         Map<String, String> requestParams = new HashMap<>();
         requestParams.put("carMakeId", "2");
-        assertEquals(2, carSaleDao.getCarSalesDto(requestParams).size());
+        assertEquals(2, carSaleDao.getListCarSales(requestParams).size());
     }
 
     @Test
-    void getCarSalesDtoWithSelectedCarMakeAndCarModel() {
+    void getListCarSalesWithSelectedCarMakeAndCarModel() {
         Map<String, String> requestParams = new HashMap<>();
         requestParams.put("carMakeId", "2");
         requestParams.put("carModelId", "3");
-        assertEquals(1, carSaleDao.getCarSalesDto(requestParams).size());
+        assertEquals(1, carSaleDao.getListCarSales(requestParams).size());
     }
 
     @Test
-    void getCarSalesDtoWithAllFilters() {
+    void getListCarSalesWithAllFilters() {
         Map<String, String> requestParams = new HashMap<>();
         requestParams.put("carMakeId", "1");
         requestParams.put("carModelId", "1");
@@ -67,7 +61,7 @@ class CarSaleDaoImplTest {
         requestParams.put("yearTo", "2018-01-01");
         requestParams.put("priceFrom", "30000");
         requestParams.put("priceTo", "40000");
-        assertEquals(1, carSaleDao.getCarSalesDto(requestParams).size());
+        assertEquals(1, carSaleDao.getListCarSales(requestParams).size());
     }
 
     @Test
@@ -87,12 +81,12 @@ class CarSaleDaoImplTest {
 
     @Test
     void addCarSale() {
-        int size = carSaleDao.getCarSales().size();
+        int size = carSaleDao.getListCarSales(new HashMap<>()).size();
         CarSale newCarSale = new CarSale(5, new BigDecimal(23200), new Date(), new User(1),
                 new Car(3));
         int index = carSaleDao.addCarSale(newCarSale);
         CarSale obtainedCarSale = carSaleDao.getCarSale(index);
-        assertEquals(size + 1, carSaleDao.getCarSales().size());
+        assertEquals(size + 1, carSaleDao.getListCarSales(new HashMap<>()).size());
         assertEquals(newCarSale.getPrice(), obtainedCarSale.getPrice());
         assertEquals(newCarSale.getUser().getUserId(), obtainedCarSale.getUser().getUserId());
     }
@@ -128,9 +122,9 @@ class CarSaleDaoImplTest {
 
     @Test
     void deleteCarSale() {
-        int size = carSaleDao.getCarSales().size();
+        int size = carSaleDao.getListCarSales(new HashMap<>()).size();
         assertTrue(carSaleDao.deleteCarSale(3));
-        assertEquals(size - 1, carSaleDao.getCarSales().size());
+        assertEquals(size - 1, carSaleDao.getListCarSales(new HashMap<>()).size());
         assertThrows(EmptyResultDataAccessException.class, () -> carSaleDao.getCarSale(3));
     }
 

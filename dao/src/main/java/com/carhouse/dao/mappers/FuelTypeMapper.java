@@ -19,11 +19,11 @@ public class FuelTypeMapper implements RowMapper<FuelType> {
     /**
      * The constant FUEL_TYPE_ID.
      */
-    public static final String FUEL_TYPE_ID = "fuel_type_id";
+    private static final String FUEL_TYPE_ID = "fuel_type_id";
     /**
      * The constant FUEL_TYPE.
      */
-    public static final String FUEL_TYPE = "fuel_type";
+    private static final String FUEL_TYPE = "fuel_type";
     /**
      * Logger.
      */

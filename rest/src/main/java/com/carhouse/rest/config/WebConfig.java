@@ -3,7 +3,6 @@ package com.carhouse.rest.config;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -13,8 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 @EnableWebMvc
-@PropertySources({@PropertySource("classpath:sql-query.properties"),
-        @PropertySource("classpath:query-conditions.properties")})
+@PropertySource("classpath:sql-query.properties")
 @ComponentScan(basePackages = {"com.carhouse"})
 public class WebConfig implements WebMvcConfigurer {
 
