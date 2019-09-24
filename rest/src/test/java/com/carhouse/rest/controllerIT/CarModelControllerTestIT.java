@@ -30,7 +30,7 @@ class CarModelControllerTestIT {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + CAR_MODEL_LIST_GET_URL + 32, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().contains("there is not car make with id = " + 32));
+        assertEquals(exception.getResponseBodyAsString(),"there is not car make with id = " + 32);
     }
 
     @Test
@@ -45,6 +45,6 @@ class CarModelControllerTestIT {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + CAR_MODEL_GET_URL + 32, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().contains("there is not car model with id = " + 32));
+        assertEquals(exception.getResponseBodyAsString(),"there is not car model with id = " + 32);
     }
 }

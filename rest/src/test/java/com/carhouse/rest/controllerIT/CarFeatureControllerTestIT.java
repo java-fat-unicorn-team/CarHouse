@@ -30,7 +30,7 @@ class CarFeatureControllerTestIT {
                 () -> restTemplate.getForEntity(HOST
                     + FEATURE_LIST_OF_NOT_EXIST_CAR_GET_URL, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().contains("there is not car with id = " + 32));
+        assertEquals(exception.getResponseBodyAsString(),"there is not car with id = " + 32);
     }
 
     @Test

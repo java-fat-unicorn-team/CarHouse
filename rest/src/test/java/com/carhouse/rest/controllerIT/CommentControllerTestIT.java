@@ -36,7 +36,7 @@ class CommentControllerTestIT {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + NOT_EXIST_CAR_SALE_COMMENT_LIST_GET_URL, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().contains("there is not car sale with id = 150"));
+        assertEquals(exception.getResponseBodyAsString(),"there is not car sale with id = 150");
     }
 
     @Test
@@ -58,8 +58,8 @@ class CommentControllerTestIT {
                 () -> restTemplate.postForEntity(HOST
                         + TO_NOT_EXIST_CAR_SALE_COMMENT_ADD_URL, request, String.class));
         assertEquals(HttpStatus.FAILED_DEPENDENCY, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().contains("there is not car sale with id=" + 93
-                + " to add comment"));
+        assertEquals(exception.getResponseBodyAsString(),"there is not car sale with id=" + 93
+                + " to add comment");
     }
 
     @Test
@@ -79,7 +79,7 @@ class CommentControllerTestIT {
                 () -> restTemplate.exchange(HOST
                     + CAR_SALE_COMMENT_UPDATE_URL, HttpMethod.PUT, request, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().contains("there is not comment with id=" + 73));
+        assertEquals(exception.getResponseBodyAsString(),"there is not comment with id=" + 73);
     }
 
     @Test
@@ -96,7 +96,7 @@ class CommentControllerTestIT {
                 () -> restTemplate.exchange(HOST + CAR_SALE_COMMENT_DELETE_URL + 123,
                     HttpMethod.DELETE, null, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().contains("there is not comment with id = "
-                + 123 + " to delete"));
+        assertEquals(exception.getResponseBodyAsString(),"there is not comment with id = "
+                + 123 + " to delete");
     }
 }

@@ -44,7 +44,7 @@ class CarSaleControllerTestIT {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + CAR_SALE_GET_URL + 150, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().contains("there is not car sale with id = " + 150));
+        assertEquals(exception.getResponseBodyAsString(),"there is not car sale with id = " + 150);
     }
 
     @Test
@@ -68,7 +68,7 @@ class CarSaleControllerTestIT {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.postForEntity(HOST + CAR_SALE_ADD_URL, request, String.class));
         assertEquals(HttpStatus.FAILED_DEPENDENCY, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().contains("there is wrong references in your car sale"));
+        assertEquals(exception.getResponseBodyAsString(),"there is wrong references in your car sale");
     }
 
     @Test
@@ -96,7 +96,7 @@ class CarSaleControllerTestIT {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.exchange(HOST + CAR_SALE_UPDATE_URL, HttpMethod.PUT, request, String.class));
         assertEquals(HttpStatus.FAILED_DEPENDENCY, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().contains("there is wrong references in your car sale"));
+        assertEquals(exception.getResponseBodyAsString(),"there is wrong references in your car sale");
     }
 
     @Test
@@ -107,7 +107,7 @@ class CarSaleControllerTestIT {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.exchange(HOST + CAR_SALE_UPDATE_URL, HttpMethod.PUT, request, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().contains("there is not car sale with id = " + 37));
+        assertEquals(exception.getResponseBodyAsString(),"there is not car sale with id = " + 37);
     }
 
     @Test
@@ -126,7 +126,7 @@ class CarSaleControllerTestIT {
                 () -> restTemplate.exchange(HOST + CAR_SALE_DELETE_URL + 40,
                         HttpMethod.DELETE, null, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().contains("there is not car sale with id = "
-                + 40 + " to delete"));
+        assertEquals(exception.getResponseBodyAsString(),"there is not car sale with id = "
+                + 40 + " to delete");
     }
 }
