@@ -14,6 +14,8 @@ class CarModelControllerTestIT {
     private static final String HOST = "http://localhost:8086";
     private static final String CAR_MODEL_LIST_GET_URL = "/carSale/car/carModel/list/";
     private static final String CAR_MODEL_GET_URL = "/carSale/car/carModel/";
+    private static final String RESPONSE_REGEX = "^\"date\":\"[^\"]*\","
+            + " \"status\":\"\\d{3}\", \"message\":\"[\\s\\w=]*\", \"path\":\"[\\/\\w]*\"$";
 
     private RestTemplate restTemplate = new RestTemplate();
 
@@ -30,6 +32,7 @@ class CarModelControllerTestIT {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + CAR_MODEL_LIST_GET_URL + 32, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+        assertTrue(exception.getResponseBodyAsString().matches(RESPONSE_REGEX));
         assertTrue(exception.getResponseBodyAsString().contains("there is not car make with id = " + 32));
     }
 
@@ -45,6 +48,7 @@ class CarModelControllerTestIT {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + CAR_MODEL_GET_URL + 32, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+        assertTrue(exception.getResponseBodyAsString().matches(RESPONSE_REGEX));
         assertTrue(exception.getResponseBodyAsString().contains("there is not car model with id = " + 32));
     }
 }
