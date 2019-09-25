@@ -79,8 +79,7 @@ class CommentControllerTest {
         int carSaleId = 22;
         when(commentService.getCarSaleComments(carSaleId)).thenThrow(NotFoundException.class);
         mockMvc.perform(get(CAR_SALE_COMMENT_LIST_GET_URL, carSaleId))
-                .andExpect(status().isNotFound())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+                .andExpect(status().isNotFound());
         verify(commentService, times(1)).getCarSaleComments(carSaleId);
     }
 

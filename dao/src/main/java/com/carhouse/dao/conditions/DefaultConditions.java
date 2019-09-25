@@ -32,6 +32,12 @@ public enum DefaultConditions {
     private String key;
     private String defaultValue;
 
+    /**
+     * Instantiates a new condition.
+     *
+     * @param key is used to get value from map
+     * @param defaultValue is used if no value is found
+     */
     DefaultConditions(final String key, final String defaultValue) {
         this.key = key;
         this.defaultValue = defaultValue;
@@ -59,6 +65,7 @@ public enum DefaultConditions {
 
     /**
      * Gets default value.
+     * It is used if no value is found.
      *
      * @return the default value
      */
@@ -68,6 +75,7 @@ public enum DefaultConditions {
 
     /**
      * Sets default value.
+     * It is used if no value is found.
      *
      * @param defaultValue the default value
      */

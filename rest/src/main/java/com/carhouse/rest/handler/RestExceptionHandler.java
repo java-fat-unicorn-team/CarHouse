@@ -1,6 +1,6 @@
 package com.carhouse.rest.handler;
 
-import com.carhouse.rest.response.ExceptionJSONInfo;
+import com.carhouse.rest.response.ExceptionJSONResponse;
 import com.carhouse.service.exception.WrongReferenceException;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * The Rest exception handler.
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class RestExceptionHandler {
 
-    private ExceptionJSONInfo response;
+    private ExceptionJSONResponse response;
 
     /**
      * Instantiates a new Rest exception handler.
@@ -27,7 +28,7 @@ public class RestExceptionHandler {
      * @param response the response
      */
     @Autowired
-    public RestExceptionHandler(final ExceptionJSONInfo response) {
+    public RestExceptionHandler(final ExceptionJSONResponse response) {
         this.response = response;
     }
 
@@ -42,10 +43,12 @@ public class RestExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
     public @ResponseBody
-    ExceptionJSONInfo notFoundHandler(final HttpServletRequest request, final Exception ex) {
-        response.setUrl(request.getRequestURL().toString());
+    String notFoundHandler(final HttpServletRequest request, final Exception ex) {
+        response.setDate(new Date());
+        response.setStatus(HttpStatus.NOT_FOUND.value());
+        response.setPath(request.getRequestURI());
         response.setMessage(ex.getMessage());
-        return response;
+        return response.toString();
     }
 
     /**
@@ -59,9 +62,11 @@ public class RestExceptionHandler {
     @ResponseStatus(HttpStatus.FAILED_DEPENDENCY)
     @ExceptionHandler(WrongReferenceException.class)
     public @ResponseBody
-    ExceptionJSONInfo wrongReferenceHandler(final HttpServletRequest request, final Exception ex) {
-        response.setUrl(request.getRequestURL().toString());
+    String wrongReferenceHandler(final HttpServletRequest request, final Exception ex) {
+        response.setDate(new Date());
+        response.setStatus(HttpStatus.FAILED_DEPENDENCY.value());
+        response.setPath(request.getRequestURI());
         response.setMessage(ex.getMessage());
-        return response;
+        return response.toString();
     }
 }

@@ -8,7 +8,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class CarMakeControllerTestIT {
@@ -17,7 +16,7 @@ class CarMakeControllerTestIT {
     private static final String CAR_MAKE_LIST_GET_URL = "/carSale/car/carModel/carMake";
     private static final String CAR_MAKE_GET_URL = "/carSale/car/carModel/carMake/";
 
-    RestTemplate restTemplate = new RestTemplate();
+    private RestTemplate restTemplate = new RestTemplate();
 
     @Test
     void getCarMakes() {
