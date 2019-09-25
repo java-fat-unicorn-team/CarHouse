@@ -23,7 +23,7 @@ class CarSaleControllerTestIT {
     private static final String CAR_SALE_UPDATE_URL = "/carSale";
     private static final String CAR_SALE_DELETE_URL = "/carSale/";
 
-    RestTemplate restTemplate = new RestTemplate();
+    private RestTemplate restTemplate = new RestTemplate();
 
     @Test
     void getListCarSales() {

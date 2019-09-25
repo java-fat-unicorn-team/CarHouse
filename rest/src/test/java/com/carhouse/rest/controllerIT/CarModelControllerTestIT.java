@@ -15,7 +15,7 @@ class CarModelControllerTestIT {
     private static final String CAR_MODEL_LIST_GET_URL = "/carSale/car/carModel/list/";
     private static final String CAR_MODEL_GET_URL = "/carSale/car/carModel/";
 
-    RestTemplate restTemplate = new RestTemplate();
+    private RestTemplate restTemplate = new RestTemplate();
 
     @Test
     void getCarModels() {

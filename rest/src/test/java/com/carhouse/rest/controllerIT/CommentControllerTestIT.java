@@ -1,6 +1,9 @@
 package com.carhouse.rest.controllerIT;
 
 import com.carhouse.model.Comment;
+import com.carhouse.rest.response.ExceptionJSONResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -21,7 +24,8 @@ class CommentControllerTestIT {
     private static final String CAR_SALE_COMMENT_UPDATE_URL = "/carSale/comment";
     private static final String CAR_SALE_COMMENT_DELETE_URL = "/carSale/comment/";
 
-    RestTemplate restTemplate = new RestTemplate();
+    private RestTemplate restTemplate = new RestTemplate();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void getCarSaleComments() {

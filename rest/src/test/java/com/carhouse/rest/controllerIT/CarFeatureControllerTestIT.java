@@ -15,7 +15,7 @@ class CarFeatureControllerTestIT {
     private static final String FEATURE_LIST_OF_NOT_EXIST_CAR_GET_URL = "/carSale/car/32/carFeature";
     private static final String FEATURE_LIST_GET_URL = "/carSale/car/carFeature";
 
-    RestTemplate restTemplate = new RestTemplate();
+    private RestTemplate restTemplate = new RestTemplate();
 
     @Test
     void getCarFeatures() {
@@ -28,7 +28,7 @@ class CarFeatureControllerTestIT {
     void getCarFeaturesOfNotExistCar() {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST
-                    + FEATURE_LIST_OF_NOT_EXIST_CAR_GET_URL, String.class));
+                        + FEATURE_LIST_OF_NOT_EXIST_CAR_GET_URL, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
         assertTrue(exception.getResponseBodyAsString().contains("there is not car with id = " + 32));
     }

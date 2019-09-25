@@ -1,6 +1,7 @@
 package com.carhouse.rest.controllerIT;
 
 import com.carhouse.model.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -18,11 +19,12 @@ class CarControllerTestIT {
     private static final String HOST = "http://localhost:8086";
     private static final String CAR_LIST_GET_URL = "/carSale/car";
     private static final String CAR_GET_URL = "/carSale/car/";
-    private static final String CAR_ADD_URL = "/carSale/car";
-    private static final String CAR_UPDATE_URL = "/carSale/car";
+    private static final String CAR_ADD_URL = "/carSale/car/";
+    private static final String CAR_UPDATE_URL = "/carSale/car/";
     private static final String CAR_DELETE_URL = "/carSale/car/";
 
-    RestTemplate restTemplate = new RestTemplate();
+    private RestTemplate restTemplate = new RestTemplate();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void getCars() {
@@ -39,10 +41,11 @@ class CarControllerTestIT {
 
     @Test
     void getNotExistCarSale() {
+        int carSaleId = 150;
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
-                () -> restTemplate.getForEntity(HOST + CAR_GET_URL + 150, String.class));
+                () -> restTemplate.getForEntity(HOST + CAR_GET_URL + carSaleId, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().contains("there is not car with id = " + 150));
+        assertTrue(exception.getResponseBodyAsString().contains("there is not car with id = " + carSaleId));
     }
 
     @Test
@@ -102,13 +105,14 @@ class CarControllerTestIT {
     @Test
     void updateNotExistCar() {
         int carId = 1;
+        int carSaleId = 120;
         Car car = restTemplate.getForObject(HOST + CAR_GET_URL + carId, Car.class);
-        car.setCarId(120);
+        car.setCarId(carSaleId);
         HttpEntity<Car> request = new HttpEntity<>(car);
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.exchange(HOST + CAR_UPDATE_URL, HttpMethod.PUT, request, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().contains("there is not car with id = " + 120));
+        assertTrue(exception.getResponseBodyAsString().contains("there is not car with id = " + carSaleId));
     }
 
     @Test
