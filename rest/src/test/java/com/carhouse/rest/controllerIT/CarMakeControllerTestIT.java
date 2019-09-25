@@ -1,34 +1,24 @@
 package com.carhouse.rest.controllerIT;
 
 import com.carhouse.model.CarMake;
-import org.junit.jupiter.api.BeforeAll;
+import com.carhouse.rest.response.ExceptionJSONResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.util.Properties;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 
 class CarMakeControllerTestIT {
 
     private static final String HOST = "http://localhost:8086";
     private static final String CAR_MAKE_LIST_GET_URL = "/carSale/car/carModel/carMake";
     private static final String CAR_MAKE_GET_URL = "/carSale/car/carModel/carMake/";
-    private static String ERROR_RESPONSE_REGEX;
 
     private RestTemplate restTemplate = new RestTemplate();
-
-    @BeforeAll
-    static void getProperty() throws IOException {
-        Properties properties = new Properties();
-        properties.load(CarControllerTestIT.class.getClassLoader().getResourceAsStream("test.properties"));
-        ERROR_RESPONSE_REGEX = properties.getProperty("error.response.regexp");
-    }
 
     @Test
     void getCarMakes() {
@@ -45,11 +35,14 @@ class CarMakeControllerTestIT {
     }
 
     @Test
-    void getNotExistCarMake() {
+    void getNotExistCarMake() throws JsonProcessingException {
+        int carMakeId = 32;
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
-                () -> restTemplate.getForEntity(HOST + CAR_MAKE_GET_URL + 32, String.class));
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().matches(ERROR_RESPONSE_REGEX));
-        assertTrue(exception.getResponseBodyAsString().contains("there is not car make with id = " + 32));
+                () -> restTemplate.getForEntity(HOST + CAR_MAKE_GET_URL + carMakeId, String.class));
+        ExceptionJSONResponse response = new ObjectMapper().readValue(exception.getResponseBodyAsString(),
+                ExceptionJSONResponse.class);
+        assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
+        assertEquals("there is not car make with id = " + carMakeId, response.getMessage());
+        assertEquals(CAR_MAKE_GET_URL + carMakeId, response.getPath());
     }
 }
