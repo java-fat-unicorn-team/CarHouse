@@ -1,7 +1,9 @@
 package com.carhouse.rest.controllerIT;
 
 import com.carhouse.model.*;
-import org.junit.jupiter.api.BeforeAll;
+import com.carhouse.rest.response.ExceptionJSONResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -10,9 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.sql.Date;
-import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,16 +24,9 @@ class CarControllerTestIT {
     private static final String CAR_ADD_URL = "/carSale/car/";
     private static final String CAR_UPDATE_URL = "/carSale/car/";
     private static final String CAR_DELETE_URL = "/carSale/car/";
-    private static String ERROR_RESPONSE_REGEX;
 
     private RestTemplate restTemplate = new RestTemplate();
-
-    @BeforeAll
-    static void getProperty() throws IOException {
-        Properties properties = new Properties();
-        properties.load(CarControllerTestIT.class.getClassLoader().getResourceAsStream("test.properties"));
-        ERROR_RESPONSE_REGEX = properties.getProperty("error.response.regexp");
-    }
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void getCars() {
@@ -49,13 +42,15 @@ class CarControllerTestIT {
     }
 
     @Test
-    void getNotExistCarSale() {
+    void getNotExistCarSale() throws JsonProcessingException {
         int carSaleId = 150;
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + CAR_GET_URL + carSaleId, String.class));
-        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().matches(ERROR_RESPONSE_REGEX));
-        assertTrue(exception.getResponseBodyAsString().contains("there is not car with id = " + carSaleId));
+        ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
+                ExceptionJSONResponse.class);
+        assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
+        assertEquals("there is not car with id = " + carSaleId, response.getMessage());
+        assertEquals(CAR_GET_URL + carSaleId, response.getPath());
     }
 
     @Test
@@ -73,7 +68,7 @@ class CarControllerTestIT {
     }
 
     @Test
-    void addCarWithWrongReference() {
+    void addCarWithWrongReference() throws JsonProcessingException {
         Car car = new Car(2);
         car.setYear(Date.valueOf("2017-04-05"));
         car.setCarModel(new CarModel(20, new CarMake(12)));
@@ -82,9 +77,11 @@ class CarControllerTestIT {
         HttpEntity<Car> request = new HttpEntity<>(car);
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.postForEntity(HOST + CAR_ADD_URL, request, String.class));
-        assertEquals(HttpStatus.FAILED_DEPENDENCY, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().matches(ERROR_RESPONSE_REGEX));
-        assertTrue(exception.getResponseBodyAsString().contains("there is wrong references in your car"));
+        ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
+                ExceptionJSONResponse.class);
+        assertEquals(HttpStatus.FAILED_DEPENDENCY.value(), response.getStatus());
+        assertEquals("there is wrong references in your car", response.getMessage());
+        assertEquals(CAR_GET_URL, response.getPath());
     }
 
     @Test
@@ -101,7 +98,7 @@ class CarControllerTestIT {
     }
 
     @Test
-    void updateCarWithWrongReference() {
+    void updateCarWithWrongReference() throws JsonProcessingException {
         int carId = 4;
         Car car = restTemplate.getForObject(HOST + CAR_GET_URL + carId, Car.class);
         car.setFuelType(new FuelType(15));
@@ -109,9 +106,11 @@ class CarControllerTestIT {
         HttpEntity<Car> request = new HttpEntity<>(car);
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.exchange(HOST + CAR_UPDATE_URL, HttpMethod.PUT, request, String.class));
-        assertEquals(HttpStatus.FAILED_DEPENDENCY, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().matches(ERROR_RESPONSE_REGEX));
-        assertTrue(exception.getResponseBodyAsString().contains("there is wrong references in your car"));
+        ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
+                ExceptionJSONResponse.class);
+        assertEquals(HttpStatus.FAILED_DEPENDENCY.value(), response.getStatus());
+        assertEquals("there is wrong references in your car", response.getMessage());
+        assertEquals(CAR_UPDATE_URL, response.getPath());
     }
 
     @Test
@@ -124,7 +123,6 @@ class CarControllerTestIT {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.exchange(HOST + CAR_UPDATE_URL, HttpMethod.PUT, request, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().matches(ERROR_RESPONSE_REGEX));
         assertTrue(exception.getResponseBodyAsString().contains("there is not car with id = " + carSaleId));
     }
 
@@ -151,7 +149,6 @@ class CarControllerTestIT {
                 () -> restTemplate.exchange(HOST + CAR_DELETE_URL + 1,
                         HttpMethod.DELETE, null, String.class));
         assertEquals(HttpStatus.FAILED_DEPENDENCY, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().matches(ERROR_RESPONSE_REGEX));
         assertTrue(exception.getResponseBodyAsString().contains("car with id = " + 1 + " has references"));
         assertNotNull(restTemplate.getForEntity(HOST + CAR_GET_URL + 1, Car.class));
     }
@@ -162,7 +159,6 @@ class CarControllerTestIT {
                 () -> restTemplate.exchange(HOST + CAR_DELETE_URL + 40,
                         HttpMethod.DELETE, null, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().matches(ERROR_RESPONSE_REGEX));
         assertTrue(exception.getResponseBodyAsString().contains("there is not car with id = " + 40 + " to delete"));
     }
 }
