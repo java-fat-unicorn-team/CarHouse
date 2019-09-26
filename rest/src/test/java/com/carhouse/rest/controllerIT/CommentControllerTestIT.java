@@ -1,7 +1,7 @@
 package com.carhouse.rest.controllerIT;
 
 import com.carhouse.model.Comment;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
+import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,10 +24,16 @@ class CommentControllerTestIT {
     private static final String TO_NOT_EXIST_CAR_SALE_COMMENT_ADD_URL = "/carSale/93/comment";
     private static final String CAR_SALE_COMMENT_UPDATE_URL = "/carSale/comment";
     private static final String CAR_SALE_COMMENT_DELETE_URL = "/carSale/comment/";
-    private static final String RESPONSE_REGEX = "^\"date\":\"[^\"]*\","
-            + " \"status\":\"\\d{3}\", \"message\":\"[\\s\\w=]*\", \"path\":\"[\\/\\w]*\"$";
+    private static String ERROR_RESPONSE_REGEX;
 
     private RestTemplate restTemplate = new RestTemplate();
+
+    @BeforeAll
+    static void getProperty() throws IOException {
+        Properties properties = new Properties();
+        properties.load(CarControllerTestIT.class.getClassLoader().getResourceAsStream("test.properties"));
+        ERROR_RESPONSE_REGEX = properties.getProperty("error.response.regexp");
+    }
 
     @Test
     void getCarSaleComments() {
@@ -39,7 +48,7 @@ class CommentControllerTestIT {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + NOT_EXIST_CAR_SALE_COMMENT_LIST_GET_URL, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().matches(RESPONSE_REGEX));
+        assertTrue(exception.getResponseBodyAsString().matches(ERROR_RESPONSE_REGEX));
         assertTrue(exception.getResponseBodyAsString().contains("there is not car sale with id = 150"));
     }
 
@@ -62,7 +71,7 @@ class CommentControllerTestIT {
                 () -> restTemplate.postForEntity(HOST
                         + TO_NOT_EXIST_CAR_SALE_COMMENT_ADD_URL, request, String.class));
         assertEquals(HttpStatus.FAILED_DEPENDENCY, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().matches(RESPONSE_REGEX));
+        assertTrue(exception.getResponseBodyAsString().matches(ERROR_RESPONSE_REGEX));
         assertTrue(exception.getResponseBodyAsString().contains("there is not car sale with id=" + 93
                 + " to add comment"));
     }
@@ -84,7 +93,7 @@ class CommentControllerTestIT {
                 () -> restTemplate.exchange(HOST
                     + CAR_SALE_COMMENT_UPDATE_URL, HttpMethod.PUT, request, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().matches(RESPONSE_REGEX));
+        assertTrue(exception.getResponseBodyAsString().matches(ERROR_RESPONSE_REGEX));
         assertTrue(exception.getResponseBodyAsString().contains("there is not comment with id=" + 73));
     }
 
@@ -102,7 +111,7 @@ class CommentControllerTestIT {
                 () -> restTemplate.exchange(HOST + CAR_SALE_COMMENT_DELETE_URL + 123,
                     HttpMethod.DELETE, null, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().matches(RESPONSE_REGEX));
+        assertTrue(exception.getResponseBodyAsString().matches(ERROR_RESPONSE_REGEX));
         assertTrue(exception.getResponseBodyAsString().contains("there is not comment with id = "
                 + 123 + " to delete"));
     }
