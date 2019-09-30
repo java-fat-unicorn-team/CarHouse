@@ -1,5 +1,6 @@
 package com.carhouse.dao.impl;
 
+import com.carhouse.dao.CarFeatureDao;
 import com.carhouse.dao.CarSaleDao;
 import com.carhouse.dao.conditions.DefaultConditions;
 import com.carhouse.dao.mappers.CarSaleDtoMapper;
@@ -48,6 +49,8 @@ public class CarSaleDaoImpl implements CarSaleDao {
     @Value("${car.sale.delete}")
     private String DELETE_CAR_SALE_SQL;
 
+    private final CarFeatureDao carFeatureDao;
+
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private final CarSaleMapper carSaleMapper;
@@ -60,15 +63,17 @@ public class CarSaleDaoImpl implements CarSaleDao {
     /**
      * Instantiates a new Car sale dao.
      *
+     * @param carFeatureDao              the car feature dao to adds car features to car
      * @param namedParameterJdbcTemplate for connection with database
      * @param carSaleMapper              mapper to get CarSale object
      * @param carSaleDtoMapper           mapper to get CarSaleDto object
      * @param parameterSource            class is used to get parameters for sql query
      */
     @Autowired
-    public CarSaleDaoImpl(final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
+    public CarSaleDaoImpl(final CarFeatureDao carFeatureDao, final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
                           final CarSaleMapper carSaleMapper, final CarSaleDtoMapper carSaleDtoMapper,
                           final ParameterSource parameterSource) {
+        this.carFeatureDao = carFeatureDao;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.carSaleMapper = carSaleMapper;
         this.carSaleDtoMapper = carSaleDtoMapper;
@@ -96,6 +101,7 @@ public class CarSaleDaoImpl implements CarSaleDao {
 
     /**
      * Gets car sale by id.
+     * Use carFeatureDao to set car features
      *
      * @param carSaleId the car sale id
      * @return the list of car sale
@@ -105,7 +111,9 @@ public class CarSaleDaoImpl implements CarSaleDao {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", carSaleId);
         LOGGER.debug("method getCarSale with parameter: [{}]", carSaleId);
-        return namedParameterJdbcTemplate.queryForObject(GET_CAR_SALE_SQL, parameters, carSaleMapper);
+        CarSale carSale = namedParameterJdbcTemplate.queryForObject(GET_CAR_SALE_SQL, parameters, carSaleMapper);
+        carSale.getCar().setCarFeatureList(carFeatureDao.getCarFeatures(carSale.getCar().getCarId()));
+        return carSale;
     }
 
     /**

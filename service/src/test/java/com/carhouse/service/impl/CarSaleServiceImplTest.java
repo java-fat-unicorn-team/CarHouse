@@ -1,6 +1,8 @@
 package com.carhouse.service.impl;
 
+import com.carhouse.dao.CarDao;
 import com.carhouse.dao.CarSaleDao;
+import com.carhouse.model.Car;
 import com.carhouse.model.CarSale;
 import com.carhouse.model.dto.CarSaleDto;
 import com.carhouse.service.exception.WrongReferenceException;
@@ -24,6 +26,9 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CarSaleServiceImplTest {
+
+    @Mock
+    private CarDao carDao;
 
     @Mock
     private CarSaleDao carSaleDao;
@@ -79,16 +84,23 @@ class CarSaleServiceImplTest {
 
     @Test
     void addCarSale() {
-        Integer newCarSaleId = 5;
-        CarSale carSale = new CarSale(7);
+        int newCarId = 3;
+        int newCarSaleId = 5;
+        Car car = new Car();
+        CarSale carSale = new CarSale();
+        carSale.setCar(car);
+        when(carDao.addCar(car)).thenReturn(newCarId);
         when(carSaleDao.addCarSale(carSale)).thenReturn(newCarSaleId);
         assertEquals(newCarSaleId, carSaleService.addCarSale(carSale));
         verify(carSaleDao, times(1)).addCarSale(carSale);
+        verify(carDao, times(1)).addCar(car);
     }
 
     @Test
     void addCarSaleWithWrongReference() {
-        CarSale carSale = new CarSale(7);
+        CarSale carSale = new CarSale();
+        carSale.setCar(new Car());
+        when(carDao.addCar(carSale.getCar())).thenReturn(2);
         when(carSaleDao.addCarSale(carSale)).thenThrow(DataIntegrityViolationException.class);
         WrongReferenceException thrown = assertThrows(WrongReferenceException.class,
                 () -> carSaleService.addCarSale(carSale));
@@ -98,6 +110,8 @@ class CarSaleServiceImplTest {
     @Test
     void updateCarSale() throws NotFoundException {
         CarSale carSale = new CarSale(5);
+        carSale.setCar(new Car());
+        when(carDao.updateCar(carSale.getCar())).thenReturn(true);
         when(carSaleDao.updateCarSale(carSale)).thenReturn(true);
         carSaleService.updateCarSale(carSale);
         verify(carSaleDao, times(1)).updateCarSale(carSale);
@@ -106,6 +120,8 @@ class CarSaleServiceImplTest {
     @Test
     void updateCarSaleWithWrongReference() {
         CarSale carSale = new CarSale(4);
+        carSale.setCar(new Car());
+        when(carDao.updateCar(carSale.getCar())).thenReturn(true);
         doThrow(DataIntegrityViolationException.class).when(carSaleDao).updateCarSale(carSale);
         WrongReferenceException thrown = assertThrows(WrongReferenceException.class,
                 () -> carSaleService.updateCarSale(carSale));
@@ -115,9 +131,20 @@ class CarSaleServiceImplTest {
     @Test
     void updateNotExistCarSale() {
         CarSale carSale = new CarSale(17);
+        carSale.setCar(new Car());
+        when(carDao.updateCar(carSale.getCar())).thenReturn(true);
         when(carSaleDao.updateCarSale(carSale)).thenReturn(false);
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> carSaleService.updateCarSale(carSale));
         assertTrue(thrown.getMessage().contains("there is not car sale with id = " + carSale.getCarSaleId()));
+    }
+
+    @Test
+    void updateCarSaleWithNotExistCar() {
+        CarSale carSale = new CarSale(7);
+        carSale.setCar(new Car(15));
+        when(carDao.updateCar(carSale.getCar())).thenReturn(false);
+        NotFoundException thrown = assertThrows(NotFoundException.class, () -> carSaleService.updateCarSale(carSale));
+        assertTrue(thrown.getMessage().contains("there is not car with id = " + carSale.getCar().getCarId()));
     }
 
     @Test

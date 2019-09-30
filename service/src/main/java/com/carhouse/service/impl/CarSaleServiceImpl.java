@@ -1,5 +1,6 @@
 package com.carhouse.service.impl;
 
+import com.carhouse.dao.CarDao;
 import com.carhouse.dao.CarSaleDao;
 import com.carhouse.model.CarSale;
 import com.carhouse.model.dto.CarSaleDto;
@@ -30,17 +31,20 @@ import java.util.Map;
 public class CarSaleServiceImpl implements CarSaleService {
 
     private CarSaleDao carSaleDao;
+    private CarDao carDao;
 
     private static final Logger LOGGER = LogManager.getLogger(CarSaleServiceImpl.class);
 
     /**
      * Instantiates a new Car sale service.
      *
-     * @param carSaleDao the class is provided CRUD operations for fuel type model.
+     * @param carSaleDao the class provides CRUD operations for fuel type model.
+     * @param carDao     the car dao is used to set changes in car object and then use its id in carSale object
      */
     @Autowired
-    public CarSaleServiceImpl(final CarSaleDao carSaleDao) {
+    public CarSaleServiceImpl(final CarSaleDao carSaleDao, final CarDao carDao) {
         this.carSaleDao = carSaleDao;
+        this.carDao = carDao;
     }
 
     /**
@@ -82,6 +86,7 @@ public class CarSaleServiceImpl implements CarSaleService {
 
     /**
      * Add car sale.
+     * First add car object from carSale object and then use returned car id to add carSale object
      *
      * @param carSale the car sale
      * @return car sale id
@@ -90,6 +95,8 @@ public class CarSaleServiceImpl implements CarSaleService {
     public Integer addCarSale(final CarSale carSale) {
         LOGGER.debug("method addCarSale with parameter: [{}]", carSale);
         try {
+            int carId = carDao.addCar(carSale.getCar());
+            carSale.getCar().setCarId(carId);
             return carSaleDao.addCarSale(carSale);
         } catch (DataIntegrityViolationException ex) {
             throw new WrongReferenceException("there is wrong references in your car sale");
@@ -99,6 +106,7 @@ public class CarSaleServiceImpl implements CarSaleService {
     /**
      * Update car sale.
      * Gets car sale id from carSale object
+     * Use carDao to update car object from carSale object
      *
      * @param carSale the car sale
      * @throws NotFoundException throws if there is not such car sale to update
@@ -107,6 +115,9 @@ public class CarSaleServiceImpl implements CarSaleService {
     public void updateCarSale(final CarSale carSale) throws NotFoundException {
         LOGGER.debug("method updateCarSale with parameter: [{}]", carSale);
         try {
+            if (!carDao.updateCar(carSale.getCar())) {
+                throw new NotFoundException("there is not car with id = " + carSale.getCar().getCarId());
+            }
             if (!carSaleDao.updateCarSale(carSale)) {
                 throw new NotFoundException("there is not car sale with id = " + carSale.getCarSaleId());
             }

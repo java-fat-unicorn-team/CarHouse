@@ -70,6 +70,7 @@ class CarSaleDaoImplTest {
         assertEquals(new BigDecimal(40500), carSale.getPrice());
         assertEquals(1, carSale.getUser().getUserId());
         assertEquals(2, carSale.getCar().getCarId());
+        assertEquals(2, carSale.getCar().getCarFeatureList().size());
     }
 
     @Test
