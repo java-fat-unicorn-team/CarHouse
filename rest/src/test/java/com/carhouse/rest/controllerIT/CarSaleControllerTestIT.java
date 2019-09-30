@@ -1,6 +1,5 @@
 package com.carhouse.rest.controllerIT;
 
-import com.carhouse.model.Car;
 import com.carhouse.model.CarSale;
 import com.carhouse.rest.response.ExceptionJSONResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,6 +13,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -59,7 +59,7 @@ class CarSaleControllerTestIT {
     void addCarSale() {
         CarSale carSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + 3, CarSale.class);
         carSale.setPrice(new BigDecimal(23300));
-        carSale.setCar(new Car(2));
+        carSale.setDate(new Date());
         HttpEntity<CarSale> request = new HttpEntity<>(carSale);
         ResponseEntity<String> response = restTemplate.postForEntity(HOST + CAR_SALE_ADD_URL,
                 request, String.class);
@@ -71,7 +71,7 @@ class CarSaleControllerTestIT {
     @Test
     void addCarSaleWithWrongReference() throws JsonProcessingException {
         CarSale carSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + 3, CarSale.class);
-        carSale.setCar(new Car(200));
+        carSale.getUser().setUserId(200);
         HttpEntity<CarSale> request = new HttpEntity<>(carSale);
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.postForEntity(HOST + CAR_SALE_ADD_URL, request, String.class));
@@ -85,24 +85,24 @@ class CarSaleControllerTestIT {
     @Test
     void updateCarSale() {
         int carSaleId = 3;
-        int newCarId = 2;
+        int newCarModelId = 2;
         BigDecimal newCarPrice = new BigDecimal(23300);
         CarSale carSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + carSaleId, CarSale.class);
         carSale.setPrice(newCarPrice);
-        carSale.setCar(new Car(2));
+        carSale.getCar().getCarModel().setCarModelId(newCarModelId);
         HttpEntity<CarSale> request = new HttpEntity<>(carSale);
         ResponseEntity response = restTemplate.exchange(HOST + CAR_SALE_UPDATE_URL, HttpMethod.PUT,
                 request, CarSale.class);
         assertEquals(200, response.getStatusCodeValue());
         CarSale updatedCarSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + carSaleId, CarSale.class);
         assertEquals(newCarPrice, updatedCarSale.getPrice());
-        assertEquals(newCarId, updatedCarSale.getCar().getCarId());
+        assertEquals(newCarModelId, updatedCarSale.getCar().getCarModel().getCarModelId());
     }
 
     @Test
     void updateCarSaleWithWrongReference() {
         CarSale carSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + 3, CarSale.class);
-        carSale.setCar(new Car(200));
+        carSale.getUser().setUserId(200);
         HttpEntity<CarSale> request = new HttpEntity<>(carSale);
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.exchange(HOST + CAR_SALE_UPDATE_URL, HttpMethod.PUT, request, String.class));
