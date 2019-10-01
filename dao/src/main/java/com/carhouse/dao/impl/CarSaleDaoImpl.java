@@ -70,9 +70,9 @@ public class CarSaleDaoImpl implements CarSaleDao {
      * @param parameterSource            class is used to get parameters for sql query
      */
     @Autowired
-    public CarSaleDaoImpl(final CarFeatureDao carFeatureDao, final NamedParameterJdbcTemplate namedParameterJdbcTemplate,
-                          final CarSaleMapper carSaleMapper, final CarSaleDtoMapper carSaleDtoMapper,
-                          final ParameterSource parameterSource) {
+    public CarSaleDaoImpl(final CarFeatureDao carFeatureDao, final CarSaleDtoMapper carSaleDtoMapper,
+                          final CarSaleMapper carSaleMapper, final ParameterSource parameterSource,
+                          final NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.carFeatureDao = carFeatureDao;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
         this.carSaleMapper = carSaleMapper;
@@ -92,9 +92,9 @@ public class CarSaleDaoImpl implements CarSaleDao {
     public List<CarSaleDto> getListCarSales(final Map<String, String> conditionParams) {
         LOGGER.debug("method getCarSalesDto");
         MapSqlParameterSource parameters = new MapSqlParameterSource();
-        for (DefaultConditions condition: DefaultConditions.values()) {
+        for (DefaultConditions condition : DefaultConditions.values()) {
             parameters.addValue(condition.getKey(), conditionParams.getOrDefault(condition.getKey(),
-                            condition.getDefaultValue()));
+                    condition.getDefaultValue()));
         }
         return namedParameterJdbcTemplate.query(GET_LIST_CAR_SALES_SQL, parameters, carSaleDtoMapper);
     }
