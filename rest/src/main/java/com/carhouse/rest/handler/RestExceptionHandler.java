@@ -1,5 +1,6 @@
 package com.carhouse.rest.handler;
 
+import com.carhouse.dao.exception.IncorrectJsonException;
 import com.carhouse.rest.response.ExceptionJSONResponse;
 import com.carhouse.service.exception.WrongReferenceException;
 import javassist.NotFoundException;
@@ -65,6 +66,25 @@ public class RestExceptionHandler {
     ExceptionJSONResponse wrongReferenceHandler(final HttpServletRequest request, final Exception ex) {
         response.setDate(new Date());
         response.setStatus(HttpStatus.FAILED_DEPENDENCY.value());
+        response.setPath(request.getRequestURI());
+        response.setMessage(ex.getMessage());
+        return response;
+    }
+
+    /**
+     * Incorrect json exception handler.
+     * Catch wrong reference exception and give the appropriate response
+     *
+     * @param request the request object to get request url
+     * @param ex      the exception object to get exception message
+     * @return the response in JSON
+     */
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(IncorrectJsonException.class)
+    public @ResponseBody
+    ExceptionJSONResponse incorrectJsonHandler(final HttpServletRequest request, final Exception ex) {
+        response.setDate(new Date());
+        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         response.setPath(request.getRequestURI());
         response.setMessage(ex.getMessage());
         return response;
