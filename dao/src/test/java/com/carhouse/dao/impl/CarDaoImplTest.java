@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -19,6 +20,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ActiveProfiles(profiles ="h2-database")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {TestConfiguration.class, TestSpringJDBCConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)

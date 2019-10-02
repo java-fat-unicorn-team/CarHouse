@@ -1,6 +1,5 @@
 package com.carhouse.rest.controllerIT;
 
-import com.carhouse.model.dto.CarCharacteristicsDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -17,8 +16,8 @@ public class CarCharacteristicsControllerTestIT {
 
     @Test
     void getCarCharacteristicsDto() {
-        ResponseEntity<CarCharacteristicsDto> response =
-                restTemplate.getForEntity(HOST + CAR_CHARACTERISTICS_GET_URL, CarCharacteristicsDto.class);
+        ResponseEntity<String> response =
+                restTemplate.getForEntity(HOST + CAR_CHARACTERISTICS_GET_URL, String.class);
         assertEquals(200, response.getStatusCodeValue());
         assertNotNull(response.getBody());
     }
