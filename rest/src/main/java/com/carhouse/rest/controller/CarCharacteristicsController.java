@@ -1,6 +1,5 @@
 package com.carhouse.rest.controller;
 
-import com.carhouse.model.dto.CarCharacteristicsDto;
 import com.carhouse.service.CarCharacteristicsDtoService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.logging.log4j.LogManager;
@@ -40,7 +39,7 @@ public class CarCharacteristicsController {
      */
     @ApiOperation("get car characteristics dto")
     @GetMapping("/carCharacteristics")
-    public CarCharacteristicsDto getCarCharacteristicsDto() {
+    public String getCarCharacteristicsDto() {
         LOGGER.debug("method getCarCharacteristicsDto");
         return carCharacteristicsDtoService.getCarCharacteristics();
     }

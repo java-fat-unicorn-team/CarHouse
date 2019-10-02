@@ -1,7 +1,6 @@
 package com.carhouse.service.impl;
 
 import com.carhouse.dao.CarCharacteristicsDtoDao;
-import com.carhouse.model.dto.CarCharacteristicsDto;
 import com.carhouse.service.CarCharacteristicsDtoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
  * It is realisation of CarCharacteristicsDtoService interface
  *
  * @author Katuranau Maksimilyan
- * @see CarCharacteristicsDtoService
  */
 @Service
 public class CarCharacteristicsDtoServiceImpl implements CarCharacteristicsDtoService {
@@ -37,10 +35,10 @@ public class CarCharacteristicsDtoServiceImpl implements CarCharacteristicsDtoSe
      * Gets car characteristics.
      * It is used to reduce the count of sql queries
      *
-     * @return the car characteristics
+     * @return the car characteristics in json format
      */
     @Override
-    public CarCharacteristicsDto getCarCharacteristics() {
+    public String getCarCharacteristics() {
         LOGGER.debug("method getCarCharacteristics");
         return carCharacteristicsDtoDao.getCarCharacteristics();
     }

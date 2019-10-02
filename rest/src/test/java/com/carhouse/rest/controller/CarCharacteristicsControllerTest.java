@@ -1,8 +1,6 @@
 package com.carhouse.rest.controller;
 
-import com.carhouse.dao.exception.IncorrectJsonException;
 import com.carhouse.model.dto.CarCharacteristicsDto;
-import com.carhouse.rest.handler.RestExceptionHandler;
 import com.carhouse.rest.testConfig.RestTestConfig;
 import com.carhouse.service.CarCharacteristicsDtoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,35 +35,23 @@ class CarCharacteristicsControllerTest {
     private CarCharacteristicsController carCharacteristicsController;
 
     @Autowired
-    private RestExceptionHandler restExceptionHandler;
-
-    @Autowired
     private ObjectMapper objectMapper = new ObjectMapper();
     private MockMvc mockMvc;
 
     @BeforeEach
     void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(carCharacteristicsController)
-                .setControllerAdvice(restExceptionHandler)
-                .build();
+        mockMvc = MockMvcBuilders.standaloneSetup(carCharacteristicsController).build();
     }
 
     @Test
     void getCarCharacteristicsDto() throws Exception {
         CarCharacteristicsDto carCharacteristicsDto = new CarCharacteristicsDto();
-        when(carCharacteristicsDtoService.getCarCharacteristics()).thenReturn(carCharacteristicsDto);
+        String carCharacteristicsDtoJson = objectMapper.writeValueAsString(carCharacteristicsDto);
+        when(carCharacteristicsDtoService.getCarCharacteristics()).thenReturn(carCharacteristicsDtoJson);
         mockMvc.perform(get(CAR_CHARACTERISTICS_GET_URL))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(content().json(objectMapper.writeValueAsString(carCharacteristicsDto)));
-        verify(carCharacteristicsDtoService).getCarCharacteristics();
-    }
-
-    @Test
-    void getCarCharacteristicsDtoError() throws Exception {
-        when(carCharacteristicsDtoService.getCarCharacteristics()).thenThrow(IncorrectJsonException.class);
-        mockMvc.perform(get(CAR_CHARACTERISTICS_GET_URL))
-                .andExpect(status().isInternalServerError());
+                .andExpect(content().contentType("text/plain;charset=ISO-8859-1"))
+                .andExpect(content().json(carCharacteristicsDtoJson));
         verify(carCharacteristicsDtoService).getCarCharacteristics();
     }
 }

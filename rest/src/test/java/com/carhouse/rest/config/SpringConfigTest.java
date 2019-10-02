@@ -13,7 +13,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("integrationTest")
-@PropertySource("classpath:test-jdbc-connection.properties")
+@PropertySource("classpath:test-h2-jdbc-connection.properties")
 @ExtendWith(SpringExtension.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {WebConfig.class, SpringJDBCConfig.class})

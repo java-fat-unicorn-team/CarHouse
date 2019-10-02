@@ -22,7 +22,7 @@
     <profile>
       <id>integration_test</id>
       <properties>
-        <jdbc.properties.file>test-jdbc-connection</jdbc.properties.file>
+        <jdbc.properties.file>test-mysql-jdbc-connection</jdbc.properties.file>
         <spring.profiles.active>integrationTest</spring.profiles.active>
         <skip.integration.tests>false</skip.integration.tests>
       </properties>
