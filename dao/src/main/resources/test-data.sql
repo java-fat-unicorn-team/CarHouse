@@ -69,6 +69,6 @@ VALUES ('Pasha', 'Good car', '4');
 INSERT INTO `comment` (`user_name`, `comment`, `car_sale_id`)
 VALUES ('Alex', 'Cool', '1');
 INSERT INTO `comment` (`user_name`, `comment`, `car_sale_id`)
-VALUES ('Michael', 'Rubbish', '4');
+VALUES ('Michael', 'Rubbish', '2');
 INSERT INTO `comment` (`user_name`, `comment`, `car_sale_id`)
 VALUES ('David', 'Nice car', '2');

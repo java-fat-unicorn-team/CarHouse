@@ -16,7 +16,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ActiveProfiles(profiles ="h2-database")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {TestConfiguration.class, TestSpringJDBCConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -31,7 +30,7 @@ class CommentDaoImplTest {
 
     @Test
     void getCarSaleComments() {
-        assertEquals(2, commentDao.getCarSaleComments(4).size());
+        assertEquals(2, commentDao.getCarSaleComments(2).size());
     }
 
     @Test
@@ -47,11 +46,12 @@ class CommentDaoImplTest {
 
     @Test
     void addComment() {
-        int size = commentDao.getCarSaleComments(4).size();
+        int carSaleId = 2;
+        int size = commentDao.getCarSaleComments(carSaleId).size();
         Comment newComment = new Comment(4, "David", "Good");
-        int index = commentDao.addComment(4, newComment);
+        int index = commentDao.addComment(carSaleId, newComment);
         Comment obtainedComment = commentDao.getComment(index);
-        assertEquals(size + 1, commentDao.getCarSaleComments(4).size());
+        assertEquals(size + 1, commentDao.getCarSaleComments(carSaleId).size());
         assertEquals(newComment.getUserName(), obtainedComment.getUserName());
     }
 

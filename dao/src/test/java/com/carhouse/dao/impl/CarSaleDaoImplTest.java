@@ -4,8 +4,8 @@ import com.carhouse.dao.CarSaleDao;
 import com.carhouse.dao.config.TestConfiguration;
 import com.carhouse.dao.config.TestSpringJDBCConfig;
 import com.carhouse.model.Car;
-import com.carhouse.model.User;
 import com.carhouse.model.CarSale;
+import com.carhouse.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,6 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ActiveProfiles(profiles ="h2-database")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {TestConfiguration.class, TestSpringJDBCConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -73,6 +72,7 @@ class CarSaleDaoImplTest {
         assertEquals(1, carSale.getUser().getUserId());
         assertEquals(2, carSale.getCar().getCarId());
         assertEquals(2, carSale.getCar().getCarFeatureList().size());
+        assertEquals(2, carSale.getCommentList().size());
     }
 
     @Test
@@ -86,7 +86,7 @@ class CarSaleDaoImplTest {
     void addCarSale() {
         int size = carSaleDao.getListCarSales(new HashMap<>()).size();
         CarSale newCarSale = new CarSale(5, new BigDecimal(23200), new Date(), new User(1),
-                new Car(3));
+                new Car(3), null);
         int index = carSaleDao.addCarSale(newCarSale);
         CarSale obtainedCarSale = carSaleDao.getCarSale(index);
         assertEquals(size + 1, carSaleDao.getListCarSales(new HashMap<>()).size());
@@ -97,13 +97,13 @@ class CarSaleDaoImplTest {
     @Test
     void addCarSaleWithWrongReference() {
         assertThrows(DataIntegrityViolationException.class, () -> carSaleDao.addCarSale(new CarSale(4,
-                new BigDecimal(3200), new Date(), new User(5), new Car(15))));
+                new BigDecimal(3200), new Date(), new User(5), new Car(15), null)));
     }
 
     @Test
     void updateCarSale() {
         CarSale newCarSale = new CarSale(4, new BigDecimal(13200), new Date(), new User(1),
-                new Car(5));
+                new Car(5), null);
         assertTrue(carSaleDao.updateCarSale(newCarSale));
         CarSale obtainedCarSale = carSaleDao.getCarSale(4);
         assertEquals(newCarSale.getPrice(), obtainedCarSale.getPrice());
@@ -114,13 +114,13 @@ class CarSaleDaoImplTest {
     @Test
     void updateCarSaleWithWrongReference() {
         assertThrows(DataIntegrityViolationException.class, () -> carSaleDao.updateCarSale(new CarSale(4,
-                new BigDecimal(3200), new Date(), new User(5), new Car(15))));
+                new BigDecimal(3200), new Date(), new User(5), new Car(15), null)));
     }
 
     @Test
     void updateNotExistCarSaleCarSale() {
         assertFalse(carSaleDao.updateCarSale(new CarSale(14, new BigDecimal(13200), new Date(),
-                new User(1), new Car(5))));
+                new User(1), new Car(5), null)));
     }
 
     @Test

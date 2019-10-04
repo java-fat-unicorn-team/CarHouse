@@ -1,6 +1,7 @@
 package com.carhouse.dao.mappers;
 
 import com.carhouse.model.CarSale;
+import com.carhouse.model.Comment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +10,14 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Class is used to create CarSale from data obtained from database.
- * @see CarSale
+ *
  * @author Katuranau Maksimilyan
+ * @see CarSale
  */
 @Component
 public class CarSaleMapper implements RowMapper<CarSale> {
@@ -30,6 +34,10 @@ public class CarSaleMapper implements RowMapper<CarSale> {
      */
     private static final String DATE = "date";
     /**
+     * The constant IMAGE.
+     */
+    private static final String IMAGE = "image";
+    /**
      * mapper to get User object.
      */
     private UserMapper userMapper;
@@ -38,6 +46,10 @@ public class CarSaleMapper implements RowMapper<CarSale> {
      */
     private CarMapper carMapper;
     /**
+     * mapper to get list of comments object.
+     */
+    private CommentMapper commentMapper;
+    /**
      * Logger.
      */
     private static final Logger LOGGER = LogManager.getLogger(CarSaleMapper.class);
@@ -45,21 +57,40 @@ public class CarSaleMapper implements RowMapper<CarSale> {
     /**
      * Instantiates a new Car sale mapper.
      *
-     * @param userMapper               the user mapper
-     * @param carMapper the car mapper
+     * @param userMapper    the user mapper
+     * @param carMapper     the car mapper
+     * @param commentMapper the comment mapper
      */
     @Autowired
-    public CarSaleMapper(final UserMapper userMapper, final CarMapper carMapper) {
+    public CarSaleMapper(final UserMapper userMapper, final CarMapper carMapper, final CommentMapper commentMapper) {
         this.userMapper = userMapper;
         this.carMapper = carMapper;
+        this.commentMapper = commentMapper;
     }
 
+    /**
+     * Auto increment starts from 1, so if comment id 0 it means what comments do not exist end created by left join.
+     * @param resultSet     resultSet
+     * @param i             row number
+     * @return              carSale object
+     * @throws SQLException exception
+     */
     @Override
     public CarSale mapRow(final ResultSet resultSet, final int i) throws SQLException {
         CarSale carSale = new CarSale(resultSet.getInt(CAR_SALE_ID), resultSet.getBigDecimal(PRICE),
-                resultSet.getDate(DATE), userMapper.mapRow(resultSet, i), carMapper.mapRow(resultSet, i));
-        LOGGER.debug("row ({}, {}, {}) has been mapped", carSale.getCarSaleId(), carSale.getPrice(),
-                carSale.getDate());
+                resultSet.getDate(DATE), userMapper.mapRow(resultSet, i), carMapper.mapRow(resultSet, i),
+                resultSet.getBytes(IMAGE));
+        List<Comment> commentList = new ArrayList<>();
+        Comment comment;
+        do {
+            comment = commentMapper.mapRow(resultSet, i);
+            if (comment.getCommentId() != 0) {
+                commentList.add(comment);
+            }
+        } while (resultSet.next());
+        carSale.setCommentList(commentList);
+        LOGGER.debug("row ({}, {}, {}) with {} comments has been mapped", carSale.getCarSaleId(), carSale.getPrice(),
+                carSale.getDate(), commentList.size());
         return carSale;
     }
 }

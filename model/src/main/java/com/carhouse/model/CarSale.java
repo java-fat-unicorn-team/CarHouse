@@ -2,11 +2,13 @@ package com.carhouse.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * The car sale model describes the announcement of the car sale.
  * The model includes car price, date when the announcement was added, user who added this announcement and
  * car characteristics.
+ *
  * @author Katuranau Maksimilyan
  */
 public class CarSale {
@@ -15,6 +17,8 @@ public class CarSale {
     private Date date;
     private User user;
     private Car car;
+    private byte[] image;
+    private List<Comment> commentList;
 
     /**
      * Instantiates a new Car sale.
@@ -34,19 +38,21 @@ public class CarSale {
     /**
      * Instantiates a new Car sale.
      *
-     * @param carSaleId          the car sale id
-     * @param price              the price
-     * @param date               the date
-     * @param user               the user
-     * @param car the car
+     * @param carSaleId the car sale id
+     * @param price     the price
+     * @param date      the date
+     * @param user      the user
+     * @param car       the car
+     * @param image     the image as byte array
      */
     public CarSale(final int carSaleId, final BigDecimal price, final Date date, final User user,
-                   final Car car) {
+                   final Car car, final byte[] image) {
         this.carSaleId = carSaleId;
         this.price = price;
         this.date = date;
         this.user = user;
         this.car = car;
+        this.image = image;
     }
 
     /**
@@ -137,6 +143,42 @@ public class CarSale {
      */
     public void setCar(final Car car) {
         this.car = car;
+    }
+
+    /**
+     * Get image as byte array.
+     *
+     * @return the byte array
+     */
+    public byte[] getImage() {
+        return image;
+    }
+
+    /**
+     * Sets image as byte array.
+     *
+     * @param image the image
+     */
+    public void setImage(final byte[] image) {
+        this.image = image;
+    }
+
+    /**
+     * Gets comment list.
+     *
+     * @return the comment list
+     */
+    public List<Comment> getCommentList() {
+        return commentList;
+    }
+
+    /**
+     * Sets comment list.
+     *
+     * @param commentList the comment list
+     */
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
     }
 
     @Override
