@@ -32,7 +32,7 @@ public class CarCharacteristicsDtoServiceImpl implements CarCharacteristicsDtoSe
 
 
     /**
-     * Gets car characteristics.
+     * Gets car characteristics in JSON format.
      * It is used to reduce the count of sql queries
      *
      * @return the car characteristics in json format
