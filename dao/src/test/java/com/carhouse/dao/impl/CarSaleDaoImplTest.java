@@ -26,6 +26,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class CarSaleDaoImplTest {
 
     private CarSaleDao carSaleDao;
+    private byte[] bytes = ("It is used to verify that an array of image bytes"
+            + " is correctly stored in the database").getBytes();
 
     @Autowired
     CarSaleDaoImplTest(CarSaleDao carSaleDao) {
@@ -85,41 +87,43 @@ class CarSaleDaoImplTest {
     void addCarSale() {
         int size = carSaleDao.getListCarSales(new HashMap<>()).size();
         CarSale newCarSale = new CarSale(5, new BigDecimal(23200), new Date(), new User(1),
-                new Car(3));
+                new Car(3), bytes);
         int index = carSaleDao.addCarSale(newCarSale);
         CarSale obtainedCarSale = carSaleDao.getCarSale(index);
         assertEquals(size + 1, carSaleDao.getListCarSales(new HashMap<>()).size());
         assertEquals(newCarSale.getPrice(), obtainedCarSale.getPrice());
         assertEquals(newCarSale.getUser().getUserId(), obtainedCarSale.getUser().getUserId());
+        assertEquals(newCarSale.getImage(), bytes);
     }
 
     @Test
     void addCarSaleWithWrongReference() {
         assertThrows(DataIntegrityViolationException.class, () -> carSaleDao.addCarSale(new CarSale(4,
-                new BigDecimal(3200), new Date(), new User(5), new Car(15))));
+                new BigDecimal(3200), new Date(), new User(5), new Car(15), bytes)));
     }
 
     @Test
     void updateCarSale() {
         CarSale newCarSale = new CarSale(4, new BigDecimal(13200), new Date(), new User(1),
-                new Car(5));
+                new Car(5), bytes);
         assertTrue(carSaleDao.updateCarSale(newCarSale));
         CarSale obtainedCarSale = carSaleDao.getCarSale(4);
         assertEquals(newCarSale.getPrice(), obtainedCarSale.getPrice());
         assertEquals(newCarSale.getUser().getUserId(), obtainedCarSale.getUser().getUserId());
         assertEquals(newCarSale.getCar().getCarId(), obtainedCarSale.getCar().getCarId());
+        assertEquals(newCarSale.getImage(), bytes);
     }
 
     @Test
     void updateCarSaleWithWrongReference() {
         assertThrows(DataIntegrityViolationException.class, () -> carSaleDao.updateCarSale(new CarSale(4,
-                new BigDecimal(3200), new Date(), new User(5), new Car(15))));
+                new BigDecimal(3200), new Date(), new User(5), new Car(15), bytes)));
     }
 
     @Test
     void updateNotExistCarSaleCarSale() {
         assertFalse(carSaleDao.updateCarSale(new CarSale(14, new BigDecimal(13200), new Date(),
-                new User(1), new Car(5))));
+                new User(1), new Car(5), bytes)));
     }
 
     @Test

@@ -16,6 +16,7 @@ public class CarSaleDto {
     private String transmission;
     private String carMake;
     private String carModel;
+    private byte[] image;
 
     /**
      * Gets car sale id.
@@ -194,6 +195,26 @@ public class CarSaleDto {
      */
     public CarSaleDto setCarModel(final String carModel) {
         this.carModel = carModel;
+        return this;
+    }
+
+    /**
+     * Get image as byte array.
+     *
+     * @return the byte array
+     */
+    public byte[] getImage() {
+        return image;
+    }
+
+    /**
+     * Sets image as byte array.
+     *
+     * @param image the image
+     * @return CarSaleDto object
+     */
+    public CarSaleDto setImage(final byte[] image) {
+        this.image = image;
         return this;
     }
 }
