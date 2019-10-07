@@ -17,6 +17,7 @@ public class CarSale {
     private Date date;
     private User user;
     private Car car;
+    private byte[] image;
     private List<Comment> commentList;
 
     /**
@@ -37,19 +38,21 @@ public class CarSale {
     /**
      * Instantiates a new Car sale.
      *
-     * @param carSaleId          the car sale id
-     * @param price              the price
-     * @param date               the date
-     * @param user               the user
-     * @param car the car
+     * @param carSaleId the car sale id
+     * @param price     the price
+     * @param date      the date
+     * @param user      the user
+     * @param car       the car
+     * @param image     the image as byte array
      */
     public CarSale(final int carSaleId, final BigDecimal price, final Date date, final User user,
-                   final Car car) {
+                   final Car car, final byte[] image) {
         this.carSaleId = carSaleId;
         this.price = price;
         this.date = date;
         this.user = user;
         this.car = car;
+        this.image = image;
     }
 
     /**
@@ -140,6 +143,24 @@ public class CarSale {
      */
     public void setCar(final Car car) {
         this.car = car;
+    }
+
+    /**
+     * Get image as byte array.
+     *
+     * @return the byte array
+     */
+    public byte[] getImage() {
+        return image;
+    }
+
+    /**
+     * Sets image as byte array.
+     *
+     * @param image the image
+     */
+    public void setImage(final byte[] image) {
+        this.image = image;
     }
 
     /**

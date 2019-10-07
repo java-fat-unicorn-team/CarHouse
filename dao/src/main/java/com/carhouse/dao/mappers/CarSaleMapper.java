@@ -35,6 +35,10 @@ public class CarSaleMapper implements RowMapper<CarSale> {
      */
     private static final String DATE = "date";
     /**
+     * The constant IMAGE.
+     */
+    private static final String IMAGE = "image";
+    /**
      * mapper to get User object.
      */
     private UserMapper userMapper;
@@ -75,7 +79,8 @@ public class CarSaleMapper implements RowMapper<CarSale> {
     @Override
     public CarSale mapRow(final ResultSet resultSet, final int i) throws SQLException {
         CarSale carSale = new CarSale(resultSet.getInt(CAR_SALE_ID), resultSet.getBigDecimal(PRICE),
-                resultSet.getDate(DATE), userMapper.mapRow(resultSet, i), carMapper.mapRow(resultSet, i));
+                resultSet.getDate(DATE), userMapper.mapRow(resultSet, i), carMapper.mapRow(resultSet, i),
+                resultSet.getBytes(IMAGE));
         List<Comment> commentList = new ArrayList<>();
         Comment comment;
         do {
