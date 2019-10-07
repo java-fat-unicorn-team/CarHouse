@@ -18,7 +18,7 @@ public class TestConfiguration {
         return new ObjectMapper();
     }
 
-    @Profile("h2-database")
+    @Profile("!mysql-database")
     @Bean
     public PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurerH2() {
         PropertySourcesPlaceholderConfigurer properties = new PropertySourcesPlaceholderConfigurer();

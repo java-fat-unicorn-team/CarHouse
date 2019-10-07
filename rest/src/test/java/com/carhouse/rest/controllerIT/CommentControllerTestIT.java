@@ -19,6 +19,8 @@ class CommentControllerTestIT {
     private static final String HOST = "http://localhost:8086";
     private static final String CAR_SALE_COMMENT_LIST_GET_URL = "/carSale/3/comment";
     private static final String NOT_EXIST_CAR_SALE_COMMENT_LIST_GET_URL = "/carSale/150/comment";
+    private static final String CAR_SALE_COMMENT_GET = "/carSale/comment/2";
+    private static final String NOT_EXIST_CAR_SALE_COMMENT_GET = "/carSale/comment/150";
     private static final String CAR_SALE_COMMENT_ADD_URL = "/carSale/3/comment";
     private static final String TO_NOT_EXIST_CAR_SALE_COMMENT_ADD_URL = "/carSale/93/comment";
     private static final String CAR_SALE_COMMENT_UPDATE_URL = "/carSale/comment";
@@ -44,6 +46,25 @@ class CommentControllerTestIT {
         assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
         assertEquals("there is not car sale with id = 150", response.getMessage());
         assertEquals(NOT_EXIST_CAR_SALE_COMMENT_LIST_GET_URL, response.getPath());
+    }
+
+    @Test
+    void getCarSaleComment() {
+        ResponseEntity<Comment> response = restTemplate.getForEntity(HOST + CAR_SALE_COMMENT_GET,
+                Comment.class);
+        assertEquals(200, response.getStatusCodeValue());
+        assertNotNull(response.getBody());
+    }
+
+    @Test
+    void getNotExistentComment() throws JsonProcessingException {
+        HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
+                () -> restTemplate.getForEntity(HOST + NOT_EXIST_CAR_SALE_COMMENT_GET, String.class));
+        ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
+                ExceptionJSONResponse.class);
+        assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
+        assertEquals("there is not comment with id = 150", response.getMessage());
+        assertEquals(NOT_EXIST_CAR_SALE_COMMENT_GET, response.getPath());
     }
 
     @Test

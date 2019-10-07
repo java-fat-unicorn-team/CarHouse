@@ -35,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CommentControllerTest {
 
     private static final String CAR_SALE_COMMENT_LIST_GET_URL = "/carSale/{carSaleId}/comment";
+    private static final String CAR_SALE_COMMENT_GET = "/carSale/comment/{commentId}";
     private static final String CAR_SALE_COMMENT_ADD_URL = "/carSale/{carSaleId}/comment";
     private static final String CAR_SALE_COMMENT_UPDATE_URL = "/carSale/comment";
     private static final String CAR_SALE_COMMENT_DELETE_URL = "/carSale/comment/{id}";
@@ -81,6 +82,26 @@ class CommentControllerTest {
         mockMvc.perform(get(CAR_SALE_COMMENT_LIST_GET_URL, carSaleId))
                 .andExpect(status().isNotFound());
         verify(commentService, times(1)).getCarSaleComments(carSaleId);
+    }
+
+    @Test
+    void getCommentById() throws Exception {
+        int commentId = 1;
+        when(commentService.getComment(commentId)).thenReturn(listComment.get(commentId));
+        mockMvc.perform(get(CAR_SALE_COMMENT_GET, commentId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(content().json(objectMapper.writeValueAsString(listComment.get(commentId))));
+        verify(commentService, times(1)).getComment(commentId);
+    }
+
+    @Test
+    void getNotExistComment() throws Exception {
+        int commentId = 21;
+        when(commentService.getComment(commentId)).thenThrow(NotFoundException.class);
+        mockMvc.perform(get(CAR_SALE_COMMENT_GET, commentId))
+                .andExpect(status().isNotFound());
+        verify(commentService, times(1)).getComment(commentId);
     }
 
     @Test

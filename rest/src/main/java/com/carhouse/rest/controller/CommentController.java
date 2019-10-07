@@ -54,6 +54,23 @@ public class CommentController {
     }
 
     /**
+     * Send comment with provided id.
+     * Get comment id as path variable
+     *
+     * @param commentId the comment id
+     * @return the comment with provided id
+     * @throws NotFoundException throws if there is not such comment
+     */
+    @ApiOperation("get comment by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Not Found")})
+    @GetMapping("/comment/{commentId}")
+    public Comment getComment(@PathVariable final int commentId) throws NotFoundException {
+        LOGGER.debug("method getComment wit parameter: [{}]", commentId);
+        return commentService.getComment(commentId);
+    }
+
+    /**
      * Add new comment.
      * Get car sale's id to which it is necessary to add as path variable
      * Get comment object to add as request body

@@ -4,15 +4,14 @@ import com.carhouse.dao.CarSaleDao;
 import com.carhouse.dao.config.TestConfiguration;
 import com.carhouse.dao.config.TestSpringJDBCConfig;
 import com.carhouse.model.Car;
-import com.carhouse.model.User;
 import com.carhouse.model.CarSale;
+import com.carhouse.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -21,7 +20,6 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ActiveProfiles(profiles ="h2-database")
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {TestConfiguration.class, TestSpringJDBCConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
@@ -73,6 +71,7 @@ class CarSaleDaoImplTest {
         assertEquals(1, carSale.getUser().getUserId());
         assertEquals(2, carSale.getCar().getCarId());
         assertEquals(2, carSale.getCar().getCarFeatureList().size());
+        assertEquals(2, carSale.getCommentList().size());
     }
 
     @Test

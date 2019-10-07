@@ -64,10 +64,10 @@ public class CarSaleDaoImpl implements CarSaleDao {
      * Instantiates a new Car sale dao.
      *
      * @param carFeatureDao              the car feature dao to adds car features to car
-     * @param namedParameterJdbcTemplate for connection with database
-     * @param carSaleMapper              mapper to get CarSale object
      * @param carSaleDtoMapper           mapper to get CarSaleDto object
+     * @param carSaleMapper              mapper to get CarSale object
      * @param parameterSource            class is used to get parameters for sql query
+     * @param namedParameterJdbcTemplate for connection with database
      */
     @Autowired
     public CarSaleDaoImpl(final CarFeatureDao carFeatureDao, final CarSaleDtoMapper carSaleDtoMapper,
@@ -119,7 +119,7 @@ public class CarSaleDaoImpl implements CarSaleDao {
     /**
      * Add car sale.
      * Database generate new id and take all data from carSale object
-     * Ads car sale advertisement to the end of list in database
+     * Adds car sale advertisement to the end of list in database
      *
      * @param carSale the car sale
      * @return car sale id
