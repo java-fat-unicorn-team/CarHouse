@@ -17,21 +17,10 @@ import java.sql.SQLException;
  */
 @Component
 public class CarModelMapper implements RowMapper<CarModel> {
-    /**
-     * The constant CAR_MODEL_ID.
-     */
+
     private static final String CAR_MODEL_ID = "car_model_id";
-    /**
-     * The constant CAR_MODEL.
-     */
     private static final String CAR_MODEL = "car_model";
-    /**
-     * mapper to get CarMake object.
-     */
     private CarMakeMapper carMakeMapper;
-    /**
-     * Logger.
-     */
     private static final Logger LOGGER = LogManager.getLogger(CarModelMapper.class);
 
     /**

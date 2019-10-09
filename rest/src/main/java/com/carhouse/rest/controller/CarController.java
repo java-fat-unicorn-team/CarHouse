@@ -9,8 +9,11 @@ import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 /**
@@ -21,6 +24,7 @@ import java.util.List;
  */
 @RequestMapping("/carSale/car")
 @RestController
+@Validated
 public class CarController {
 
     private static final Logger LOGGER = LogManager.getLogger(CarController.class);
@@ -60,7 +64,9 @@ public class CarController {
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Not Found")})
     @GetMapping("/{carId}")
-    public Car getCar(@PathVariable final int carId) throws NotFoundException {
+    public Car getCar(@PathVariable
+                      @PositiveOrZero(message = "car id can't be negative") final int carId)
+            throws NotFoundException {
         LOGGER.debug("method getCar wit parameter: [{}]", carId);
         return carService.getCar(carId);
     }
@@ -77,7 +83,7 @@ public class CarController {
             @ApiResponse(code = 200, message = "Success|OK, returns id of created car"),
             @ApiResponse(code = 424, message = "Wrong References")})
     @PostMapping
-    public Integer addCar(@RequestBody final Car car) {
+    public Integer addCar(@RequestBody @Valid final Car car) {
         LOGGER.debug("method addCar wit parameter: [{}]", car);
         return carService.addCar(car);
     }
@@ -96,7 +102,7 @@ public class CarController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 424, message = "Wrong References")})
     @PutMapping
-    public void updateCar(@RequestBody final Car car) throws NotFoundException {
+    public void updateCar(@RequestBody @Valid final Car car) throws NotFoundException {
         LOGGER.debug("method updateCar wit parameter: [{}]", car);
         carService.updateCar(car);
     }
@@ -113,7 +119,9 @@ public class CarController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 424, message = "Car Has References")})
     @DeleteMapping("/{carId}")
-    public void deleteCar(@PathVariable final int carId) throws NotFoundException {
+    public void deleteCar(@PathVariable
+                          @PositiveOrZero(message = "car id can't be negative") final int carId)
+            throws NotFoundException {
         LOGGER.debug("method deleteCar wit parameter: [{}]", carId);
         carService.deleteCar(carId);
     }

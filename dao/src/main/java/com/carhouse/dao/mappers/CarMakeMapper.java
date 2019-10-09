@@ -16,17 +16,9 @@ import java.sql.SQLException;
  */
 @Component
 public class CarMakeMapper implements RowMapper<CarMake> {
-    /**
-     * The constant CAR_MAKE_ID.
-     */
+
     private static final String CAR_MAKE_ID = "car_make_id";
-    /**
-     * The constant CAR_MAKE.
-     */
     private static final String CAR_MAKE = "car_make";
-    /**
-     * Logger.
-     */
     private static final Logger LOGGER = LogManager.getLogger(CarMakeMapper.class);
 
     @Override

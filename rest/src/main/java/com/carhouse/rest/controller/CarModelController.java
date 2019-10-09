@@ -6,11 +6,13 @@ import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 /**
@@ -21,6 +23,7 @@ import java.util.List;
  */
 @RequestMapping("/carSale/car/carModel")
 @RestController
+@Validated
 public class CarModelController {
 
     private static final Logger LOGGER = LogManager.getLogger(CarModelController.class);
@@ -45,7 +48,10 @@ public class CarModelController {
      * @throws NotFoundException if there is not car make with selected id
      */
     @GetMapping("/list/{carMakeId}")
-    public List<CarModel> getListCarModels(@PathVariable final Integer carMakeId) throws NotFoundException {
+    public List<CarModel> getListCarModels(
+            @PathVariable
+            @PositiveOrZero(message = "car make id can't be negative") final Integer carMakeId)
+            throws NotFoundException {
         LOGGER.debug("method getListCarModels wit parameter: [{}]", carMakeId);
         return carModelService.getCarModels(carMakeId);
     }
@@ -58,7 +64,9 @@ public class CarModelController {
      * @throws NotFoundException if there is not car model with selected id
      */
     @GetMapping("/{carModelId}")
-    public CarModel getCarModel(@PathVariable final Integer carModelId) throws NotFoundException {
+    public CarModel getCarModel(@PathVariable
+                                @PositiveOrZero(message = "car model id can't be negative") final Integer carModelId)
+            throws NotFoundException {
         LOGGER.debug("method getCarModel wit parameter: [{}]", carModelId);
         return carModelService.getCarModel(carModelId);
     }

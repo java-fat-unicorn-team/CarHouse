@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.validation.ConstraintViolationException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CommentControllerTestIT {
@@ -38,13 +40,24 @@ class CommentControllerTestIT {
     }
 
     @Test
+    void getCarSaleCommentValidationError() throws JsonProcessingException {
+        HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
+                () -> restTemplate.getForEntity(HOST + "/carSale/-11/comment", String.class));
+        ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
+                ExceptionJSONResponse.class);
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+        assertEquals("car sale id can't be negative", response.getMessages().get(0));
+        assertEquals("/carSale/-11/comment", response.getPath());
+    }
+
+    @Test
     void getCommentsOfNotExistentCarSale() throws JsonProcessingException {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + NOT_EXIST_CAR_SALE_COMMENT_LIST_GET_URL, String.class));
         ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
                 ExceptionJSONResponse.class);
         assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
-        assertEquals("there is not car sale with id = 150", response.getMessage());
+        assertEquals("there is not car sale with id = 150", response.getMessages().get(0));
         assertEquals(NOT_EXIST_CAR_SALE_COMMENT_LIST_GET_URL, response.getPath());
     }
 
@@ -63,7 +76,7 @@ class CommentControllerTestIT {
         ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
                 ExceptionJSONResponse.class);
         assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
-        assertEquals("there is not comment with id = 150", response.getMessage());
+        assertEquals("there is not comment with id = 150", response.getMessages().get(0));
         assertEquals(NOT_EXIST_CAR_SALE_COMMENT_GET, response.getPath());
     }
 
@@ -88,8 +101,21 @@ class CommentControllerTestIT {
         ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
                 ExceptionJSONResponse.class);
         assertEquals(HttpStatus.FAILED_DEPENDENCY.value(), response.getStatus());
-        assertEquals("there is not car sale with id=" + 93 + " to add comment", response.getMessage());
+        assertEquals("there is not car sale with id=" + 93 + " to add comment", response.getMessages().get(0));
         assertEquals(TO_NOT_EXIST_CAR_SALE_COMMENT_ADD_URL, response.getPath());
+    }
+
+    @Test
+    void addCommentValidationError() throws JsonProcessingException {
+        Comment comment = new Comment(12, "", "");
+        HttpEntity<Comment> request = new HttpEntity<>(comment);
+        HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
+                () -> restTemplate.postForEntity(HOST + CAR_SALE_COMMENT_ADD_URL, request,
+                        String.class));
+        ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
+                ExceptionJSONResponse.class);
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+        assertFalse(response.getMessages().isEmpty());
     }
 
     @Test
@@ -128,5 +154,18 @@ class CommentControllerTestIT {
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
         assertTrue(exception.getResponseBodyAsString().contains("there is not comment with id = "
                 + 123 + " to delete"));
+    }
+
+    @Test
+    void deleteCommentValidationError() throws JsonProcessingException {
+        int commentId = -4;
+        HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
+                () -> restTemplate.exchange(HOST + CAR_SALE_COMMENT_DELETE_URL + commentId,
+                        HttpMethod.DELETE, null, String.class));
+        ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
+                ExceptionJSONResponse.class);
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+        assertEquals("comment id can't be negative", response.getMessages().get(0));
+        assertEquals(CAR_SALE_COMMENT_DELETE_URL + commentId, response.getPath());
     }
 }

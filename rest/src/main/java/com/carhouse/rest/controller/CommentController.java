@@ -9,8 +9,11 @@ import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 /**
@@ -21,6 +24,7 @@ import java.util.List;
  */
 @RequestMapping("/carSale")
 @RestController
+@Validated
 public class CommentController {
 
     private static final Logger LOGGER = LogManager.getLogger(CommentController.class);
@@ -48,7 +52,9 @@ public class CommentController {
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Not Found")})
     @GetMapping("/{carSaleId}/comment")
-    public List<Comment> getComments(@PathVariable final int carSaleId) throws NotFoundException {
+    public List<Comment> getComments(@PathVariable
+                                     @PositiveOrZero(message = "car sale id can't be negative") final int carSaleId)
+            throws NotFoundException {
         LOGGER.debug("method getComments wit parameter: [{}]", carSaleId);
         return commentService.getCarSaleComments(carSaleId);
     }
@@ -65,7 +71,9 @@ public class CommentController {
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Not Found")})
     @GetMapping("/comment/{commentId}")
-    public Comment getComment(@PathVariable final int commentId) throws NotFoundException {
+    public Comment getComment(@PathVariable
+                              @PositiveOrZero(message = "comment id can't be negative") final int commentId)
+            throws NotFoundException {
         LOGGER.debug("method getComment wit parameter: [{}]", commentId);
         return commentService.getComment(commentId);
     }
@@ -83,7 +91,9 @@ public class CommentController {
     @ApiResponses(value = {
             @ApiResponse(code = 424, message = "Wrong References")})
     @PostMapping("/{carSaleId}/comment")
-    public Integer addComment(@PathVariable final int carSaleId, @RequestBody final Comment comment) {
+    public Integer addComment(@PathVariable
+                              @PositiveOrZero(message = "car sale id can't be negative") final int carSaleId,
+                              @RequestBody @Valid final Comment comment) {
         LOGGER.debug("method addComment wit parameters: [{}, {}]", carSaleId, comment);
         return commentService.addComment(carSaleId, comment);
     }
@@ -100,7 +110,7 @@ public class CommentController {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 424, message = "Wrong References")})
     @PutMapping("/comment")
-    public void updateComment(@RequestBody final Comment comment) throws NotFoundException {
+    public void updateComment(@RequestBody @Valid final Comment comment) throws NotFoundException {
         LOGGER.debug("method updateComment wit parameter: [{}]", comment);
         commentService.updateComment(comment);
     }
@@ -116,7 +126,9 @@ public class CommentController {
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Not Found")})
     @DeleteMapping("/comment/{id}")
-    public void deleteComment(@PathVariable final int id) throws NotFoundException {
+    public void deleteComment(@PathVariable
+                              @PositiveOrZero(message = "comment id can't be negative") final int id)
+            throws NotFoundException {
         LOGGER.debug("method deleteComment wit parameter: [{}]", id);
         commentService.deleteComment(id);
     }

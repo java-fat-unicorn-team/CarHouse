@@ -16,17 +16,9 @@ import java.sql.SQLException;
  */
 @Component
 public class FuelTypeMapper implements RowMapper<FuelType> {
-    /**
-     * The constant FUEL_TYPE_ID.
-     */
+
     private static final String FUEL_TYPE_ID = "fuel_type_id";
-    /**
-     * The constant FUEL_TYPE.
-     */
     private static final String FUEL_TYPE = "fuel_type";
-    /**
-     * Logger.
-     */
     private static final Logger LOGGER = LogManager.getLogger(FuelTypeMapper.class);
 
     @Override

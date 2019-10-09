@@ -18,33 +18,13 @@ import java.sql.SQLException;
  */
 @Component
 public class CarMapper implements RowMapper<Car> {
-    /**
-     * The constant CAR_ID.
-     */
+
     private static final String CAR_ID = "car_id";
-    /**
-     * The constant YEAR.
-     */
     private static final String YEAR = "year";
-    /**
-     * The constant MILEAGE.
-     */
     private static final String MILEAGE = "mileage";
-    /**
-     * mapper to get FuelType object.
-     */
     private FuelTypeMapper fuelTypeMapper;
-    /**
-     * mapper to get Transmission object.
-     */
     private TransmissionMapper transmissionMapper;
-    /**
-     * mapper to get CarModel object.
-     */
     private CarModelMapper carModelMapper;
-    /**
-     * Logger.
-     */
     private static final Logger LOGGER = LogManager.getLogger(CarMapper.class);
 
     /**

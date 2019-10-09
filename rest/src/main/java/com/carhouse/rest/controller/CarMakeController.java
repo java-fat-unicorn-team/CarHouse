@@ -6,11 +6,13 @@ import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 /**
@@ -21,6 +23,7 @@ import java.util.List;
  */
 @RequestMapping("/carSale/car/carModel/carMake")
 @RestController
+@Validated
 public class CarMakeController {
 
     private static final Logger LOGGER = LogManager.getLogger(CarMakeController.class);
@@ -56,7 +59,9 @@ public class CarMakeController {
      * @throws NotFoundException if there is not car make with selected id
      */
     @GetMapping("/{carMakeId}")
-    public CarMake getCarMake(@PathVariable final Integer carMakeId) throws NotFoundException {
+    public CarMake getCarMake(@PathVariable
+                              @PositiveOrZero(message = "car make id can't be negative") final Integer carMakeId)
+            throws NotFoundException {
         LOGGER.debug("method getCarMake wit parameter: [{}]", carMakeId);
         return carMakeService.getCarMake(carMakeId);
     }

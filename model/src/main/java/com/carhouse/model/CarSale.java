@@ -1,5 +1,7 @@
 package com.carhouse.model;
 
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -12,10 +14,14 @@ import java.util.List;
  * @author Katuranau Maksimilyan
  */
 public class CarSale {
+    @PositiveOrZero(message = "car id can't be negative")
     private int carSaleId;
+    @DecimalMin(value = "0", message = "the price can't be negative")
     private BigDecimal price;
     private Date date;
     private User user;
+    @NotNull(message = "car object can't be null")
+    @Valid
     private Car car;
     private byte[] image;
     private List<Comment> commentList;
@@ -177,7 +183,7 @@ public class CarSale {
      *
      * @param commentList the comment list
      */
-    public void setCommentList(List<Comment> commentList) {
+    public void setCommentList(final List<Comment> commentList) {
         this.commentList = commentList;
     }
 

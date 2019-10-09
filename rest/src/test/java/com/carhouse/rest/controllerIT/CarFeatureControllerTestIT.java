@@ -16,9 +16,11 @@ class CarFeatureControllerTestIT {
     private static final String HOST = "http://localhost:8086";
     private static final String CAR_FEATURE_LIST_GET_URL = "/carSale/car/2/carFeature";
     private static final String FEATURE_LIST_OF_NOT_EXIST_CAR_GET_URL = "/carSale/car/32/carFeature";
+    private static final String FEATURE_LIST_OF_CAR_WITH_NEGATIVE_ID_GET_URL = "/carSale/car/-12/carFeature";
     private static final String FEATURE_LIST_GET_URL = "/carSale/car/carFeature";
 
     private RestTemplate restTemplate = new RestTemplate();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void getCarFeatures() {
@@ -33,11 +35,22 @@ class CarFeatureControllerTestIT {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST
                     + FEATURE_LIST_OF_NOT_EXIST_CAR_GET_URL, String.class));
-        ExceptionJSONResponse response = new ObjectMapper().readValue(exception.getResponseBodyAsString(),
+        ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
                 ExceptionJSONResponse.class);
         assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
-        assertEquals("there is not car with id = " + carId, response.getMessage());
+        assertEquals("there is not car with id = " + carId, response.getMessages().get(0));
         assertEquals(FEATURE_LIST_OF_NOT_EXIST_CAR_GET_URL, response.getPath());
+    }
+
+    @Test
+    void getCarFeatureValidationError() throws JsonProcessingException {
+        HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
+                () -> restTemplate.getForEntity(HOST + FEATURE_LIST_OF_CAR_WITH_NEGATIVE_ID_GET_URL, String.class));
+        ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
+                ExceptionJSONResponse.class);
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+        assertEquals("car feature id cant be negative", response.getMessages().get(0));
+        assertEquals(FEATURE_LIST_OF_CAR_WITH_NEGATIVE_ID_GET_URL, response.getPath());
     }
 
     @Test

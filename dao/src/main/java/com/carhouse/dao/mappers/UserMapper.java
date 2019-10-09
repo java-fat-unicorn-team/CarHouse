@@ -16,30 +16,12 @@ import java.sql.SQLException;
  */
 @Component
 public class UserMapper implements RowMapper<User> {
-    /**
-     * The constant USER_ID.
-     */
-    private static final String USER_ID = "user_id";
-    /**
-     * The constant USER_NAME.
-     */
-    private static final String USER_NAME = "user_name";
-    /**
-     * The constant PHONE_NUMBER.
-     */
-    private static final String PHONE_NUMBER = "phone_number";
-    /**
-     * The constant LOGIN.
-     */
-    private static final String LOGIN = "login";
-    /**
-     * The constant PASSWORD.
-     */
-    private static final String PASSWORD = "password";
 
-    /**
-     * Logger.
-     */
+    private static final String USER_ID = "user_id";
+    private static final String USER_NAME = "user_name";
+    private static final String PHONE_NUMBER = "phone_number";
+    private static final String LOGIN = "login";
+    private static final String PASSWORD = "password";
     private static final Logger LOGGER = LogManager.getLogger(UserMapper.class);
 
     @Override
