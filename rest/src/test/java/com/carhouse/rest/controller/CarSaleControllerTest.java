@@ -42,7 +42,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CarSaleControllerTest {
 
     public static final String CAR_SALE_LIST_STORAGE_JSON = "car-sale-list-storage.json";
-    private static final String CAR_SALE_LIST_GET_URL = "/carSale";
     private static final String CAR_SALE_DTO_LIST_GET_URL = "/carSale";
     private static final String CAR_SALE_GET_URL = "/carSale/{carSaleId}";
     private static final String CAR_SALE_ADD_URL = "/carSale";

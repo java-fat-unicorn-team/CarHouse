@@ -22,37 +22,14 @@ import java.util.List;
  */
 @Component
 public class CarSaleMapper implements RowMapper<CarSale> {
-    /**
-     * The constant CAR_SALE.
-     */
+
     private static final String CAR_SALE_ID = "car_sale_id";
-    /**
-     * The constant PRICE.
-     */
     private static final String PRICE = "price";
-    /**
-     * The constant DATE.
-     */
     private static final String DATE = "date";
-    /**
-     * The constant IMAGE.
-     */
     private static final String IMAGE = "image";
-    /**
-     * mapper to get User object.
-     */
     private UserMapper userMapper;
-    /**
-     * mapper to get Car object.
-     */
     private CarMapper carMapper;
-    /**
-     * mapper to get list of comments object.
-     */
     private CommentMapper commentMapper;
-    /**
-     * Logger.
-     */
     private static final Logger LOGGER = LogManager.getLogger(CarSaleMapper.class);
 
     /**

@@ -4,14 +4,19 @@ import com.carhouse.rest.response.ExceptionJSONResponse;
 import com.carhouse.service.exception.WrongReferenceException;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The Rest exception handler.
@@ -44,11 +49,9 @@ public class RestExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public @ResponseBody
     ExceptionJSONResponse notFoundHandler(final HttpServletRequest request, final Exception ex) {
-        response.setDate(new Date());
-        response.setStatus(HttpStatus.NOT_FOUND.value());
-        response.setPath(request.getRequestURI());
-        response.setMessage(ex.getMessage());
-        return response;
+        return createResponse(HttpStatus.NOT_FOUND, request.getRequestURI(),
+                Collections.singletonList(ex.getMessage()));
+
     }
 
     /**
@@ -63,10 +66,67 @@ public class RestExceptionHandler {
     @ExceptionHandler(WrongReferenceException.class)
     public @ResponseBody
     ExceptionJSONResponse wrongReferenceHandler(final HttpServletRequest request, final Exception ex) {
+        return createResponse(HttpStatus.FAILED_DEPENDENCY, request.getRequestURI(),
+                Collections.singletonList(ex.getMessage()));
+    }
+
+
+    /**
+     * Handle request body not valid exception json response.
+     * Return custom error response object in JSON format.
+     *
+     * @param request the request object to get request url
+     * @param ex      the exception object to get information about exception
+     * @return the exception json response
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public @ResponseBody
+    ExceptionJSONResponse handleRequestBodyNotValid(final HttpServletRequest request,
+                                                               final MethodArgumentNotValidException ex) {
+        List<String> errors = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toList());
+        return createResponse(HttpStatus.BAD_REQUEST, request.getRequestURI(), errors);
+
+    }
+
+    /**
+     * Handle path variable not valid exception.
+     * Return custom error response object in JSON format.
+     *
+     * @param request the request object to get request url
+     * @param ex      the exception object to get information about exception
+     * @return the exception json response
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public @ResponseBody
+    ExceptionJSONResponse handlePathVariableNotValid(final HttpServletRequest request,
+                                                                 final ConstraintViolationException ex) {
+        List<String> errors = ex.getConstraintViolations()
+                .stream()
+                .map(ConstraintViolation::getMessage)
+                .collect(Collectors.toList());
+        return createResponse(HttpStatus.BAD_REQUEST, request.getRequestURI(), errors);
+    }
+
+    /**
+     * Create custom response object.
+     *
+     * @param status     the error status
+     * @param requestUri the request uri
+     * @param errors     the errors list
+     * @return the exception response object
+     */
+    private ExceptionJSONResponse createResponse(final HttpStatus status, final String requestUri,
+                                                 final List<String> errors) {
         response.setDate(new Date());
-        response.setStatus(HttpStatus.FAILED_DEPENDENCY.value());
-        response.setPath(request.getRequestURI());
-        response.setMessage(ex.getMessage());
+        response.setStatus(status.value());
+        response.setPath(requestUri);
+        response.setMessages(errors);
         return response;
     }
 }

@@ -14,9 +14,22 @@
       "carId": 3,
       "year": null,
       "mileage": 0,
-      "fuelType": null,
-      "transmission": null,
-      "carModel": null,
+      "fuelType": {
+        "fuelTypeId": 1,
+        "fuelType": "Bensin"
+      },
+      "transmission": {
+        "transmissionId": 1,
+        "transmission": "Automatic"
+      },
+      "carModel": {
+        "carModelId": 2,
+        "carMake": {
+          "carMakeId": 2,
+          "carMake": "BMW"
+        },
+        "carModel": "M5"
+      },
       "carFeatureList": null
     }
   },
@@ -35,9 +48,22 @@
       "carId": 3,
       "year": null,
       "mileage": 0,
-      "fuelType": null,
-      "transmission": null,
-      "carModel": null,
+      "fuelType": {
+        "fuelTypeId": 2,
+        "fuelType": "Diesel"
+      },
+      "transmission": {
+        "transmissionId": 2,
+        "transmission": "Manual"
+      },
+      "carModel": {
+        "carModelId": 4,
+        "carMake": {
+          "carMakeId": 1,
+          "carMake": "Mercedes"
+        },
+        "carModel": "E220"
+      },
       "carFeatureList": null
     }
   },
@@ -54,11 +80,24 @@
     },
     "car": {
       "carId": 3,
-      "year": null,
-      "mileage": 0,
-      "fuelType": null,
-      "transmission": null,
-      "carModel": null,
+      "year": 1462665600000,
+      "mileage": 110300,
+      "fuelType": {
+        "fuelTypeId": 1,
+        "fuelType": "Bensin"
+      },
+      "transmission": {
+        "transmissionId": 2,
+        "transmission": "Manual"
+      },
+      "carModel": {
+        "carModelId": 2,
+        "carMake": {
+          "carMakeId": 1,
+          "carMake": "BMW"
+        },
+        "carModel": "M7"
+      },
       "carFeatureList": null
     }
   }

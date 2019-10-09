@@ -17,21 +17,10 @@ import java.sql.SQLException;
  */
 @Component
 public class CommentMapper implements RowMapper<Comment> {
-    /**
-     * The constant COMMENT_ID.
-     */
+
     private static final String COMMENT_ID = "comment_id";
-    /**
-     * The constant USER_NAME.
-     */
-    private static final String USER_NAME = "user_name";
-    /**
-     * The constant COMMENT.
-     */
+    private static final String USER_NAME = "userName";
     private static final String COMMENT = "comment";
-    /**
-     * Logger.
-     */
     private static final Logger LOGGER = LogManager.getLogger(CommentMapper.class);
 
     @Override

@@ -17,17 +17,8 @@ import java.sql.SQLException;
 @Component
 public class TransmissionMapper implements RowMapper<Transmission> {
 
-    /**
-     * The constant TRANSMISSION_ID.
-     */
     private static final String TRANSMISSION_ID = "transmission_id";
-    /**
-     * The constant TRANSMISSION.
-     */
     private static final String TRANSMISSION = "transmission";
-    /**
-     * Logger.
-     */
     private static final Logger LOGGER = LogManager.getLogger(TransmissionMapper.class);
 
     @Override

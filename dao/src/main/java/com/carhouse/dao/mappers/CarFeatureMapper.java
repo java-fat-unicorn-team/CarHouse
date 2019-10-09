@@ -17,17 +17,9 @@ import java.sql.SQLException;
  */
 @Component
 public class CarFeatureMapper implements RowMapper<CarFeature> {
-    /**
-     * The constant CAR_FEATURE_ID.
-     */
+
     private static final String CAR_FEATURE_ID = "car_feature_id";
-    /**
-     * The constant CAR_FEATURE.
-     */
     private static final String CAR_FEATURE = "car_feature";
-    /**
-     * Logger.
-     */
     private static final Logger LOGGER = LogManager.getLogger(CarFeatureMapper.class);
 
     @Override

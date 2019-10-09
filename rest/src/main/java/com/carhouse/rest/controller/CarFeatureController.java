@@ -9,11 +9,13 @@ import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 /**
@@ -24,6 +26,7 @@ import java.util.List;
  */
 @RequestMapping("/carSale/car")
 @RestController
+@Validated
 public class CarFeatureController {
 
     private static final Logger LOGGER = LogManager.getLogger(CarFeatureController.class);
@@ -51,7 +54,9 @@ public class CarFeatureController {
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Not Found")})
     @GetMapping("/{carId}/carFeature")
-    public List<CarFeature> getCarFeatures(@PathVariable final int carId) throws NotFoundException {
+    public List<CarFeature> getCarFeatures(@PathVariable
+                                           @PositiveOrZero(message = "car feature id cant be negative") final int carId)
+            throws NotFoundException {
         return carFeatureService.getCarFeatures(carId);
     }
 

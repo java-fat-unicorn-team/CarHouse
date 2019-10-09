@@ -51,7 +51,19 @@ class CarSaleControllerTestIT {
         ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
                 ExceptionJSONResponse.class);
         assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
-        assertEquals("there is not car sale with id = " + carSaleId, response.getMessage());
+        assertEquals("there is not car sale with id = " + carSaleId, response.getMessages().get(0));
+        assertEquals(CAR_SALE_GET_URL + carSaleId, response.getPath());
+    }
+
+    @Test
+    void getCarSaleValidationError() throws JsonProcessingException {
+        int carSaleId = -150;
+        HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
+                () -> restTemplate.getForEntity(HOST + CAR_SALE_GET_URL + carSaleId, String.class));
+        ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
+                ExceptionJSONResponse.class);
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+        assertEquals("car sale id can't be negative", response.getMessages().get(0));
         assertEquals(CAR_SALE_GET_URL + carSaleId, response.getPath());
     }
 
@@ -78,8 +90,23 @@ class CarSaleControllerTestIT {
         ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
                 ExceptionJSONResponse.class);
         assertEquals(HttpStatus.FAILED_DEPENDENCY.value(), response.getStatus());
-        assertEquals("there is wrong references in your car sale", response.getMessage());
+        assertEquals("there is wrong references in your car sale", response.getMessages().get(0));
         assertEquals(CAR_SALE_ADD_URL, response.getPath());
+    }
+
+    @Test
+    void addCarSaleValidationError() throws JsonProcessingException {
+        CarSale carSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + 3, CarSale.class);
+        carSale.setPrice(new BigDecimal(-123));
+        carSale.getCar().setCarId(-22).setFuelType(null);
+        HttpEntity<CarSale> request = new HttpEntity<>(carSale);
+        HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
+                () -> restTemplate.postForEntity(HOST + CAR_SALE_ADD_URL, request,
+                        String.class));
+        ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
+                ExceptionJSONResponse.class);
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+        assertFalse(response.getMessages().isEmpty());
     }
 
     @Test
@@ -139,5 +166,18 @@ class CarSaleControllerTestIT {
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
         assertTrue(exception.getResponseBodyAsString().contains("there is not car sale with id = "
                 + 40 + " to delete"));
+    }
+
+    @Test
+    void deleteCarSaleValidationError() throws JsonProcessingException {
+        int carSaleId = -4;
+        HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
+                () -> restTemplate.exchange(HOST + CAR_SALE_DELETE_URL + carSaleId,
+                        HttpMethod.DELETE, null, String.class));
+        ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
+                ExceptionJSONResponse.class);
+        assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+        assertEquals("car sale id can't be negative", response.getMessages().get(0));
+        assertEquals(CAR_SALE_DELETE_URL + carSaleId, response.getPath());
     }
 }
