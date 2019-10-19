@@ -12,9 +12,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.PositiveOrZero;
+import java.nio.file.FileSystemException;
 import java.util.List;
 import java.util.Map;
 
@@ -78,18 +80,23 @@ public class CarSaleController {
      * Add new car sale.
      * Get car sale object as request body
      * Car sale id is auto generated
+     * <p>
+     * //     * @param carSale the car sale object to add
      *
-     * @param carSale the car sale object to add
+     * @param carSale the car sale
+     * @param file    the image file
      * @return the id generated for this object
+     * @throws FileSystemException the file system exception when writing file
      */
     @ApiOperation("add car sale, the date should be in this format \"yyyy-MM-dd HH:mm:ss\" or in integer")
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 424, message = "Wrong References")})
-    @PostMapping
-    public Integer addCarSale(@RequestBody @Valid final CarSale carSale) {
+    @PostMapping(headers = ("content-type=multipart/*"))
+    public Integer addCarSale(@RequestPart("carSale") @Valid final CarSale carSale,
+                              @RequestParam("file") final MultipartFile file) throws FileSystemException {
         LOGGER.debug("method addCarSale wit parameter: [{}]", carSale);
-        return carSaleService.addCarSale(carSale);
+        return carSaleService.addCarSale(carSale, file);
     }
 
     /**
@@ -97,18 +104,25 @@ public class CarSaleController {
      * Get car sale object as request body
      * Replace car sale with id provided in new car sale on this new object
      *
-     * @param carSale the car sale object to update
+     * @param carSaleId the car sale id
+     * @param carSale   the car sale object to update
+     * @param file      the file
      * @throws NotFoundException throws if there is not such car sale to update
+     * @throws FileSystemException the file system exception when writing file
      */
     @ApiOperation("update car sale, gets car sale id to update from object provided as request body\n"
             + "the date can be in integer or in this format \"yyyy-MM-dd HH:mm:ss\"")
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 424, message = "Wrong References")})
-    @PutMapping
-    public void updateCarSale(@RequestBody @Valid final CarSale carSale) throws NotFoundException {
+    @PostMapping(value = "/{carSaleId}", headers = ("content-type=multipart/*"))
+    public void updateCarSale(@PathVariable final Integer carSaleId,
+                              @RequestPart("carSale") @Valid final CarSale carSale,
+                              @RequestParam("file") final MultipartFile file
+    ) throws NotFoundException, FileSystemException {
         LOGGER.debug("method updateCarSale wit parameter: [{}]", carSale);
-        carSaleService.updateCarSale(carSale);
+        carSale.setCarSaleId(carSaleId);
+        carSaleService.updateCarSale(carSale, file);
     }
 
     /**

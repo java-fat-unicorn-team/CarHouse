@@ -2,8 +2,8 @@ package com.carhouse.rest.controller;
 
 import com.carhouse.model.CarSale;
 import com.carhouse.model.dto.CarSaleDto;
-import com.carhouse.rest.testConfig.RestTestConfig;
 import com.carhouse.rest.handler.RestExceptionHandler;
+import com.carhouse.rest.testConfig.RestTestConfig;
 import com.carhouse.service.CarSaleService;
 import com.carhouse.service.exception.WrongReferenceException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -18,21 +18,24 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystemException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,11 +44,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class CarSaleControllerTest {
 
-    public static final String CAR_SALE_LIST_STORAGE_JSON = "car-sale-list-storage.json";
+    private static final String CAR_SALE_LIST_STORAGE_JSON = "car-sale-list-storage.json";
     private static final String CAR_SALE_DTO_LIST_GET_URL = "/carSale";
     private static final String CAR_SALE_GET_URL = "/carSale/{carSaleId}";
     private static final String CAR_SALE_ADD_URL = "/carSale";
-    private static final String CAR_SALE_UPDATE_URL = "/carSale";
+    private static final String CAR_SALE_UPDATE_URL = "/carSale/{carSaleId}";
     private static final String CAR_SALE_DELETE_URL = "/carSale/{id}";
 
     @Mock
@@ -60,6 +63,9 @@ class CarSaleControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     private List<CarSale> listCarSale;
+    private MockMultipartFile multipartFile;
+    private MockMultipartFile jsonPart;
+
     private MockMvc mockMvc;
 
     @BeforeEach
@@ -70,13 +76,17 @@ class CarSaleControllerTest {
         File file = new ClassPathResource(CAR_SALE_LIST_STORAGE_JSON).getFile();
         listCarSale = objectMapper.readValue(file, new TypeReference<List<CarSale>>() {
         });
+        multipartFile = new MockMultipartFile("file", "test.txt", "image/*",
+                "There should be bytes of image".getBytes());
+        jsonPart = new MockMultipartFile("carSale", "carSale",
+                "application/json", objectMapper.writeValueAsBytes(listCarSale.get(2)));
     }
 
     @Test
     void getCarSalesDto() throws Exception {
         List<CarSaleDto> listCarSaleDto = new ArrayList<>() {{
-           add(new CarSaleDto().setCarSaleId(1));
-           add(new CarSaleDto().setCarSaleId(2));
+            add(new CarSaleDto().setCarSaleId(1));
+            add(new CarSaleDto().setCarSaleId(2));
         }};
         when(carSaleService.getListCarSales(anyMap())).thenReturn(listCarSaleDto);
         mockMvc.perform(get(CAR_SALE_DTO_LIST_GET_URL))
@@ -110,61 +120,92 @@ class CarSaleControllerTest {
     void addCarSale() throws Exception {
         int carSaleId = 2;
         CarSale carSale = listCarSale.get(carSaleId);
-        when(carSaleService.addCarSale(any(CarSale.class))).thenReturn(carSaleId);
-        mockMvc.perform(post(CAR_SALE_ADD_URL)
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .content(objectMapper.writeValueAsString(carSale)))
+        when(carSaleService.addCarSale(any(CarSale.class), any(MultipartFile.class))).thenReturn(carSaleId);
+        MockMultipartFile jsonPart = new MockMultipartFile("carSale", "carSale",
+                "application/json", objectMapper.writeValueAsBytes(carSale));
+        mockMvc.perform(MockMvcRequestBuilders.multipart(CAR_SALE_ADD_URL)
+                .file(multipartFile)
+                .file(jsonPart))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(content().json(objectMapper.writeValueAsString(carSaleId)));
-        verify(carSaleService, times(1)).addCarSale(any(CarSale.class));
+        verify(carSaleService, times(1)).addCarSale(any(CarSale.class), any(MultipartFile.class));
     }
 
     @Test
     void addCarSaleWithWrongReference() throws Exception {
         int carSaleId = 2;
         CarSale carSale = listCarSale.get(carSaleId);
-        when(carSaleService.addCarSale(any(CarSale.class))).thenThrow(WrongReferenceException.class);
-        mockMvc.perform(post(CAR_SALE_ADD_URL)
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .content(objectMapper.writeValueAsString(carSale)))
+        MockMultipartFile jsonPart = new MockMultipartFile("carSale", "carSale",
+                "application/json", objectMapper.writeValueAsBytes(carSale));
+        when(carSaleService.addCarSale(any(CarSale.class), any(MultipartFile.class)))
+                .thenThrow(WrongReferenceException.class);
+        mockMvc.perform(MockMvcRequestBuilders.multipart(CAR_SALE_ADD_URL)
+                .file(multipartFile)
+                .file(jsonPart))
                 .andExpect(status().isFailedDependency());
-        verify(carSaleService, times(1)).addCarSale(any(CarSale.class));
+        verify(carSaleService, times(1)).addCarSale(any(CarSale.class), any(MultipartFile.class));
+    }
+
+    @Test
+    void addCarSaleErrorWritingFile() throws Exception {
+        int carSaleId = 2;
+        CarSale carSale = listCarSale.get(carSaleId);
+        MockMultipartFile jsonPart = new MockMultipartFile("carSale", "carSale",
+                "application/json", objectMapper.writeValueAsBytes(carSale));
+        when(carSaleService.addCarSale(any(CarSale.class), any(MultipartFile.class)))
+                .thenThrow(FileSystemException.class);
+        mockMvc.perform(MockMvcRequestBuilders.multipart(CAR_SALE_ADD_URL)
+                .file(multipartFile)
+                .file(jsonPart))
+                .andExpect(status().isUnprocessableEntity());
+        verify(carSaleService, times(1)).addCarSale(any(CarSale.class), any(MultipartFile.class));
     }
 
     @Test
     void updateCarSale() throws Exception {
         int carSaleId = 2;
         CarSale carSale = listCarSale.get(carSaleId);
-        mockMvc.perform(put(CAR_SALE_UPDATE_URL)
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .content(objectMapper.writeValueAsString(carSale)))
+        MockMultipartFile jsonPart = new MockMultipartFile("carSale", "carSale",
+                "application/json", objectMapper.writeValueAsBytes(carSale));
+        mockMvc.perform(MockMvcRequestBuilders.multipart(CAR_SALE_UPDATE_URL, carSaleId)
+                .file(multipartFile)
+                .file(jsonPart))
                 .andExpect(status().isOk());
-        verify(carSaleService, times(1)).updateCarSale(any(CarSale.class));
+        verify(carSaleService, times(1)).updateCarSale(any(CarSale.class),
+                any(MultipartFile.class));
     }
 
     @Test
     void updateCarSaleWithWrongReference() throws Exception {
         int carSaleId = 2;
         CarSale carSale = listCarSale.get(carSaleId);
-        doThrow(WrongReferenceException.class).when(carSaleService).updateCarSale(any(CarSale.class));
-        mockMvc.perform(put(CAR_SALE_UPDATE_URL)
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .content(objectMapper.writeValueAsString(carSale)))
+        MockMultipartFile jsonPart = new MockMultipartFile("carSale", "carSale",
+                "application/json", objectMapper.writeValueAsBytes(carSale));
+        doThrow(WrongReferenceException.class).when(carSaleService).updateCarSale(any(CarSale.class),
+                any(MultipartFile.class));
+        mockMvc.perform(MockMvcRequestBuilders.multipart(CAR_SALE_UPDATE_URL, carSaleId)
+                .file(multipartFile)
+                .file(jsonPart))
                 .andExpect(status().isFailedDependency());
-        verify(carSaleService, times(1)).updateCarSale(any(CarSale.class));
+        verify(carSaleService, times(1)).updateCarSale(any(CarSale.class),
+                any(MultipartFile.class));
     }
 
     @Test
     void updateNotExistCarSale() throws Exception {
         int carSaleId = 2;
         CarSale carSale = listCarSale.get(carSaleId);
-        doThrow(NotFoundException.class).when(carSaleService).updateCarSale(any(CarSale.class));
-        mockMvc.perform(put(CAR_SALE_UPDATE_URL)
-                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
-                .content(objectMapper.writeValueAsString(carSale)))
+        MockMultipartFile jsonPart = new MockMultipartFile("carSale", "carSale",
+                "application/json", objectMapper.writeValueAsBytes(carSale));
+        doThrow(NotFoundException.class).when(carSaleService).updateCarSale(any(CarSale.class),
+                any(MultipartFile.class));
+        mockMvc.perform(MockMvcRequestBuilders.multipart(CAR_SALE_UPDATE_URL, carSaleId)
+                .file(multipartFile)
+                .file(jsonPart))
                 .andExpect(status().isNotFound());
-        verify(carSaleService, times(1)).updateCarSale(any(CarSale.class));
+        verify(carSaleService, times(1)).updateCarSale(any(CarSale.class),
+                any(MultipartFile.class));
     }
 
     @Test

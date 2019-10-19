@@ -15,7 +15,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.mock.web.MockMultipartFile;
 
+import java.nio.file.FileSystemException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +40,7 @@ class CarSaleServiceImplTest {
 
     private static List<CarSale> listCarSale;
     private static List<CarSaleDto> listCarSaleDto;
+    private static MockMultipartFile file;
 
     @BeforeAll
     static void addCarSales() {
@@ -50,6 +53,8 @@ class CarSaleServiceImplTest {
             add(new CarSaleDto().setCarSaleId(0));
             add(new CarSaleDto().setCarSaleId(1));
         }};
+        file = new MockMultipartFile("file", "test.txt", "image/*",
+                "There should be bytes of image".getBytes());
     }
 
     @Test
@@ -83,58 +88,71 @@ class CarSaleServiceImplTest {
     }
 
     @Test
-    void addCarSale() {
+    void addCarSale() throws FileSystemException {
         int newCarId = 3;
         int newCarSaleId = 5;
         Car car = new Car();
         CarSale carSale = new CarSale();
         carSale.setCar(car);
         when(carDao.addCar(car)).thenReturn(newCarId);
-        when(carSaleDao.addCarSale(carSale)).thenReturn(newCarSaleId);
-        assertEquals(newCarSaleId, carSaleService.addCarSale(carSale));
-        verify(carSaleDao, times(1)).addCarSale(carSale);
+        when(carSaleDao.addCarSale(carSale, file)).thenReturn(newCarSaleId);
+        assertEquals(newCarSaleId, carSaleService.addCarSale(carSale, file));
+        verify(carSaleDao, times(1)).addCarSale(carSale, file);
         verify(carDao, times(1)).addCar(car);
     }
 
     @Test
-    void addCarSaleWithWrongReference() {
+    void addCarSaleWithWrongReference() throws FileSystemException {
         CarSale carSale = new CarSale();
         carSale.setCar(new Car());
         when(carDao.addCar(carSale.getCar())).thenReturn(2);
-        when(carSaleDao.addCarSale(carSale)).thenThrow(DataIntegrityViolationException.class);
+        when(carSaleDao.addCarSale(carSale, file)).thenThrow(DataIntegrityViolationException.class);
         WrongReferenceException thrown = assertThrows(WrongReferenceException.class,
-                () -> carSaleService.addCarSale(carSale));
+                () -> carSaleService.addCarSale(carSale, file));
         assertTrue(thrown.getMessage().contains("there is wrong references in your car sale"));
     }
 
     @Test
-    void updateCarSale() throws NotFoundException {
+    void addCarSaleErrorWritingFile() throws FileSystemException {
+        String errorMsg = "Something went wrong. Error writing file.";
+        CarSale carSale = new CarSale();
+        carSale.setCar(new Car());
+        when(carDao.addCar(carSale.getCar())).thenReturn(2);
+        when(carSaleDao.addCarSale(carSale, file)).thenThrow(new FileSystemException(errorMsg));
+        FileSystemException thrown = assertThrows(FileSystemException.class,
+                () -> carSaleService.addCarSale(carSale, file));
+        assertTrue(thrown.getMessage().contains(errorMsg));
+    }
+
+    @Test
+    void updateCarSale() throws NotFoundException, FileSystemException {
         CarSale carSale = new CarSale(5);
         carSale.setCar(new Car());
         when(carDao.updateCar(carSale.getCar())).thenReturn(true);
-        when(carSaleDao.updateCarSale(carSale)).thenReturn(true);
-        carSaleService.updateCarSale(carSale);
-        verify(carSaleDao, times(1)).updateCarSale(carSale);
+        when(carSaleDao.updateCarSale(carSale, file)).thenReturn(true);
+        carSaleService.updateCarSale(carSale, file);
+        verify(carSaleDao, times(1)).updateCarSale(carSale, file);
     }
 
     @Test
-    void updateCarSaleWithWrongReference() {
+    void updateCarSaleWithWrongReference() throws FileSystemException {
         CarSale carSale = new CarSale(4);
         carSale.setCar(new Car());
         when(carDao.updateCar(carSale.getCar())).thenReturn(true);
-        doThrow(DataIntegrityViolationException.class).when(carSaleDao).updateCarSale(carSale);
+        doThrow(DataIntegrityViolationException.class).when(carSaleDao).updateCarSale(carSale, file);
         WrongReferenceException thrown = assertThrows(WrongReferenceException.class,
-                () -> carSaleService.updateCarSale(carSale));
+                () -> carSaleService.updateCarSale(carSale, file));
         assertTrue(thrown.getMessage().contains("there is wrong references in your car sale"));
     }
 
     @Test
-    void updateNotExistCarSale() {
+    void updateNotExistCarSale() throws FileSystemException {
         CarSale carSale = new CarSale(17);
         carSale.setCar(new Car());
         when(carDao.updateCar(carSale.getCar())).thenReturn(true);
-        when(carSaleDao.updateCarSale(carSale)).thenReturn(false);
-        NotFoundException thrown = assertThrows(NotFoundException.class, () -> carSaleService.updateCarSale(carSale));
+        when(carSaleDao.updateCarSale(carSale, file)).thenReturn(false);
+        NotFoundException thrown = assertThrows(NotFoundException.class,
+                () -> carSaleService.updateCarSale(carSale, file));
         assertTrue(thrown.getMessage().contains("there is not car sale with id = " + carSale.getCarSaleId()));
     }
 
@@ -143,7 +161,8 @@ class CarSaleServiceImplTest {
         CarSale carSale = new CarSale(7);
         carSale.setCar(new Car(15));
         when(carDao.updateCar(carSale.getCar())).thenReturn(false);
-        NotFoundException thrown = assertThrows(NotFoundException.class, () -> carSaleService.updateCarSale(carSale));
+        NotFoundException thrown = assertThrows(NotFoundException.class,
+                () -> carSaleService.updateCarSale(carSale, file));
         assertTrue(thrown.getMessage().contains("there is not car with id = " + carSale.getCar().getCarId()));
     }
 

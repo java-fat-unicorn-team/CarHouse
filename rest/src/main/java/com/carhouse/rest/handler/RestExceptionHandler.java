@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.nio.file.FileSystemException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -67,6 +68,21 @@ public class RestExceptionHandler {
     public @ResponseBody
     ExceptionJSONResponse wrongReferenceHandler(final HttpServletRequest request, final Exception ex) {
         return createResponse(HttpStatus.FAILED_DEPENDENCY, request.getRequestURI(),
+                Collections.singletonList(ex.getMessage()));
+    }
+    /**
+     * File system exception handler.
+     * Catch file system exception and give the appropriate response
+     *
+     * @param request the request object to get request url
+     * @param ex      the exception object to get exception message
+     * @return the response in JSON
+     */
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(FileSystemException.class)
+    public @ResponseBody
+    ExceptionJSONResponse fileSystemExceptionHandler(final HttpServletRequest request, final Exception ex) {
+        return createResponse(HttpStatus.UNPROCESSABLE_ENTITY, request.getRequestURI(),
                 Collections.singletonList(ex.getMessage()));
     }
 

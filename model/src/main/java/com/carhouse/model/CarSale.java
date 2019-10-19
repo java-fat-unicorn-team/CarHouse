@@ -1,7 +1,9 @@
 package com.carhouse.model;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -23,7 +25,7 @@ public class CarSale {
     @NotNull(message = "car object can't be null")
     @Valid
     private Car car;
-    private byte[] image;
+    private String imageName;
     private List<Comment> commentList;
 
     /**
@@ -49,16 +51,16 @@ public class CarSale {
      * @param date      the date
      * @param user      the user
      * @param car       the car
-     * @param image     the image as byte array
+     * @param imageName the image as byte array
      */
     public CarSale(final int carSaleId, final BigDecimal price, final Date date, final User user,
-                   final Car car, final byte[] image) {
+                   final Car car, final String imageName) {
         this.carSaleId = carSaleId;
         this.price = price;
         this.date = date;
         this.user = user;
         this.car = car;
-        this.image = image;
+        this.imageName = imageName;
     }
 
     /**
@@ -152,21 +154,21 @@ public class CarSale {
     }
 
     /**
-     * Get image as byte array.
+     * Get image url.
      *
      * @return the byte array
      */
-    public byte[] getImage() {
-        return image;
+    public String getImageName() {
+        return imageName;
     }
 
     /**
-     * Sets image as byte array.
+     * Sets image url.
      *
-     * @param image the image
+     * @param imageName the image
      */
-    public void setImage(final byte[] image) {
-        this.image = image;
+    public void setImageName(final String imageName) {
+        this.imageName = imageName;
     }
 
     /**

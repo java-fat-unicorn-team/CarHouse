@@ -26,7 +26,7 @@ public class CarSaleMapper implements RowMapper<CarSale> {
     private static final String CAR_SALE_ID = "car_sale_id";
     private static final String PRICE = "price";
     private static final String DATE = "date";
-    private static final String IMAGE = "image";
+    private static final String IMAGE_NAME = "image_name";
     private UserMapper userMapper;
     private CarMapper carMapper;
     private CommentMapper commentMapper;
@@ -57,7 +57,7 @@ public class CarSaleMapper implements RowMapper<CarSale> {
     public CarSale mapRow(final ResultSet resultSet, final int i) throws SQLException {
         CarSale carSale = new CarSale(resultSet.getInt(CAR_SALE_ID), resultSet.getBigDecimal(PRICE),
                 resultSet.getDate(DATE), userMapper.mapRow(resultSet, i), carMapper.mapRow(resultSet, i),
-                resultSet.getBytes(IMAGE));
+                resultSet.getString(IMAGE_NAME));
         List<Comment> commentList = new ArrayList<>();
         Comment comment;
         do {

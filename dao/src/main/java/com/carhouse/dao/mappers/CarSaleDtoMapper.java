@@ -27,7 +27,7 @@ public class CarSaleDtoMapper implements RowMapper<CarSaleDto> {
     private static final String TRANSMISSION = "transmission";
     private static final String CAR_MAKE = "car_make";
     private static final String CAR_MODEL = "car_model";
-    private static final String IMAGE = "image";
+    private static final String IMAGE_NAME = "image_name";
 
     private static final Logger LOGGER = LogManager.getLogger(CarSaleDtoMapper.class);
 
@@ -43,7 +43,7 @@ public class CarSaleDtoMapper implements RowMapper<CarSaleDto> {
                 .setTransmission(resultSet.getString(TRANSMISSION))
                 .setCarMake(resultSet.getString(CAR_MAKE))
                 .setCarModel(resultSet.getString(CAR_MODEL))
-                .setImage(resultSet.getBytes(IMAGE));
+                .setImageName(resultSet.getString(IMAGE_NAME));
         LOGGER.debug("object carSaleDto has been mapped: {}", carSaleDto);
         return carSaleDto;
     }

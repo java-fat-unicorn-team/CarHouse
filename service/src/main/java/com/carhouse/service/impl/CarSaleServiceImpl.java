@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.FileSystemException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,7 @@ public class CarSaleServiceImpl implements CarSaleService {
 
     private CarSaleDao carSaleDao;
     private CarDao carDao;
+
 
     private static final Logger LOGGER = LogManager.getLogger(CarSaleServiceImpl.class);
 
@@ -89,15 +92,17 @@ public class CarSaleServiceImpl implements CarSaleService {
      * First add car object from carSale object and then use returned car id to add carSale object
      *
      * @param carSale the car sale
+     * @param file    the image file
      * @return car sale id
+     * @throws FileSystemException the file system exception when writing file
      */
     @Override
-    public Integer addCarSale(final CarSale carSale) {
+    public Integer addCarSale(final CarSale carSale, final MultipartFile file) throws FileSystemException {
         LOGGER.debug("method addCarSale with parameter: [{}]", carSale);
         try {
             int carId = carDao.addCar(carSale.getCar());
             carSale.getCar().setCarId(carId);
-            return carSaleDao.addCarSale(carSale);
+            return carSaleDao.addCarSale(carSale, file);
         } catch (DataIntegrityViolationException ex) {
             throw new WrongReferenceException("there is wrong references in your car sale");
         }
@@ -109,16 +114,19 @@ public class CarSaleServiceImpl implements CarSaleService {
      * Use carDao to update car object from carSale object
      *
      * @param carSale the car sale
+     * @param file    the image file
      * @throws NotFoundException throws if there is not such car sale to update
+     * @throws FileSystemException the file system exception when writing file
      */
     @Override
-    public void updateCarSale(final CarSale carSale) throws NotFoundException {
+    public void updateCarSale(final CarSale carSale, final MultipartFile file) throws NotFoundException,
+            FileSystemException {
         LOGGER.debug("method updateCarSale with parameter: [{}]", carSale);
         try {
             if (!carDao.updateCar(carSale.getCar())) {
                 throw new NotFoundException("there is not car with id = " + carSale.getCar().getCarId());
             }
-            if (!carSaleDao.updateCarSale(carSale)) {
+            if (!carSaleDao.updateCarSale(carSale, file)) {
                 throw new NotFoundException("there is not car sale with id = " + carSale.getCarSaleId());
             }
         } catch (DataIntegrityViolationException ex) {
