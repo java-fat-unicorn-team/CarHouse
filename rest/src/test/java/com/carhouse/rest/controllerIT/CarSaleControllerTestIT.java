@@ -5,12 +5,13 @@ import com.carhouse.rest.response.ExceptionJSONResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -23,11 +24,13 @@ class CarSaleControllerTestIT {
     private static final String CAR_SALE_LIST_GET_URL = "/carSale";
     private static final String CAR_SALE_GET_URL = "/carSale/";
     private static final String CAR_SALE_ADD_URL = "/carSale";
-    private static final String CAR_SALE_UPDATE_URL = "/carSale";
+    private static final String CAR_SALE_UPDATE_URL = "/carSale/{carSaleId}";
     private static final String CAR_SALE_DELETE_URL = "/carSale/";
 
     private RestTemplate restTemplate = new RestTemplate();
     private ObjectMapper objectMapper = new ObjectMapper();
+    private MultipartFile file = new MockMultipartFile("file", "test.txt", "image/*",
+            new byte[]{});
 
     @Test
     void getListCarSales() {
@@ -72,11 +75,10 @@ class CarSaleControllerTestIT {
         CarSale carSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + 3, CarSale.class);
         carSale.setPrice(new BigDecimal(23300));
         carSale.setDate(new Date());
-        HttpEntity<CarSale> request = new HttpEntity<>(carSale);
-        ResponseEntity<String> response = restTemplate.postForEntity(HOST + CAR_SALE_ADD_URL,
-                request, String.class);
+        ResponseEntity<Integer> response = restTemplate.postForEntity(HOST + CAR_SALE_ADD_URL,
+                createMultipartRequest(carSale, file), Integer.class);
         assertEquals(200, response.getStatusCodeValue());
-        Integer id = Integer.valueOf(response.getBody());
+        Integer id = response.getBody();
         assertTrue(id > 0);
     }
 
@@ -84,9 +86,9 @@ class CarSaleControllerTestIT {
     void addCarSaleWithWrongReference() throws JsonProcessingException {
         CarSale carSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + 3, CarSale.class);
         carSale.getUser().setUserId(200);
-        HttpEntity<CarSale> request = new HttpEntity<>(carSale);
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
-                () -> restTemplate.postForEntity(HOST + CAR_SALE_ADD_URL, request, String.class));
+                () -> restTemplate.postForEntity(HOST + CAR_SALE_ADD_URL, createMultipartRequest(carSale, file),
+                        Integer.class));
         ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
                 ExceptionJSONResponse.class);
         assertEquals(HttpStatus.FAILED_DEPENDENCY.value(), response.getStatus());
@@ -101,8 +103,8 @@ class CarSaleControllerTestIT {
         carSale.getCar().setCarId(-22).setFuelType(null);
         HttpEntity<CarSale> request = new HttpEntity<>(carSale);
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
-                () -> restTemplate.postForEntity(HOST + CAR_SALE_ADD_URL, request,
-                        String.class));
+                () -> restTemplate.postForEntity(HOST + CAR_SALE_ADD_URL, createMultipartRequest(carSale, file),
+                        Integer.class));
         ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
                 ExceptionJSONResponse.class);
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
@@ -117,9 +119,8 @@ class CarSaleControllerTestIT {
         CarSale carSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + carSaleId, CarSale.class);
         carSale.setPrice(newCarPrice);
         carSale.getCar().getCarModel().setCarModelId(newCarModelId);
-        HttpEntity<CarSale> request = new HttpEntity<>(carSale);
-        ResponseEntity response = restTemplate.exchange(HOST + CAR_SALE_UPDATE_URL, HttpMethod.PUT,
-                request, CarSale.class);
+        ResponseEntity response = restTemplate.postForEntity(HOST + CAR_SALE_UPDATE_URL,
+                createMultipartRequest(carSale, file), String.class, carSaleId);
         assertEquals(200, response.getStatusCodeValue());
         CarSale updatedCarSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + carSaleId, CarSale.class);
         assertEquals(newCarPrice, updatedCarSale.getPrice());
@@ -128,24 +129,26 @@ class CarSaleControllerTestIT {
 
     @Test
     void updateCarSaleWithWrongReference() {
-        CarSale carSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + 3, CarSale.class);
+        int carSaleId = 3;
+        CarSale carSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + carSaleId, CarSale.class);
         carSale.getUser().setUserId(200);
-        HttpEntity<CarSale> request = new HttpEntity<>(carSale);
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
-                () -> restTemplate.exchange(HOST + CAR_SALE_UPDATE_URL, HttpMethod.PUT, request, String.class));
+                () -> restTemplate.postForEntity(HOST + CAR_SALE_UPDATE_URL,
+                        createMultipartRequest(carSale, file), String.class, carSaleId));
         assertEquals(HttpStatus.FAILED_DEPENDENCY, exception.getStatusCode());
         assertTrue(exception.getResponseBodyAsString().contains("there is wrong references in your car sale"));
     }
 
     @Test
     void updateNotExistCarSale() {
+        int carSaleId = 37;
         CarSale carSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + 3, CarSale.class);
-        carSale.setCarSaleId(37);
-        HttpEntity<CarSale> request = new HttpEntity<>(carSale);
+        carSale.setCarSaleId(carSaleId);
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
-                () -> restTemplate.exchange(HOST + CAR_SALE_UPDATE_URL, HttpMethod.PUT, request, String.class));
+                () -> restTemplate.postForEntity(HOST + CAR_SALE_UPDATE_URL,
+                        createMultipartRequest(carSale, file), String.class, carSaleId));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        assertTrue(exception.getResponseBodyAsString().contains("there is not car sale with id = " + 37));
+        assertTrue(exception.getResponseBodyAsString().contains("there is not car sale with id = " + carSaleId));
     }
 
     @Test
@@ -179,5 +182,15 @@ class CarSaleControllerTestIT {
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
         assertEquals("car sale id can't be negative", response.getMessages().get(0));
         assertEquals(CAR_SALE_DELETE_URL + carSaleId, response.getPath());
+    }
+
+    private HttpEntity<MultiValueMap<String, Object>> createMultipartRequest(final CarSale carSale,
+                                                                             final MultipartFile file) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("carSale", carSale);
+        body.add("file", file.getResource());
+        return new HttpEntity<>(body, headers);
     }
 }

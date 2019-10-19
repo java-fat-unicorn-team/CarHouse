@@ -94,7 +94,7 @@ CREATE TABLE `car_sale`
     `date`        datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `user_id`     int(11)     NOT NULL,
     `car_id`      int(11)     NOT NULL,
-    `image`       mediumblob,
+    `image_name`  varchar(45) NOT NULL DEFAULT 'default',
     PRIMARY KEY (`car_sale_id`),
     CONSTRAINT `fk_car_id` FOREIGN KEY (`car_id`) REFERENCES `car` (`car_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
     CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user_table` (`user_id`)

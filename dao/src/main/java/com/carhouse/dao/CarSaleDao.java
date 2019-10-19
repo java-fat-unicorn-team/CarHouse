@@ -2,7 +2,9 @@ package com.carhouse.dao;
 
 import com.carhouse.model.CarSale;
 import com.carhouse.model.dto.CarSaleDto;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.FileSystemException;
 import java.util.List;
 import java.util.Map;
 
@@ -35,9 +37,11 @@ public interface CarSaleDao {
      * Add car sale.
      *
      * @param carSale the car sale
+     * @param file    the image file
      * @return car sale id
+     * @throws FileSystemException the file system exception when writing file
      */
-    Integer addCarSale(CarSale carSale);
+    Integer addCarSale(CarSale carSale, MultipartFile file) throws FileSystemException;
 
 
     /**
@@ -45,9 +49,11 @@ public interface CarSaleDao {
      * Gets car sale id from carSale object
      *
      * @param carSale the car sale
+     * @param file    the image file
      * @return check or car sale is updated
+     * @throws FileSystemException the file system exception when writing file
      */
-    boolean updateCarSale(CarSale carSale);
+    boolean updateCarSale(CarSale carSale, MultipartFile file) throws FileSystemException;
 
     /**
      * Delete car sale by id.

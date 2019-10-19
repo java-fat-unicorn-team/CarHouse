@@ -44,7 +44,7 @@ public class ParameterSource {
                 .addValue("price", carSale.getPrice())
                 .addValue("userId", carSale.getUser().getUserId())
                 .addValue("carId", carSale.getCar().getCarId())
-                .addValue("image", carSale.getImage());
+                .addValue("imageName", carSale.getImageName());
     }
 
     /**

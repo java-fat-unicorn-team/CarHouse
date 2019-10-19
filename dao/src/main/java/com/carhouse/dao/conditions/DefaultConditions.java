@@ -54,16 +54,6 @@ public enum DefaultConditions {
     }
 
     /**
-     * Sets key.
-     * It is used to get value from map and set parameter to sql query
-     *
-     * @param key the key
-     */
-    public void setKey(final String key) {
-        this.key = key;
-    }
-
-    /**
      * Gets default value.
      * It is used if no value is found.
      *
@@ -71,15 +61,5 @@ public enum DefaultConditions {
      */
     public String getDefaultValue() {
         return defaultValue;
-    }
-
-    /**
-     * Sets default value.
-     * It is used if no value is found.
-     *
-     * @param defaultValue the default value
-     */
-    public void setDefaultValue(final String defaultValue) {
-        this.defaultValue = defaultValue;
     }
 }
