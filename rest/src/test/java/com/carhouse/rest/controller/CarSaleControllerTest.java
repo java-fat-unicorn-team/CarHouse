@@ -5,6 +5,7 @@ import com.carhouse.model.dto.CarSaleDto;
 import com.carhouse.rest.handler.RestExceptionHandler;
 import com.carhouse.rest.testConfig.RestTestConfig;
 import com.carhouse.service.CarSaleService;
+import com.carhouse.service.exception.WriteFileException;
 import com.carhouse.service.exception.WrongReferenceException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -154,7 +155,7 @@ class CarSaleControllerTest {
         MockMultipartFile jsonPart = new MockMultipartFile("carSale", "carSale",
                 "application/json", objectMapper.writeValueAsBytes(carSale));
         when(carSaleService.addCarSale(any(CarSale.class), any(MultipartFile.class)))
-                .thenThrow(FileSystemException.class);
+                .thenThrow(WriteFileException.class);
         mockMvc.perform(MockMvcRequestBuilders.multipart(CAR_SALE_ADD_URL)
                 .file(multipartFile)
                 .file(jsonPart))

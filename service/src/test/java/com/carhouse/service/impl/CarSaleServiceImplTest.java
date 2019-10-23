@@ -5,7 +5,9 @@ import com.carhouse.dao.CarSaleDao;
 import com.carhouse.model.Car;
 import com.carhouse.model.CarSale;
 import com.carhouse.model.dto.CarSaleDto;
+import com.carhouse.service.exception.WriteFileException;
 import com.carhouse.service.exception.WrongReferenceException;
+import com.carhouse.service.fileUpload.FileWriter;
 import javassist.NotFoundException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,8 +18,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.FileSystemException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +30,9 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CarSaleServiceImplTest {
+
+    @Mock
+    private FileWriter fileWriter;
 
     @Mock
     private CarDao carDao;
@@ -88,69 +93,72 @@ class CarSaleServiceImplTest {
     }
 
     @Test
-    void addCarSale() throws FileSystemException {
+    void addCarSale() {
         int newCarId = 3;
         int newCarSaleId = 5;
         Car car = new Car();
         CarSale carSale = new CarSale();
         carSale.setCar(car);
+        MultipartFile file = new MockMultipartFile("file", "test.txt", "image/*",
+                new byte[]{});
         when(carDao.addCar(car)).thenReturn(newCarId);
-        when(carSaleDao.addCarSale(carSale, file)).thenReturn(newCarSaleId);
+        when(carSaleDao.addCarSale(carSale)).thenReturn(newCarSaleId);
         assertEquals(newCarSaleId, carSaleService.addCarSale(carSale, file));
-        verify(carSaleDao, times(1)).addCarSale(carSale, file);
+        verify(carSaleDao, times(1)).addCarSale(carSale);
         verify(carDao, times(1)).addCar(car);
     }
 
     @Test
-    void addCarSaleWithWrongReference() throws FileSystemException {
+    void addCarSaleWithWrongReference() {
         CarSale carSale = new CarSale();
         carSale.setCar(new Car());
         when(carDao.addCar(carSale.getCar())).thenReturn(2);
-        when(carSaleDao.addCarSale(carSale, file)).thenThrow(DataIntegrityViolationException.class);
+        when(carSaleDao.addCarSale(carSale)).thenThrow(DataIntegrityViolationException.class);
         WrongReferenceException thrown = assertThrows(WrongReferenceException.class,
                 () -> carSaleService.addCarSale(carSale, file));
         assertTrue(thrown.getMessage().contains("there is wrong references in your car sale"));
     }
 
     @Test
-    void addCarSaleErrorWritingFile() throws FileSystemException {
+    void addCarSaleErrorWritingFile() {
         String errorMsg = "Something went wrong. Error writing file.";
         CarSale carSale = new CarSale();
         carSale.setCar(new Car());
         when(carDao.addCar(carSale.getCar())).thenReturn(2);
-        when(carSaleDao.addCarSale(carSale, file)).thenThrow(new FileSystemException(errorMsg));
-        FileSystemException thrown = assertThrows(FileSystemException.class,
+        when(carSaleDao.addCarSale(carSale)).thenReturn(5);
+        doThrow(new WriteFileException(errorMsg)).when(fileWriter).writeFile(eq(file), anyString());
+        WriteFileException thrown = assertThrows(WriteFileException.class,
                 () -> carSaleService.addCarSale(carSale, file));
         assertTrue(thrown.getMessage().contains(errorMsg));
     }
 
     @Test
-    void updateCarSale() throws NotFoundException, FileSystemException {
+    void updateCarSale() throws NotFoundException {
         CarSale carSale = new CarSale(5);
         carSale.setCar(new Car());
         when(carDao.updateCar(carSale.getCar())).thenReturn(true);
-        when(carSaleDao.updateCarSale(carSale, file)).thenReturn(true);
+        when(carSaleDao.updateCarSale(carSale)).thenReturn(true);
         carSaleService.updateCarSale(carSale, file);
-        verify(carSaleDao, times(1)).updateCarSale(carSale, file);
+        verify(carSaleDao, times(1)).updateCarSale(carSale);
     }
 
     @Test
-    void updateCarSaleWithWrongReference() throws FileSystemException {
+    void updateCarSaleWithWrongReference() {
         CarSale carSale = new CarSale(4);
         carSale.setCar(new Car());
         when(carDao.updateCar(carSale.getCar())).thenReturn(true);
-        doThrow(DataIntegrityViolationException.class).when(carSaleDao).updateCarSale(carSale, file);
+        doThrow(DataIntegrityViolationException.class).when(carSaleDao).updateCarSale(carSale);
         WrongReferenceException thrown = assertThrows(WrongReferenceException.class,
                 () -> carSaleService.updateCarSale(carSale, file));
         assertTrue(thrown.getMessage().contains("there is wrong references in your car sale"));
     }
 
     @Test
-    void updateNotExistCarSale() throws FileSystemException {
+    void updateNotExistCarSale() {
         CarSale carSale = new CarSale(17);
         carSale.setCar(new Car());
         when(carDao.updateCar(carSale.getCar())).thenReturn(true);
-        when(carSaleDao.updateCarSale(carSale, file)).thenReturn(false);
+        when(carSaleDao.updateCarSale(carSale)).thenReturn(false);
         NotFoundException thrown = assertThrows(NotFoundException.class,
                 () -> carSaleService.updateCarSale(carSale, file));
         assertTrue(thrown.getMessage().contains("there is not car sale with id = " + carSale.getCarSaleId()));
@@ -169,7 +177,6 @@ class CarSaleServiceImplTest {
     @Test
     void deleteCarSale() throws NotFoundException {
         int carSaleId = 3;
-        when(carSaleDao.deleteCarSale(carSaleId)).thenReturn(true);
         carSaleService.deleteCarSale(carSaleId);
         verify(carSaleDao, times(1)).deleteCarSale(carSaleId);
     }
@@ -177,7 +184,7 @@ class CarSaleServiceImplTest {
     @Test
     void deleteNotExistCarSale() {
         int carSaleId = 12;
-        when(carSaleDao.deleteCarSale(carSaleId)).thenReturn(false);
+        doThrow(EmptyResultDataAccessException.class).when(carSaleDao).deleteCarSale(carSaleId);
         NotFoundException thrown = assertThrows(NotFoundException.class, () -> carSaleService.deleteCarSale(carSaleId));
         assertTrue(thrown.getMessage().contains("there is not car sale with id = " + carSaleId + " to delete"));
     }

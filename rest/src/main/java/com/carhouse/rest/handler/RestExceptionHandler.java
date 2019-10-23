@@ -1,6 +1,7 @@
 package com.carhouse.rest.handler;
 
 import com.carhouse.rest.response.ExceptionJSONResponse;
+import com.carhouse.service.exception.WriteFileException;
 import com.carhouse.service.exception.WrongReferenceException;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.nio.file.FileSystemException;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -70,6 +72,7 @@ public class RestExceptionHandler {
         return createResponse(HttpStatus.FAILED_DEPENDENCY, request.getRequestURI(),
                 Collections.singletonList(ex.getMessage()));
     }
+
     /**
      * File system exception handler.
      * Catch file system exception and give the appropriate response
@@ -79,9 +82,9 @@ public class RestExceptionHandler {
      * @return the response in JSON
      */
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    @ExceptionHandler(FileSystemException.class)
+    @ExceptionHandler(WriteFileException.class)
     public @ResponseBody
-    ExceptionJSONResponse fileSystemExceptionHandler(final HttpServletRequest request, final Exception ex) {
+    ExceptionJSONResponse writeFileExceptionHandler(final HttpServletRequest request, final Exception ex) {
         return createResponse(HttpStatus.UNPROCESSABLE_ENTITY, request.getRequestURI(),
                 Collections.singletonList(ex.getMessage()));
     }
@@ -99,7 +102,7 @@ public class RestExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public @ResponseBody
     ExceptionJSONResponse handleRequestBodyNotValid(final HttpServletRequest request,
-                                                               final MethodArgumentNotValidException ex) {
+                                                    final MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -121,7 +124,7 @@ public class RestExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public @ResponseBody
     ExceptionJSONResponse handlePathVariableNotValid(final HttpServletRequest request,
-                                                                 final ConstraintViolationException ex) {
+                                                     final ConstraintViolationException ex) {
         List<String> errors = ex.getConstraintViolations()
                 .stream()
                 .map(ConstraintViolation::getMessage)

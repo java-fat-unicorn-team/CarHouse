@@ -1,8 +1,6 @@
-package com.carhouse.dao.fileUpload;
+package com.carhouse.service.fileUpload;
 
 import org.springframework.web.multipart.MultipartFile;
-
-import java.nio.file.FileSystemException;
 
 /**
  * The interface File writer.
@@ -10,7 +8,7 @@ import java.nio.file.FileSystemException;
 public interface FileWriter {
 
     /**
-     * Delete image.
+     * Delete file.
      *
      * @param fileName the image name
      */
@@ -21,7 +19,6 @@ public interface FileWriter {
      *
      * @param file     the file to write
      * @param fileName the file name
-     * @throws FileSystemException the file system exception when writing file
      */
-    void writeFile(MultipartFile file, String fileName) throws FileSystemException;
+    void writeFile(MultipartFile file, String fileName);
 }

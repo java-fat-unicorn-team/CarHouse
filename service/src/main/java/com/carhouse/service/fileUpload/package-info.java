@@ -1,4 +1,4 @@
 /**
  * This package contains file writer.
  */
-package com.carhouse.dao.fileUpload;
+package com.carhouse.service.fileUpload;

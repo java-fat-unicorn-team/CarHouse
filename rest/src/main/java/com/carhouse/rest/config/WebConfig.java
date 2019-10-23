@@ -1,10 +1,8 @@
 package com.carhouse.rest.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.*;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -19,7 +17,10 @@ import javax.validation.Validator;
  */
 @Configuration
 @EnableWebMvc
-@PropertySource("classpath:sql-query.properties")
+@PropertySources({
+        @PropertySource("classpath:application.properties"),
+        @PropertySource("classpath:sql-query.properties")
+})
 @ComponentScan(basePackages = {"com.carhouse"})
 public class WebConfig implements WebMvcConfigurer {
 
@@ -59,9 +60,9 @@ public class WebConfig implements WebMvcConfigurer {
      * @return multipartResolver
      */
     @Bean(name = "multipartResolver")
-    public CommonsMultipartResolver multipartResolver() {
+    public CommonsMultipartResolver multipartResolver(@Value("${max.upload.size}") String maxUploadSize) {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(10000000);
+        multipartResolver.setMaxUploadSize(Integer.parseInt(maxUploadSize));
         return multipartResolver;
     }
 

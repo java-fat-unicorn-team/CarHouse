@@ -5,7 +5,6 @@ import com.carhouse.model.dto.CarSaleDto;
 import javassist.NotFoundException;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.FileSystemException;
 import java.util.List;
 import java.util.Map;
 
@@ -42,9 +41,8 @@ public interface CarSaleService {
      * @param carSale the car sale
      * @param file    the image file
      * @return car sale id
-     * @throws FileSystemException the file system exception when writing file
      */
-    Integer addCarSale(CarSale carSale, MultipartFile file) throws FileSystemException;
+    Integer addCarSale(CarSale carSale, MultipartFile file);
 
 
     /**
@@ -54,9 +52,8 @@ public interface CarSaleService {
      * @param carSale the car sale
      * @param file    the image file
      * @throws NotFoundException throws if there is not such car sale to update
-     * @throws FileSystemException the file system exception when writing file
      */
-    void updateCarSale(CarSale carSale, MultipartFile file) throws NotFoundException, FileSystemException;
+    void updateCarSale(CarSale carSale, MultipartFile file) throws NotFoundException;
 
     /**
      * Delete car sale by id.

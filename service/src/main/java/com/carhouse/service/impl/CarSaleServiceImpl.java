@@ -6,6 +6,7 @@ import com.carhouse.model.CarSale;
 import com.carhouse.model.dto.CarSaleDto;
 import com.carhouse.service.CarSaleService;
 import com.carhouse.service.exception.WrongReferenceException;
+import com.carhouse.service.fileUpload.FileWriter;
 import javassist.NotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.GenericValidator;
@@ -17,10 +18,10 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.FileSystemException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * The class provides method to manage CarSale models on service layer.
@@ -32,6 +33,7 @@ import java.util.Map;
 @Service
 public class CarSaleServiceImpl implements CarSaleService {
 
+    private FileWriter fileWriter;
     private CarSaleDao carSaleDao;
     private CarDao carDao;
 
@@ -41,11 +43,13 @@ public class CarSaleServiceImpl implements CarSaleService {
     /**
      * Instantiates a new Car sale service.
      *
+     * @param fileWriter the class is used to write file to the Apache server
      * @param carSaleDao the class provides CRUD operations for fuel type model.
      * @param carDao     the car dao is used to set changes in car object and then use its id in carSale object
      */
     @Autowired
-    public CarSaleServiceImpl(final CarSaleDao carSaleDao, final CarDao carDao) {
+    public CarSaleServiceImpl(final FileWriter fileWriter, final CarSaleDao carSaleDao, final CarDao carDao) {
+        this.fileWriter = fileWriter;
         this.carSaleDao = carSaleDao;
         this.carDao = carDao;
     }
@@ -90,19 +94,24 @@ public class CarSaleServiceImpl implements CarSaleService {
     /**
      * Add car sale.
      * First add car object from carSale object and then use returned car id to add carSale object
+     * Generate unique file name and write to the Apache server if file is not empty
      *
      * @param carSale the car sale
      * @param file    the image file
      * @return car sale id
-     * @throws FileSystemException the file system exception when writing file
      */
     @Override
-    public Integer addCarSale(final CarSale carSale, final MultipartFile file) throws FileSystemException {
+    public Integer addCarSale(final CarSale carSale, final MultipartFile file) {
         LOGGER.debug("method addCarSale with parameter: [{}]", carSale);
         try {
             int carId = carDao.addCar(carSale.getCar());
             carSale.getCar().setCarId(carId);
-            return carSaleDao.addCarSale(carSale, file);
+            carSale.setImageName(!file.isEmpty() ? UUID.randomUUID().toString() : null);
+            Integer carSaleId = carSaleDao.addCarSale(carSale);
+            if (!file.isEmpty()) {
+                fileWriter.writeFile(file, carSale.getImageName());
+            }
+            return carSaleId;
         } catch (DataIntegrityViolationException ex) {
             throw new WrongReferenceException("there is wrong references in your car sale");
         }
@@ -112,30 +121,37 @@ public class CarSaleServiceImpl implements CarSaleService {
      * Update car sale.
      * Gets car sale id from carSale object
      * Use carDao to update car object from carSale object
+     * Generate unique file name and write to the Apache server if file is not empty @param carSale the car sale
+     * Delete old image(browser caches images so the image should have a new name,
+     * otherwise the browser will show old image)
      *
-     * @param carSale the car sale
      * @param file    the image file
      * @throws NotFoundException throws if there is not such car sale to update
-     * @throws FileSystemException the file system exception when writing file
      */
     @Override
-    public void updateCarSale(final CarSale carSale, final MultipartFile file) throws NotFoundException,
-            FileSystemException {
+    public void updateCarSale(final CarSale carSale, final MultipartFile file) throws NotFoundException {
         LOGGER.debug("method updateCarSale with parameter: [{}]", carSale);
+        String oldCarSaleImageName = carSale.getImageName();
+        carSale.setImageName(!file.isEmpty() ? UUID.randomUUID().toString() : oldCarSaleImageName);
         try {
             if (!carDao.updateCar(carSale.getCar())) {
                 throw new NotFoundException("there is not car with id = " + carSale.getCar().getCarId());
             }
-            if (!carSaleDao.updateCarSale(carSale, file)) {
+            if (!carSaleDao.updateCarSale(carSale)) {
                 throw new NotFoundException("there is not car sale with id = " + carSale.getCarSaleId());
             }
         } catch (DataIntegrityViolationException ex) {
             throw new WrongReferenceException("there is wrong references in your car sale");
         }
+        if (!file.isEmpty()) {
+            fileWriter.deleteFile(oldCarSaleImageName);
+            fileWriter.writeFile(file, carSale.getImageName());
+        }
     }
 
     /**
      * Delete car sale by id.
+     * Get image name from database by carSale id and delete this image from apache server
      *
      * @param carSaleId the car sale id
      * @throws NotFoundException throws if there is not such car sale to delete
@@ -143,7 +159,11 @@ public class CarSaleServiceImpl implements CarSaleService {
     @Override
     public void deleteCarSale(final int carSaleId) throws NotFoundException {
         LOGGER.debug("method deleteCarSale with parameter: [{}]", carSaleId);
-        if (!carSaleDao.deleteCarSale(carSaleId)) {
+        try {
+            String imageName = carSaleDao.getCarSaleImageName(carSaleId);
+            carSaleDao.deleteCarSale(carSaleId);
+            fileWriter.deleteFile(imageName);
+        } catch (EmptyResultDataAccessException ex) {
             throw new NotFoundException("there is not car sale with id = " + carSaleId + " to delete");
         }
     }

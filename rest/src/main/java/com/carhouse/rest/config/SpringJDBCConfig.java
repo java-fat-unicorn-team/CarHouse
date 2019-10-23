@@ -18,10 +18,7 @@ import javax.sql.DataSource;
  * @author Katuranau Maksimilyan
  */
 @Configuration
-@PropertySources({
-        @PropertySource("classpath:application.properties"),
-        @PropertySource("classpath:${jdbc.properties.file}.properties"),
-})
+@PropertySource("classpath:${jdbc.properties.file}.properties")
 public class SpringJDBCConfig {
 
     @Value("${db.driver.class.name}")
