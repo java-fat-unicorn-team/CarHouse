@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.PositiveOrZero;
-import java.nio.file.FileSystemException;
 import java.util.List;
 import java.util.Map;
 
@@ -86,7 +85,6 @@ public class CarSaleController {
      * @param carSale the car sale
      * @param file    the image file
      * @return the id generated for this object
-     * @throws FileSystemException the file system exception when writing file
      */
     @ApiOperation("add car sale, the date should be in this format \"yyyy-MM-dd HH:mm:ss\" or in integer")
     @ApiResponses(value = {
@@ -94,7 +92,7 @@ public class CarSaleController {
             @ApiResponse(code = 424, message = "Wrong References")})
     @PostMapping(headers = ("content-type=multipart/*"))
     public Integer addCarSale(@RequestPart("carSale") @Valid final CarSale carSale,
-                              @RequestParam("file") final MultipartFile file) throws FileSystemException {
+                              @RequestParam("file") final MultipartFile file) {
         LOGGER.debug("method addCarSale wit parameter: [{}]", carSale);
         return carSaleService.addCarSale(carSale, file);
     }
@@ -108,7 +106,6 @@ public class CarSaleController {
      * @param carSale   the car sale object to update
      * @param file      the file
      * @throws NotFoundException throws if there is not such car sale to update
-     * @throws FileSystemException the file system exception when writing file
      */
     @ApiOperation("update car sale, gets car sale id to update from object provided as request body\n"
             + "the date can be in integer or in this format \"yyyy-MM-dd HH:mm:ss\"")
@@ -118,8 +115,7 @@ public class CarSaleController {
     @PostMapping(value = "/{carSaleId}", headers = ("content-type=multipart/*"))
     public void updateCarSale(@PathVariable final Integer carSaleId,
                               @RequestPart("carSale") @Valid final CarSale carSale,
-                              @RequestParam("file") final MultipartFile file
-    ) throws NotFoundException, FileSystemException {
+                              @RequestParam("file") final MultipartFile file) throws NotFoundException {
         LOGGER.debug("method updateCarSale wit parameter: [{}]", carSale);
         carSale.setCarSaleId(carSaleId);
         carSaleService.updateCarSale(carSale, file);
