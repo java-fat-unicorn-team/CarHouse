@@ -4,6 +4,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.1.3.RELEASE</version>
+<!--    <relativePath/>-->
+  </parent>
+
   <groupId>com.carhouse</groupId>
   <artifactId>CarHouse</artifactId>
   <version>1.0-SNAPSHOT</version>
@@ -41,6 +48,7 @@
     <pitest.maven>1.4.8</pitest.maven>
     <pitest.junit5.plugin>0.9</pitest.junit5.plugin>
     <spring.version>5.1.7.RELEASE</spring.version>
+    <spring.boot.version>2.2.2.RELEASE</spring.boot.version>
     <jackson.databind.version>2.10.0.pr1</jackson.databind.version>
     <javax.servlet.api.version>3.1.0</javax.servlet.api.version>
     <javassist.version>3.25.0-GA</javassist.version>
@@ -72,9 +80,14 @@
     <tomcat7.maven.plugin>2.2</tomcat7.maven.plugin>
   </properties>
 
-
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.junit.platform</groupId>
+        <artifactId>junit-platform-commons</artifactId>
+        <version>1.4.1</version>
+        <scope>test</scope>
+      </dependency>
       <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
@@ -114,32 +127,6 @@
         <groupId>org.springframework</groupId>
         <artifactId>spring-jdbc</artifactId>
         <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-context</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-webmvc</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-web</artifactId>
-        <version>${spring.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>${jackson.databind.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>javax.servlet-api</artifactId>
-        <version>${javax.servlet.api.version}</version>
-        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>mysql</groupId>

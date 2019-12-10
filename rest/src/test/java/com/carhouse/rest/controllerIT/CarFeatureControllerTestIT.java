@@ -1,7 +1,6 @@
 package com.carhouse.rest.controllerIT;
 
 import com.carhouse.rest.response.ExceptionJSONResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -9,7 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CarFeatureControllerTestIT {
 
@@ -30,11 +33,11 @@ class CarFeatureControllerTestIT {
     }
 
     @Test
-    void getCarFeaturesOfNotExistCar() throws JsonProcessingException {
+    void getCarFeaturesOfNotExistCar() throws IOException {
         int carId = 32;
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST
-                    + FEATURE_LIST_OF_NOT_EXIST_CAR_GET_URL, String.class));
+                        + FEATURE_LIST_OF_NOT_EXIST_CAR_GET_URL, String.class));
         ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
                 ExceptionJSONResponse.class);
         assertEquals(HttpStatus.NOT_FOUND.value(), response.getStatus());
@@ -43,7 +46,7 @@ class CarFeatureControllerTestIT {
     }
 
     @Test
-    void getCarFeatureValidationError() throws JsonProcessingException {
+    void getCarFeatureValidationError() throws IOException {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + FEATURE_LIST_OF_CAR_WITH_NEGATIVE_ID_GET_URL, String.class));
         ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),

@@ -2,7 +2,6 @@ package com.carhouse.rest.controllerIT;
 
 import com.carhouse.model.CarMake;
 import com.carhouse.rest.response.ExceptionJSONResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CarMakeControllerTestIT {
 
@@ -36,7 +39,7 @@ class CarMakeControllerTestIT {
     }
 
     @Test
-    void getNotExistCarMake() throws JsonProcessingException {
+    void getNotExistCarMake() throws IOException {
         int carMakeId = 32;
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + CAR_MAKE_GET_URL + carMakeId, String.class));
@@ -48,7 +51,7 @@ class CarMakeControllerTestIT {
     }
 
     @Test
-    void getCarMakeValidationError() throws JsonProcessingException {
+    void getCarMakeValidationError() throws IOException {
         int carMakeId = -12;
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + CAR_MAKE_GET_URL + carMakeId, String.class));

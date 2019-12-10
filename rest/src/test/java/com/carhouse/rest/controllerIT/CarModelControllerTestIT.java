@@ -2,7 +2,6 @@ package com.carhouse.rest.controllerIT;
 
 import com.carhouse.model.CarModel;
 import com.carhouse.rest.response.ExceptionJSONResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CarModelControllerTestIT {
 
@@ -30,7 +34,7 @@ class CarModelControllerTestIT {
     }
 
     @Test
-    void getCarModelsOfNotExistCarMake() throws JsonProcessingException {
+    void getCarModelsOfNotExistCarMake() throws IOException {
         int carMakeId = 32;
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + CAR_MODEL_LIST_GET_URL + carMakeId, String.class));
@@ -42,7 +46,7 @@ class CarModelControllerTestIT {
     }
 
     @Test
-    void getCarModelsValidationError() throws JsonProcessingException {
+    void getCarModelsValidationError() throws IOException {
         int carMakeId = -12;
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + CAR_MODEL_LIST_GET_URL + carMakeId, String.class));
@@ -69,7 +73,7 @@ class CarModelControllerTestIT {
     }
 
     @Test
-    void getCarModelValidationError() throws JsonProcessingException {
+    void getCarModelValidationError() throws IOException {
         int carModelId = -12;
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + CAR_MODEL_GET_URL + carModelId, String.class));

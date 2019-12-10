@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.sql.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,7 +43,7 @@ class CarControllerTestIT {
     }
 
     @Test
-    void getNotExistCar() throws JsonProcessingException {
+    void getNotExistCar() throws IOException {
         int carId = 150;
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + CAR_GET_URL + carId, String.class));
@@ -54,7 +55,7 @@ class CarControllerTestIT {
     }
 
     @Test
-    void getCarValidationError() throws JsonProcessingException {
+    void getCarValidationError() throws IOException {
         int carId = -150;
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + CAR_GET_URL + carId, String.class));
@@ -80,7 +81,7 @@ class CarControllerTestIT {
     }
 
     @Test
-    void addCarWithWrongReference() throws JsonProcessingException {
+    void addCarWithWrongReference() throws IOException {
         Car car = new Car(2);
         car.setYear(Date.valueOf("2017-04-05"));
         car.setCarModel(new CarModel(20, new CarMake(12)));
@@ -97,7 +98,7 @@ class CarControllerTestIT {
     }
 
     @Test
-    void addCarValidationError() throws JsonProcessingException {
+    void addCarValidationError() throws IOException {
         Car car = new Car(2);
         car.setYear(Date.valueOf("2017-04-05"));
         car.setCarModel(new CarModel(-2, new CarMake(2)));
@@ -126,7 +127,7 @@ class CarControllerTestIT {
     }
 
     @Test
-    void updateCarWithWrongReference() throws JsonProcessingException {
+    void updateCarWithWrongReference() throws IOException {
         int carId = 4;
         Car car = restTemplate.getForObject(HOST + CAR_GET_URL + carId, Car.class);
         car.setFuelType(new FuelType(15));
@@ -192,7 +193,7 @@ class CarControllerTestIT {
     }
 
     @Test
-    void deleteCommentValidationError() throws JsonProcessingException {
+    void deleteCommentValidationError() throws IOException {
         int carId = -4;
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.exchange(HOST + CAR_DELETE_URL + carId,

@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -33,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @ContextConfiguration(classes = RestTestConfig.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class CarControllerTest {
 
     private static final String CARS_LIST_STORAGE_JSON = "car-list-storage.json";
@@ -62,7 +64,7 @@ class CarControllerTest {
                 .setControllerAdvice(restExceptionHandler)
                 .build();
         File file = new ClassPathResource(CARS_LIST_STORAGE_JSON).getFile();
-        carList = objectMapper.readValue(file, new TypeReference<>() {
+        carList = objectMapper.readValue(file, new TypeReference<List<Car>>() {
         });
     }
 

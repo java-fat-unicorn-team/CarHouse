@@ -2,7 +2,6 @@ package com.carhouse.rest.controllerIT;
 
 import com.carhouse.model.Comment;
 import com.carhouse.rest.response.ExceptionJSONResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpEntity;
@@ -12,9 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import javax.validation.ConstraintViolationException;
+import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CommentControllerTestIT {
 
@@ -40,7 +43,7 @@ class CommentControllerTestIT {
     }
 
     @Test
-    void getCarSaleCommentValidationError() throws JsonProcessingException {
+    void getCarSaleCommentValidationError() throws IOException {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + "/carSale/-11/comment", String.class));
         ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
@@ -51,7 +54,7 @@ class CommentControllerTestIT {
     }
 
     @Test
-    void getCommentsOfNotExistentCarSale() throws JsonProcessingException {
+    void getCommentsOfNotExistentCarSale() throws IOException {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + NOT_EXIST_CAR_SALE_COMMENT_LIST_GET_URL, String.class));
         ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
@@ -70,7 +73,7 @@ class CommentControllerTestIT {
     }
 
     @Test
-    void getNotExistentComment() throws JsonProcessingException {
+    void getNotExistentComment() throws IOException {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + NOT_EXIST_CAR_SALE_COMMENT_GET, String.class));
         ExceptionJSONResponse response = objectMapper.readValue(exception.getResponseBodyAsString(),
@@ -92,7 +95,7 @@ class CommentControllerTestIT {
     }
 
     @Test
-    void addCommentWithWrongReference() throws JsonProcessingException {
+    void addCommentWithWrongReference() throws IOException {
         Comment comment = new Comment(12, "vova", "good");
         HttpEntity<Comment> request = new HttpEntity<>(comment);
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
@@ -106,7 +109,7 @@ class CommentControllerTestIT {
     }
 
     @Test
-    void addCommentValidationError() throws JsonProcessingException {
+    void addCommentValidationError() throws IOException {
         Comment comment = new Comment(12, "", "");
         HttpEntity<Comment> request = new HttpEntity<>(comment);
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
@@ -133,7 +136,7 @@ class CommentControllerTestIT {
         HttpEntity<Comment> request = new HttpEntity<>(comment);
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.exchange(HOST
-                    + CAR_SALE_COMMENT_UPDATE_URL, HttpMethod.PUT, request, String.class));
+                        + CAR_SALE_COMMENT_UPDATE_URL, HttpMethod.PUT, request, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
         assertTrue(exception.getResponseBodyAsString().contains("there is not comment with id=" + 73));
     }
@@ -150,14 +153,14 @@ class CommentControllerTestIT {
     void deleteNotExistComment() {
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.exchange(HOST + CAR_SALE_COMMENT_DELETE_URL + 123,
-                    HttpMethod.DELETE, null, String.class));
+                        HttpMethod.DELETE, null, String.class));
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
         assertTrue(exception.getResponseBodyAsString().contains("there is not comment with id = "
                 + 123 + " to delete"));
     }
 
     @Test
-    void deleteCommentValidationError() throws JsonProcessingException {
+    void deleteCommentValidationError() throws IOException {
         int commentId = -4;
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.exchange(HOST + CAR_SALE_COMMENT_DELETE_URL + commentId,

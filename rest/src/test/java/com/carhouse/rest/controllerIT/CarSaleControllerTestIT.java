@@ -2,10 +2,14 @@ package com.carhouse.rest.controllerIT;
 
 import com.carhouse.model.CarSale;
 import com.carhouse.rest.response.ExceptionJSONResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -13,10 +17,15 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CarSaleControllerTestIT {
 
@@ -47,7 +56,7 @@ class CarSaleControllerTestIT {
     }
 
     @Test
-    void getNotExistCarSale() throws JsonProcessingException {
+    void getNotExistCarSale() throws IOException {
         int carSaleId = 150;
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + CAR_SALE_GET_URL + carSaleId, String.class));
@@ -59,7 +68,7 @@ class CarSaleControllerTestIT {
     }
 
     @Test
-    void getCarSaleValidationError() throws JsonProcessingException {
+    void getCarSaleValidationError() throws IOException {
         int carSaleId = -150;
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.getForEntity(HOST + CAR_SALE_GET_URL + carSaleId, String.class));
@@ -83,7 +92,7 @@ class CarSaleControllerTestIT {
     }
 
     @Test
-    void addCarSaleWithWrongReference() throws JsonProcessingException {
+    void addCarSaleWithWrongReference() throws IOException {
         CarSale carSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + 3, CarSale.class);
         carSale.getUser().setUserId(200);
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
@@ -97,7 +106,7 @@ class CarSaleControllerTestIT {
     }
 
     @Test
-    void addCarSaleValidationError() throws JsonProcessingException {
+    void addCarSaleValidationError() throws IOException {
         CarSale carSale = restTemplate.getForObject(HOST + CAR_SALE_GET_URL + 3, CarSale.class);
         carSale.setPrice(new BigDecimal(-123));
         carSale.getCar().setCarId(-22).setFuelType(null);
@@ -172,7 +181,7 @@ class CarSaleControllerTestIT {
     }
 
     @Test
-    void deleteCarSaleValidationError() throws JsonProcessingException {
+    void deleteCarSaleValidationError() throws IOException {
         int carSaleId = -4;
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class,
                 () -> restTemplate.exchange(HOST + CAR_SALE_DELETE_URL + carSaleId,

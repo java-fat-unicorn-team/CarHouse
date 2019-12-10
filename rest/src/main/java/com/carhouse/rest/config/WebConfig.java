@@ -17,10 +17,7 @@ import javax.validation.Validator;
  */
 @Configuration
 @EnableWebMvc
-@PropertySources({
-        @PropertySource("classpath:application.properties"),
-        @PropertySource("classpath:sql-query.properties")
-})
+@PropertySource("classpath:sql-query.properties")
 @ComponentScan(basePackages = {"com.carhouse"})
 public class WebConfig implements WebMvcConfigurer {
 
