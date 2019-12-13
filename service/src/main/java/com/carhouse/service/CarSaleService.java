@@ -26,6 +26,21 @@ public interface CarSaleService {
     List<CarSaleDto> getListCarSales(Map<String, String> conditionParams);
 
     /**
+     * Gets last five car sales.
+     *
+     * @return the car sales dto
+     */
+    List<CarSaleDto> getListLastFiveCarSales();
+
+    /**
+     * Gets user car sales.
+     *
+     * @param login the user name to get car sales
+     * @return the car sales dto
+     */
+    List<CarSaleDto> getListUserCarSales(String login);
+
+    /**
      * Gets car sale by id.
      *
      * @param carSaleId the car sale id

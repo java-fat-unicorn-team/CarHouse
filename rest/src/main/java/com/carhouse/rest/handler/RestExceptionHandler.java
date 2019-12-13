@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
@@ -86,6 +87,21 @@ public class RestExceptionHandler {
     public @ResponseBody
     ExceptionJSONResponse writeFileExceptionHandler(final HttpServletRequest request, final Exception ex) {
         return createResponse(HttpStatus.UNPROCESSABLE_ENTITY, request.getRequestURI(),
+                Collections.singletonList(ex.getMessage()));
+    }
+
+    /**
+     * File system exception handler.
+     * Catch file system exception and give the appropriate response
+     *
+     * @param ex      the exception object to get exception message
+     * @return the response in JSON
+     */
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public @ResponseBody
+    ExceptionJSONResponse incorrectUserNameOrPasswordHandler(final Exception ex) {
+        return createResponse(HttpStatus.FORBIDDEN, "request.getRequestURI()",
                 Collections.singletonList(ex.getMessage()));
     }
 

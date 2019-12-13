@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * The interface of carFeature service.
  * provides methods to get CarFeature models.
+ *
  * @author Katuranau Maksimilyan
  * @see CarFeature
  */

@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * The interface of transmission service.
  * provides methods to get Transmission models.
+ *
  * @author Katuranau Maksimilyan
  * @see Transmission
  */

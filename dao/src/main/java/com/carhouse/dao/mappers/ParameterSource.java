@@ -3,6 +3,7 @@ package com.carhouse.dao.mappers;
 import com.carhouse.model.Car;
 import com.carhouse.model.CarSale;
 import com.carhouse.model.Comment;
+import com.carhouse.model.User;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
@@ -58,5 +59,19 @@ public class ParameterSource {
                 .addValue("id", comment.getCommentId())
                 .addValue("userName", comment.getUserName())
                 .addValue("comment", comment.getComment());
+    }
+
+    /**
+     * Gets user parameters.
+     *
+     * @param user the user
+     * @return the user parameters
+     */
+    public MapSqlParameterSource getUserParameters(final User user) {
+        return new MapSqlParameterSource()
+                .addValue("userName", user.getUserName())
+                .addValue("phoneNumber", user.getPhoneNumber())
+                .addValue("userLogin", user.getLogin())
+                .addValue("password", user.getPassword());
     }
 }

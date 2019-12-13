@@ -54,10 +54,11 @@ public class WebConfig implements WebMvcConfigurer {
     /**
      * Create MultipartResolver to upload files in html form.
      *
-     * @return multipartResolver
+     * @param maxUploadSize the max upload size
+     * @return multipartResolver commons multipart resolver
      */
     @Bean(name = "multipartResolver")
-    public CommonsMultipartResolver multipartResolver(@Value("${max.upload.size}") String maxUploadSize) {
+    public CommonsMultipartResolver multipartResolver(@Value("${max.upload.size}") final String maxUploadSize) {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
         multipartResolver.setMaxUploadSize(Integer.parseInt(maxUploadSize));
         return multipartResolver;

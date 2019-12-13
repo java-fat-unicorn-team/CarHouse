@@ -17,12 +17,13 @@ import java.sql.SQLException;
 @Component
 public class UserMapper implements RowMapper<User> {
 
+    private static final Logger LOGGER = LogManager.getLogger(UserMapper.class);
+
     private static final String USER_ID = "user_id";
     private static final String USER_NAME = "user_name";
     private static final String PHONE_NUMBER = "phone_number";
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
-    private static final Logger LOGGER = LogManager.getLogger(UserMapper.class);
 
     @Override
     public User mapRow(final ResultSet resultSet, final int i) throws SQLException {

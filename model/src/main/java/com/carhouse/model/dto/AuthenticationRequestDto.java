@@ -1,23 +1,23 @@
 package com.carhouse.model.dto;
 
 public class AuthenticationRequestDto {
-    private String username;
+    private String login;
     private String password;
 
     public AuthenticationRequestDto() {
     }
 
-    public AuthenticationRequestDto(String username, String password) {
-        this.username = username;
+    public AuthenticationRequestDto(String login, String password) {
+        this.login = login;
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
+    public String getLogin() {
+        return login;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getPassword() {

@@ -13,8 +13,9 @@ import java.util.List;
 /**
  * The class provides method to get list of FuelType models on service layer.
  * It is realisation of FuelTypeService interface
- * @see FuelTypeService
+ *
  * @author Katuranau Maksimilyan
+ * @see FuelTypeService
  */
 @Service
 public class FuelTypeServiceImpl implements FuelTypeService {

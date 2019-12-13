@@ -7,6 +7,7 @@ import java.util.List;
 /**
  * The interface of fuel type service.
  * Provides method to get list of fuel type models on the service layer
+ *
  * @author Katuranau Maksimilyan
  */
 public interface FuelTypeService {

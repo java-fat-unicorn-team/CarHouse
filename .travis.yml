@@ -11,7 +11,7 @@ notifications:
 
 install: ignore
 
-script: mvn clean verify -Pintegration_test
+script: mvn clean verify
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

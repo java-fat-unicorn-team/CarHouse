@@ -75,6 +75,28 @@ public class CarSaleServiceImpl implements CarSaleService {
     }
 
     /**
+     * Gets last five car sales.
+     *
+     * @return the car sales dto
+     */
+    @Override
+    public List<CarSaleDto> getListLastFiveCarSales() {
+        return carSaleDao.getListLastFiveCarSales();
+    }
+
+    /**
+     * Gets user car sales.
+     *
+     * @param login the user name to get car sales
+     * @return the car sales dto
+     */
+    @Override
+    public List<CarSaleDto> getListUserCarSales(final String login) {
+        LOGGER.debug("method getListUserCarSales with login: {}", login);
+        return carSaleDao.getListUserCarSales(login);
+    }
+
+    /**
      * Gets car sale by id.
      *
      * @param carSaleId the car sale id
@@ -125,7 +147,7 @@ public class CarSaleServiceImpl implements CarSaleService {
      * Delete old image(browser caches images so the image should have a new name,
      * otherwise the browser will show old image)
      *
-     * @param file    the image file
+     * @param file the image file
      * @throws NotFoundException throws if there is not such car sale to update
      */
     @Override

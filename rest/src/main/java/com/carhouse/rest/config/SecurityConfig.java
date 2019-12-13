@@ -10,16 +10,25 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
+/**
+ * The type Security config.
+ */
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    private static final String USER_ENDPOINT = "/carSale/**";
-    private static final String PERMITTED_ENDPOINT = "/authentication/**";
+    private static final String PERMITTED_ENDPOINT = "/carSale/**";
+    private static final String PERMITTED_ENDPOINT_CAR_CHARACTERISTICS = "/carCharacteristics";
+    private static final String AUTHENTICATION_ENDPOINT = "/authentication/**";
 
+    /**
+     * Instantiates a new Security config.
+     *
+     * @param jwtTokenProvider the jwt token provider
+     */
     @Autowired
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
+    public SecurityConfig(final JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -30,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
                 .csrf().disable()
@@ -38,7 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(PERMITTED_ENDPOINT).permitAll()
-//                .antMatchers(USER_ENDPOINT).hasRole("USER")
+                .antMatchers(PERMITTED_ENDPOINT_CAR_CHARACTERISTICS).permitAll()
+                .antMatchers(AUTHENTICATION_ENDPOINT).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));

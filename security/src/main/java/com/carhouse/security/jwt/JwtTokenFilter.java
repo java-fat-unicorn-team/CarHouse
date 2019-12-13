@@ -18,18 +18,22 @@ import java.io.IOException;
  * @author Eugene Suliemanov
  * @version 1.0
  */
-
 public class JwtTokenFilter extends GenericFilterBean {
 
     private JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * Instantiates a new Jwt token filter.
+     *
+     * @param jwtTokenProvider the jwt token provider
+     */
     @Autowired
-    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
+    public JwtTokenFilter(final JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain)
+    public void doFilter(final ServletRequest req, final ServletResponse res, final FilterChain filterChain)
             throws IOException, ServletException {
 
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) req);
@@ -42,5 +46,4 @@ public class JwtTokenFilter extends GenericFilterBean {
         }
         filterChain.doFilter(req, res);
     }
-
 }

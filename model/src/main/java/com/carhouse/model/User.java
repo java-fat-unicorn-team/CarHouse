@@ -1,5 +1,8 @@
 package com.carhouse.model;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
+
 /**
  * The User model.
  * The model includes user name, user's phone number, login and password.
@@ -7,10 +10,15 @@ package com.carhouse.model;
  * @author Katuranau Maksimilyan
  */
 public class User {
+    @PositiveOrZero(message = "user id can't be negative")
     private int userId;
+    @NotBlank
     private String userName;
+    @NotBlank
     private String phoneNumber;
+    @NotBlank
     private String login;
+    @NotBlank
     private String password;
 
     /**

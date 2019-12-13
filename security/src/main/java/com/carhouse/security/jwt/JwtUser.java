@@ -7,6 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * The type Jwt user.
+ */
 public class JwtUser implements UserDetails {
 
     private final int userId;
@@ -15,7 +18,17 @@ public class JwtUser implements UserDetails {
     private final String login;
     private final String password;
 
-    public JwtUser(int userId, String userName, String phoneNumber, String login, String password) {
+    /**
+     * Instantiates a new Jwt user.
+     *
+     * @param userId      the user id
+     * @param userName    the user name
+     * @param phoneNumber the phone number
+     * @param login       the login
+     * @param password    the password
+     */
+    public JwtUser(final int userId, final String userName, final String phoneNumber, final String login,
+                   final String password) {
         this.userId = userId;
         this.userName = userName;
         this.phoneNumber = phoneNumber;
@@ -35,7 +48,7 @@ public class JwtUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return login;
     }
 
     @Override
@@ -58,18 +71,38 @@ public class JwtUser implements UserDetails {
         return true;
     }
 
+    /**
+     * Gets user id.
+     *
+     * @return the user id
+     */
     public int getUserId() {
         return userId;
     }
 
-    public String getUserName() {
+    /**
+     * Gets real user name.
+     *
+     * @return the real user name
+     */
+    public String getRealUserName() {
         return userName;
     }
 
+    /**
+     * Gets phone number.
+     *
+     * @return the phone number
+     */
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    /**
+     * Gets login.
+     *
+     * @return the login
+     */
     public String getLogin() {
         return login;
     }

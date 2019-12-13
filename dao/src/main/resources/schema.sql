@@ -16,7 +16,7 @@ CREATE TABLE `user_table`
     `user_name`    varchar(45) NOT NULL,
     `phone_number` varchar(45) NOT NULL,
     `login`        varchar(45) NOT NULL,
-    `password`     varchar(45) NOT NULL,
+    `password`     varchar(225) NOT NULL,
     PRIMARY KEY (`user_id`),
     UNIQUE KEY `loggin_UNIQUE` (`login`)
 );

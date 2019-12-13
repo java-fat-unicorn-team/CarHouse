@@ -41,6 +41,12 @@ public class CarSaleDaoImpl implements CarSaleDao {
     @Value("${car.sales.list.get}")
     private String GET_LIST_CAR_SALES_SQL;
 
+    @Value("${last.five.car.sales.list.get}")
+    private String GET_LIST_LAST_FIVE_CAR_SALES_SQL;
+
+    @Value("${user.car.sales.list.get}")
+    private String GET_LIST_USER_CAR_SALES_SQL;
+
     @Value("${car.sale.add}")
     private String ADD_CAR_SALE_SQL;
 
@@ -101,6 +107,32 @@ public class CarSaleDaoImpl implements CarSaleDao {
                     condition.getDefaultValue()));
         }
         return namedParameterJdbcTemplate.query(GET_LIST_CAR_SALES_SQL, parameters, carSaleDtoMapper);
+    }
+
+    /**
+     * Gets last five car sales.
+     *
+     * @return the car sales dto
+     */
+    @Override
+    public List<CarSaleDto> getListLastFiveCarSales() {
+        return namedParameterJdbcTemplate.query(GET_LIST_LAST_FIVE_CAR_SALES_SQL, carSaleDtoMapper);
+    }
+
+    /**
+     * Gets user car sales.
+     * Find car sales by user name
+     * Return list of dto object without redundant information
+     *
+     * @param login the user name to get car sales
+     * @return the list of car sales
+     */
+    @Override
+    public List<CarSaleDto> getListUserCarSales(final String login) {
+        LOGGER.debug("method getCarSalesDto");
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("login", login);
+        return namedParameterJdbcTemplate.query(GET_LIST_USER_CAR_SALES_SQL, parameters, carSaleDtoMapper);
     }
 
     /**
